@@ -10,7 +10,7 @@
     <div class="container">
         <h1>Paramètres du site</h1>
 
-        <form action="/settings" method="POST">
+        <form method="POST">
             {% for category in settings_categories %}
                 <div class="category-card">
                     <h2>{{ category.NAME }}</h2>
@@ -19,7 +19,6 @@
                             <tr>
                                 <th>Description</th>
                                 <th>Value</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -38,21 +37,20 @@
                                                 <input type="text" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="form-control" value="{{ setting.VALUE }}">
                                             {% elseif setting.TYPE == 'checkbox' %}
                                                 <label class="switch">
-                                                    <input type="checkbox" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
+                                                    <input type="hidden" name="{{ setting.KEY }}" value="0">
+                                                    <input type="checkbox" id="{{ setting.KEY }}" name="{{ setting.KEY }}" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
                                                     <span class="slider"></span>
                                                 </label>
                                             {% else %}
                                                 <input type="text" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="form-control" value="{{ setting.VALUE }}">
                                             {% endif %}
                                         </td>
-                                        <td>
-                                            <button type="submit" class="btn-primary btn-sm" name="update[{{ setting.KEY }}]" value="1">Mettre à jour</button>
-                                        </td>
                                     </tr>
                                 {% endfor %}
                             {% endif %}
                         </tbody>
                     </table>
+                    <button type="submit" class="btn-primary btn-sm" value="1">Mettre à jour</button>
                 </div>
             {% endfor %}
         </form>
