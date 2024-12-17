@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Innovative Website{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+    <!-- AOS (Animate on Scroll) -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.css">
+    
+    <!-- Hover.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/hover.css/2.3.1/css/hover-min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{base_url}}{{ asset('css/base.css') }}">
+
+    {% block style %}
+    {% endblock %}
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header class="py-3 fixed-top">
+        <div class="container d-flex justify-content-between align-items-center">
+            <h1 class="h4 text-white mb-0">Innovative Website</h1>
+            <nav>
+                <a href="{{base_url}}/" class="text-white me-3 hvr-grow">Accueil</a>
+                <a href="{{base_url}}/features" class="text-white me-3 hvr-grow">Fonctionnalités</a>
+                <a href="{{base_url}}/contact" class="text-white hvr-grow">Contact</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="pt-5 pb-5 hero" id="main-content">
+        <section class="" data-aos="fade-up">
+            <div class="container">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+        </section>
+    </main>
+
+    
+
+    <!-- Footer Section -->
+    <footer class="py-4 fixed-bottom">
+        <div class="container text-center">
+            <p>&copy; 2022 - {{ date | date('Y') }} Innovative Website. Tous droits réservés.</p>
+            <div class="social-buttons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aos@2.3.4/dist/aos.js"></script>
+    <script>
+        AOS.init({
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,45 @@
+/* --- FEATURES SECTION --- */
+.features {
+    padding: 60px 0;
+}
+
+.features .feature-box {
+    text-align: center;
+    padding: 30px;
+    border-radius: 10px;
+    background: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    color: #333; /* Couleur du texte */
+}
+
+.features .feature-box:hover {
+    transform: translateY(-10px);
+    background: #eef3fa; /* Légère variation sur hover */
+}
+
+.features i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    transition: color 0.3s ease;
+}
+
+.features .feature-box.feature-1 i {
+    color: #ff6f61; /* Rouge/orange vif */
+}
+
+.features .feature-box.feature-2 i {
+    color: #42a5f5; /* Bleu clair */
+}
+
+.features .feature-box.feature-3 i {
+    color: #66bb6a; /* Vert frais */
+}
+
+.features .feature-box.feature-4 i {
+    color: #ffa726; /* Orange chaleureux */
+}
+
+.features .feature-box:hover i {
+    color: #0056b3; /* Couleur sombre pour hover */
+}

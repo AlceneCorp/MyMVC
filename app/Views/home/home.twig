@@ -1,0 +1,125 @@
+{% extends "base.twig" %}
+
+{% block title %}Bienvenue sur My Innovative Website{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{base_url}}{{ asset('css/home.css') }}">
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="">
+    <div data-aos="zoom-in">
+        <h1>Bienvenue dans l'innovation</h1>
+        <p>Solutions créatives pour relever vos défis numériques</p>
+        <a href="{{base_url}}/features" class="btn btn-primary hvr-float-shadow">Explorer nos services</a>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="features mt-4">
+    <div class="container">
+        <div class="row">
+            <!-- Feature 1 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-lightbulb"></i>
+                    <h3>Idées Innovantes</h3>
+                    <p>Nous transformons vos idées en réalités grâce à des solutions technologiques.</p>
+                </div>
+            </div>
+            <!-- Feature 2 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-cogs"></i>
+                    <h3>Technologies Avancées</h3>
+                    <p>Des outils de pointe pour optimiser vos performances.</p>
+                </div>
+            </div>
+            <!-- Feature 3 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-users"></i>
+                    <h3>Service Client</h3>
+                    <p>Un support dédié pour accompagner vos projets.</p>
+                </div>
+            </div>
+            <!-- Feature 4 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Sécurité Renforcée</h3>
+                    <p>La sécurité est au cœur de notre développement pour protéger vos données.</p>
+                </div>
+            </div>
+            <!-- Feature 5 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-chart-line"></i>
+                    <h3>Performance Optimisée</h3>
+                    <p>Nous assurons un fonctionnement rapide et fluide de vos applications.</p>
+                </div>
+            </div>
+            <!-- Feature 6 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-cloud"></i>
+                    <h3>Solutions Cloud</h3>
+                    <p>Accédez à vos données en toute sécurité, où que vous soyez.</p>
+                </div>
+            </div>
+            <!-- Feature 7 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-mobile-alt"></i>
+                    <h3>Compatibilité Mobile</h3>
+                    <p>Des applications fluides et parfaitement adaptées aux appareils mobiles.</p>
+                </div>
+            </div>
+            <!-- Feature 8 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-palette"></i>
+                    <h3>Design Personnalisé</h3>
+                    <p>Un design sur mesure pour s'adapter parfaitement à votre identité visuelle.</p>
+                </div>
+            </div>
+            <!-- Feature 9 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-robot"></i>
+                    <h3>Intelligence Artificielle</h3>
+                    <p>Des solutions intelligentes pour automatiser et optimiser vos processus.</p>
+                </div>
+            </div>
+            <!-- Feature 10 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-search"></i>
+                    <h3>Recherche Avancée</h3>
+                    <p>Des outils de recherche avancée pour trouver rapidement l'information.</p>
+                </div>
+            </div>
+            <!-- Feature 11 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-sync-alt"></i>
+                    <h3>Synchronisation</h3>
+                    <p>Synchronisation en temps réel pour garantir la cohérence des données.</p>
+                </div>
+            </div>
+            <!-- Feature 12 -->
+            <div class="col-md-4 mb-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="feature-box">
+                    <i class="fas fa-lock"></i>
+                    <h3>Contrôle d'Accès</h3>
+                    <p>Contrôlez et gérez les accès à vos informations sensibles avec une grande flexibilité.</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

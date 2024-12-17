@@ -1,0 +1,78 @@
+/* --- GLOBAL STYLES --- */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+header {
+    background: linear-gradient(90deg, #6c63ff, #48c6ef);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+footer {
+    background: linear-gradient(90deg, #6c63ff, #48c6ef);
+    color: white;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+a {
+    color: #48c6ef;
+    transition: all 0.3s ease;
+}
+
+    a:hover {
+        color: #6c63ff;
+        text-decoration: underline;
+    }
+
+/* --- HERO SECTION --- */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #6c63ff, #48c6ef);
+    color: white;
+    text-align: center;
+    background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
+}
+    .hero h1 {
+        font-size: 3.5rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+    }
+
+    .hero p {
+        font-size: 1.2rem;
+        margin: 20px 0;
+    }
+
+.btn-primary {
+    background: #48c6ef;
+    border: none;
+    padding: 12px 25px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: #6c63ff;
+}
+
+
+
+/* --- FOOTER --- */
+.social-buttons a {
+    display: inline-block; /* Ou block */
+    font-size: 1.5rem;
+    color: #ddd;
+    margin: 0 10px;
+    transition: all 0.3s ease;
+}
+
+.social-buttons a:hover {
+    color: white;
+    transform: scale(2);
+}
