@@ -10,9 +10,4 @@ class HomeController extends Controller
 	{
 		$this->render('home/home.twig');
 	}
-
-	public function logs($page = 1)
-	{
-		$this->render('home/logs.twig', ['page' => $page]);
-	}
 }

@@ -1,0 +1,199 @@
+/* Global styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: #f4f7fa;
+    color: #333;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #00bcd4;
+    font-size: 2rem;
+    margin-bottom: 40px;
+}
+
+/* Card styles */
+.category-card {
+    background-color: #fff;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+}
+
+.category-card:hover {
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+    transform: scale(1.02);
+}
+
+.category-card h2 {
+    font-size: 1.5rem;
+    color: #00bcd4;
+    margin-bottom: 20px;
+}
+
+/* Table styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f1f1f1;
+    color: #555;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+/* Form control */
+.form-control {
+    width: 100%;
+    padding: 10px;
+    border: 2px solid #00bcd4;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    transition: 0.3s;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #0288d1;
+    background-color: #ffffff;
+}
+
+/* Checkbox switch */
+.form-check-custom {
+    display: inline-block;
+}
+
+.form-check-input {
+    width: 20px;
+    height: 20px;
+}
+
+/* Button styles */
+.btn-primary {
+    background-color: #00bcd4;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.btn-primary:hover {
+    background-color: #0288d1;
+}
+
+.btn-primary:focus {
+    outline: none;
+}
+
+.btn-primary:active {
+    transform: scale(0.98);
+}
+
+/* Button for form submission */
+.btn-update {
+    background-color: #00bcd4;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    padding: 10px 20px;
+    font-size: 1.1rem;
+    transition: all 0.3s ease-in-out;
+    width: 100%;
+    cursor: pointer;
+}
+
+.btn-update:hover {
+    background-color: #0288d1;
+    transform: scale(1.05);
+}
+
+.btn-update:focus {
+    outline: none;
+}
+
+/* Custom toggle switch */
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+.switch {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: 0.4s;
+    border-radius: 50px;
+}
+
+.switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    border-radius: 50px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    transition: 0.4s;
+}
+
+.switch input:checked + .slider {
+    background-color: #00bcd4;
+}
+
+.switch input:checked + .slider:before {
+    transform: translateX(26px);
+}

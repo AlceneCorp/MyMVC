@@ -17,6 +17,17 @@ $settingsCategoriesManager = new SettingsCategoriesManager();
 $settingsManager = new SettingsManager();
 $configManager = new ConfigManager();
 
+// Détecter le protocole (HTTP ou HTTPS)
+$protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
+
+// Hôte (nom de domaine ou IP)
+$host = $_SERVER['HTTP_HOST'];
+
+// Chemin vers le dossier racine de l'application
+$projectPath = dirname($_SERVER['SCRIPT_NAME']);
+
+define("URL", rtrim("$protocol://$host$projectPath", '/'));
+
 foreach ($settingsCategoriesManager->findAllSettingsCategories() as $settingscategorie) 
 {
     $categoryName = $settingscategorie->getNAME();
@@ -50,8 +61,14 @@ foreach ($settingsCategoriesManager->findAllSettingsCategories() as $settingscat
     }
 }
 
+//var_dump(ConfigManager::getAll());
 
-$tablegen = new TablesGenerator();
-$tablegen->generateAll();
+if(ConfigManager::get("SITE.debug.value"))
+{
+    $tablegen = new TablesGenerator();
+    $tablegen->generateAll();
+}
+
+    
 
 

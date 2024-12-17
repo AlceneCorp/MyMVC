@@ -30,7 +30,6 @@ a {
 /* --- HERO SECTION --- */
 .hero {
     min-height: 100vh;
-    display: flex;
     align-items: center;
     justify-content: center;
     background: linear-gradient(135deg, #6c63ff, #48c6ef);
@@ -38,16 +37,16 @@ a {
     text-align: center;
     background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
 }
-    .hero h1 {
-        font-size: 3.5rem;
-        font-weight: bold;
-        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-    }
+.hero h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
 
-    .hero p {
-        font-size: 1.2rem;
-        margin: 20px 0;
-    }
+.hero p {
+    font-size: 1.2rem;
+    margin: 20px 0;
+}
 
 .btn-primary {
     background: #48c6ef;

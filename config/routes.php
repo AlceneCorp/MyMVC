@@ -16,14 +16,20 @@ return
 	],
 	[
 		'url' => '/MyMVC/admin/logs/{page}',
-		'controller' => \App\Controllers\HomeController::class,
+		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',
 		'params' => []
 	],
 	[
 		'url' => '/MyMVC/admin/logs',
-		'controller' => \App\Controllers\HomeController::class,
+		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',
 		'params' => ['page' => 1]
+	],
+	[
+		'url' => '/MyMVC/admin/settings',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'settings',
+		'params' => []
 	]
 ];

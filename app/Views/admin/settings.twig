@@ -1,0 +1,60 @@
+{% extends 'base.twig' %}
+
+{% block title %}Paramètres{% endblock %}
+
+{% block style %}
+<link rel="stylesheet" href="{{base_url}}{{ asset('css/settings.css') }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1>Paramètres du site</h1>
+
+        <form action="/settings" method="POST">
+            {% for category in settings_categories %}
+                <div class="category-card">
+                    <h2>{{ category.NAME }}</h2>
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Value</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% set category_settings = grouped_settings[category.ID] ?? [] %}
+                            
+                            {% if category_settings is empty %}
+                                <tr>
+                                    <td colspan="3">Aucun paramètre pour cette catégorie.</td>
+                                </tr>
+                            {% else %}
+                                {% for setting in category_settings %}
+                                    <tr>
+                                        <td>{{ setting.DESCRIPTION ?: setting.KEY }}</td>
+                                        <td>
+                                            {% if setting.TYPE == 'text' %}
+                                                <input type="text" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="form-control" value="{{ setting.VALUE }}">
+                                            {% elseif setting.TYPE == 'checkbox' %}
+                                                <label class="switch">
+                                                    <input type="checkbox" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
+                                                    <span class="slider"></span>
+                                                </label>
+                                            {% else %}
+                                                <input type="text" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="form-control" value="{{ setting.VALUE }}">
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <button type="submit" class="btn-primary btn-sm" name="update[{{ setting.KEY }}]" value="1">Mettre à jour</button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            {% endfor %}
+        </form>
+    </div>
+{% endblock %}
