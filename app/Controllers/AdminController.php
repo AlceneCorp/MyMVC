@@ -14,11 +14,8 @@ class AdminController extends Controller
 		$this->render('home/logs.twig', ['page' => $page]);
 	}
 
-
 	public function settings()
 	{
-
-
 		$settingsCategoriesManager = new SettingsCategoriesManager();
 		$settingsManager = new SettingsManager();
 
