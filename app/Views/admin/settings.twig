@@ -7,17 +7,17 @@
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h1>Paramètres du site</h1>
+        <h1><i class="fas fa-cogs"></i> Paramètres</h1>
 
         <form method="POST">
             {% for category in settings_categories %}
                 <div class="category-card">
-                    <h2>{{ category.NAME }}</h2>
+                    <h2 class="text-start"><i class="fa {{category.ICON}}"></i> {{ category.DESCRIPTION }}</h2>
                     <table class="table table-bordered table-striped">
                         <thead>
                             <tr>
-                                <th>Description</th>
+                                <th class='col-2'>Clé</th>
+                                <th class='col-6'>Description</th>
                                 <th>Value</th>
                             </tr>
                         </thead>
@@ -31,28 +31,35 @@
                             {% else %}
                                 {% for setting in category_settings %}
                                     <tr>
-                                        <td>{{ setting.DESCRIPTION ?: setting.KEY }}</td>
+                                        <td>{{ setting.NAME ?: setting.NAME }}</td>
+                                        <td>{{ setting.DESCRIPTION ?: setting.NAME }}</td>
                                         <td>
                                             {% if setting.TYPE == 'text' %}
-                                                <input type="text" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="form-control" value="{{ setting.VALUE }}">
+                                                <input type="text" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% elseif setting.TYPE == 'checkbox' %}
                                                 <label class="switch">
-                                                    <input type="hidden" name="{{ setting.KEY }}" value="0">
-                                                    <input type="checkbox" id="{{ setting.KEY }}" name="{{ setting.KEY }}" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
+                                                    <input type="hidden" name="data[{{ setting.NAME }}]" value="0">
+                                                    <input type="checkbox" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
                                                     <span class="slider"></span>
                                                 </label>
+                                            {% elseif setting.TYPE == 'number' %}
+                                                <input type="number" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% else %}
-                                                <input type="text" id="{{ setting.KEY }}" name="{{ setting.KEY }}" class="form-control" value="{{ setting.VALUE }}">
+                                                <input type="text" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% endif %}
                                         </td>
                                     </tr>
                                 {% endfor %}
+
                             {% endif %}
                         </tbody>
                     </table>
-                    <button type="submit" class="btn-primary btn-sm" value="1">Mettre à jour</button>
                 </div>
             {% endfor %}
+            
+            <!-- Bouton "Mettre à jour" -->
+            <div class="fixed-button">
+                <button type="submit" class="btn-primary btn-sm ml-5" value="1">Mettre à jour</button>
+            </div>
         </form>
-    </div>
 {% endblock %}
