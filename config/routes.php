@@ -31,5 +31,11 @@ return
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'settings',
 		'params' => []
+	],
+	[
+		'url' => '/MyMVC/admin/dashboard',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'dashboard',
+		'params' => []
 	]
 ];

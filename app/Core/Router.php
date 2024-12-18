@@ -76,7 +76,7 @@ class Router
         $user_id = SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0;
 
         // Logs pour la requête initiale
-        $this->logsManager->addLogs(['LEVEL' => 'INFO', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => 'Requête reçue pour ' . $requestUri . ' avec la méthode ' . $requestMethod, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $requestMethod, 'URI' => BASE_URL . $requestUri]);
+        //$this->logsManager->addLogs(['LEVEL' => 'INFO', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $requestMethod, 'URI' => BASE_URL . $requestUri]);
 
         if ($route) 
         {

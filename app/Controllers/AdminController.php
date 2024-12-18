@@ -12,6 +12,12 @@ use App\Managers\LogsManager;
 
 class AdminController extends Controller
 {
+	
+	public function dashboard()
+	{
+		echo $this->render('admin/dashboard.twig');
+	}
+
 	public function logs($page = 1)
 	{
 		$logsPerPage = ConfigManager::get('SECURITY.logsPerPage.value');
