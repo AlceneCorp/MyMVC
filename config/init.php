@@ -42,7 +42,7 @@ foreach ($settingsCategoriesManager->findAllSettingsCategories() as $settingscat
     // Boucle pour ajouter les paramètres dans la catégorie
     foreach ($settingsManager->findAllSettings(['AUTOLOAD' => 1]) as $setting) 
     {
-        $settingKey = $setting->getKEY();
+        $settingKey = $setting->getNAME();
         $settingValue = $setting->getVALUE();
 
         // Vérifier si la clé existe déjà dans la catégorie, pour éviter de l'écraser
@@ -62,13 +62,9 @@ foreach ($settingsCategoriesManager->findAllSettingsCategories() as $settingscat
 }
 
 //var_dump(ConfigManager::getAll());
-
 if(ConfigManager::get("SITE.debug.value"))
 {
     $tablegen = new TablesGenerator();
     $tablegen->generateAll();
 }
-
-    
-
 

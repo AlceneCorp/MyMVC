@@ -17,15 +17,26 @@ class AdminController extends Controller
 
 	public function settings()
 	{
+
+
 		$settingsCategoriesManager = new SettingsCategoriesManager();
 		$settingsManager = new SettingsManager();
 
+		if(isset($_POST))
+		{
+			foreach($_POST['data'] as $key => $value)
+			{
+				$settingsManager->updateSettings(['NAME' => $key, 'VALUE' => $value], $settingsManager->findOneSettings(['NAME' => $key])->getID());
+			}
+		}
+
 		$categories = $settingsCategoriesManager->findAllSettingsCategories();
-		$settings = $settingsManager->findAllSettings([], ['KEY' => 'ASC']);
+		$settings = $settingsManager->findAllSettings([], ['NAME' => 'ASC']);
 
 		// On regroupe les paramètres par catégorie
 		$grouped_settings = [];
-		foreach ($settings as $setting) {
+		foreach ($settings as $setting) 
+		{
 			$grouped_settings[$setting->getSETTINGS_CATEGORIES_ID()][] = $setting;
 		}
 
