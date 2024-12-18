@@ -13,6 +13,9 @@ ini_set('display_errors', 1);
 $fileSetting = include 'config.php';
 ConfigManager::init($fileSetting);
 
+$tablegen = new TablesGenerator();
+$tablegen->generateAll();
+
 $settingsCategoriesManager = new SettingsCategoriesManager();
 $settingsManager = new SettingsManager();
 $configManager = new ConfigManager();
