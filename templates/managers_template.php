@@ -42,6 +42,12 @@ class {{ObjectName}}Manager extends DatabaseManager // Déclaration de la classe
         return parent::delete('{{TableName}}', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function count{{ObjectName}}(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('{{TableName}}', {{ObjectName}}::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table {{TableName}}
     public function truncate{{ObjectName}}() : bool
     {

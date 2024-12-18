@@ -70,18 +70,24 @@ class DatabaseManager
     {
         $sql = '';
 
-        if (isset($parameters['GROUP BY'])) 
-        {
+        // Vérifier la présence de GROUP BY
+        if (isset($parameters['GROUP BY'])) {
             $sql .= ' GROUP BY ' . $parameters['GROUP BY'];
         }
 
-        if (isset($parameters['ORDER BY'])) 
-        {
+        // Vérifier la présence de ORDER BY
+        if (isset($parameters['ORDER BY'])) {
             $sql .= ' ORDER BY ' . $parameters['ORDER BY'];
         }
 
+        // Vérifier la présence de LIMIT
         if (isset($parameters['LIMIT'])) {
             $sql .= ' LIMIT ' . $parameters['LIMIT'];
+        }
+
+        // Ajouter le paramètre OFFSET si présent
+        if (isset($parameters['OFFSET'])) {
+            $sql .= ' OFFSET ' . $parameters['OFFSET'];
         }
 
         return $sql;
@@ -152,7 +158,6 @@ class DatabaseManager
 
         $sql .= $this->buildQueryParameters($parameters);
 
-
         $statement = $this->pdo->prepare($sql);
         $statement->execute($bindValues);
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -185,12 +190,20 @@ class DatabaseManager
 
 
             $statement = $this->pdo->prepare($sql);
+            
+
             $statement->execute($data);
+
         }
         catch (Exception $e)
         {
             return false;
         }
+        catch(PDOException $e)
+        {
+            throw new Exception($e->getMessage());
+        }
+
 
         return (int) $this->pdo->lastInsertId();
     }
@@ -267,6 +280,37 @@ class DatabaseManager
         $statement->execute($parameters);
 
         return $statement->rowCount();
+    }
+
+    public function count(string $table, string $classObject, array $key = [], array $parameters = []): int
+    {
+        $sql = "SELECT COUNT(*) FROM $table";
+        $where = [];
+        $bindValues = [];
+
+        // Ajout des conditions WHERE en fonction de $key
+        foreach ($key as $column => $value) {
+            $where[] = "$column = :$column";
+            $bindValues[$column] = $value;
+        }
+
+        // Si des conditions WHERE existent, les ajouter à la requête SQL
+        if ($where) {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+
+        // Ajout des paramètres supplémentaires (ORDER BY, LIMIT, etc.) via buildQueryParameters
+        $sql .= $this->buildQueryParameters($parameters);
+
+        // Préparer et exécuter la requête
+        $statement = $this->pdo->prepare($sql);
+        $statement->execute($bindValues);
+
+        // Récupérer le nombre de résultats
+        $result = $statement->fetchColumn();
+
+        // Retourner le nombre de résultats
+        return (int) $result;
     }
 
     /**

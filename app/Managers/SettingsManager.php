@@ -42,6 +42,12 @@ class SettingsManager extends DatabaseManager // Déclaration de la classe Setti
         return parent::delete('settings', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function countSettings(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('settings', Settings::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table settings
     public function truncateSettings() : bool
     {

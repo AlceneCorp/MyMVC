@@ -42,6 +42,12 @@ class UsersProfileManager extends DatabaseManager // Déclaration de la classe U
         return parent::delete('users_profile', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function countUsersProfile(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('users_profile', UsersProfile::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table users_profile
     public function truncateUsersProfile() : bool
     {

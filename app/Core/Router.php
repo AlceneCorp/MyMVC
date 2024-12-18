@@ -72,36 +72,33 @@ class Router
         // Trouver la route correspondante
         $route = $this->routes->find($requestUri);
 
-        $controllerName = $route['controller'];
-        $methodName = $route['method'];
-        $params = $route['params'];
+        // Récupérer l'ID de l'utilisateur si connecté
+        $user_id = SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0;
+
+        // Logs pour la requête initiale
+        $this->logsManager->addLogs(['LEVEL' => 'INFO', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => 'Requête reçue pour ' . $requestUri . ' avec la méthode ' . $requestMethod, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $requestMethod, 'URI' => BASE_URL . $requestUri]);
 
         if ($route) 
         {
+            $controllerName = $route['controller'];
+            $methodName = $route['method'];
+            $params = $route['params'];
+
             // Vérifier si le contrôleur existe
-            if (class_exists($controllerName) && method_exists($controllerName, $methodName)) 
-            {
+            if (class_exists($controllerName) && method_exists($controllerName, $methodName)) {
                 $controller = new $controllerName($this->twig);
                 call_user_func_array([$controller, $methodName], $params);
 
-                if(SessionsManager::has('USERS'))
-                {
-                    $user_id = SessionsManager::get('USERS')->getID();
-                }
-                else
-                {
-                    $user_id = 0;
-                }
-                    
-
+                // Log de succès après l'exécution
                 $this->logsManager->addLogs([
-                    'LEVEL' => 'ERROR', 
+                    'LEVEL' => 'SUCCESS', 
                     'CATEGORY' => 'APPLICATION', 
-                    'MESSAGE' => 'Route exécutée : $controllerName::$methodName avec les paramètres '. json_encode($params),
+                    'MESSAGE' => $controllerName . '::' . $methodName . '(' . json_encode($params) . ')',
                     'USERS_ID' => $user_id,
                     'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
-                    'METHOD' => 'GET',
-                    'URI' => $requestUri]);
+                    'METHOD' => $requestMethod,
+                    'URI' => BASE_URL . $requestUri
+                ]);
 
                 return;
             }
@@ -110,14 +107,36 @@ class Router
             $controller = new Controller($this->twig);
             $controller->render('error/error.twig', ['error_message' => 'Erreur interne.', 'error_code' => 500]);
             http_response_code(500);
-            echo "Controller or method not found.";
+
+            // Log d'erreur pour contrôleur/méthode introuvable
+            $this->logsManager->addLogs([
+                'LEVEL' => 'ERROR', 
+                'CATEGORY' => 'APPLICATION', 
+                'MESSAGE' => 'Controller ou méthode introuvable pour ' . $controllerName . '::' . $methodName,
+                'USERS_ID' => $user_id,
+                'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
+                'METHOD' => $requestMethod,
+                'URI' => BASE_URL . $requestUri
+            ]);
         } 
         else 
         {
+            // Log d'erreur pour route non trouvée
+            $this->logsManager->addLogs([
+                'LEVEL' => 'WARNING', 
+                'CATEGORY' => 'APPLICATION', 
+                'MESSAGE' => 'Route non trouvée pour ' . $requestUri,
+                'USERS_ID' => $user_id,
+                'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
+                'METHOD' => $requestMethod,
+                'URI' => BASE_URL . $requestUri
+            ]);
+
             // Route non trouvée
             $controller = new Controller($this->twig);
             $controller->render('error/error.twig', ['error_message' => 'Page non trouvée.', 'error_code' => 404]);
             http_response_code(404);
         }
     }
+
 }

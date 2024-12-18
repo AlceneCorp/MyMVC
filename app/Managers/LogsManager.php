@@ -42,6 +42,12 @@ class LogsManager extends DatabaseManager // Déclaration de la classe LogsManag
         return parent::delete('logs', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function countLogs(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('logs', Logs::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table logs
     public function truncateLogs() : bool
     {

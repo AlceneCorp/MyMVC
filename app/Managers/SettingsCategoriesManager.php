@@ -42,6 +42,12 @@ class SettingsCategoriesManager extends DatabaseManager // Déclaration de la cl
         return parent::delete('settings_categories', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function countSettingsCategories(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('settings_categories', SettingsCategories::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table settings_categories
     public function truncateSettingsCategories() : bool
     {

@@ -42,6 +42,12 @@ class PermissionsManager extends DatabaseManager // Déclaration de la classe Pe
         return parent::delete('permissions', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function countPermissions(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('permissions', Permissions::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table permissions
     public function truncatePermissions() : bool
     {

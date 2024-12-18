@@ -42,6 +42,12 @@ class UsersPermissionsManager extends DatabaseManager // Déclaration de la clas
         return parent::delete('users_permissions', $param_Data);
     }
 
+    // Méthode pour compter les enregistrements avec parametres
+    public function countUsersPermissions(array $param_Data = [], array $param_Parameters = []) : int
+    {
+        return parent::count('users_permissions', UsersPermissions::class, $param_Data, $param_Parameters);
+    }
+
     // Méthode pour vider (TRUNCATE) la table users_permissions
     public function truncateUsersPermissions() : bool
     {

@@ -25,6 +25,7 @@ $host = $_SERVER['HTTP_HOST'];
 $projectPath = dirname($_SERVER['SCRIPT_NAME']);
 
 define("URL", rtrim("$protocol://$host$projectPath", '/'));
+define("BASE_URL", rtrim("$protocol://$host", '/'));
 
 
 //var_dump(ConfigManager::getAll());

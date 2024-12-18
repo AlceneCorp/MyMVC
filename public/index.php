@@ -6,12 +6,9 @@ require_once '../config/init.php';
 use App\Core\Router;
 use App\Core\Routes;
 
-// Initialisation des routes
-$routes = new Routes();
-$routes->add('/admin/logs/{page}', \App\Controllers\AdminController::class, 'logs');
 
 // Initialisation du routeur
-$router = new Router($routes);
+$router = new Router();
 
 // Simuler une requête entrante
 $requestUri = $_SERVER['REQUEST_URI'];
