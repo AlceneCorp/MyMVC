@@ -14,14 +14,14 @@
             ],
             'username' =>
             [
-                'value' => 'USER',
+                'value' => 'MyMVC',
                 'type' => 'text',
                 'description' => '',
                 'readonly' => true
             ],
             'password' =>
             [
-                'value' => 'PASSWORD',
+                'value' => 'VZXfRXvsuBjp]43E',
                 'type' => 'text',
                 'description' => '',
                 'readonly' => true
