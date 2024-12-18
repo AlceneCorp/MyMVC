@@ -7,6 +7,9 @@ use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
 
 use App\Core\Routes;
+use App\Core\SessionsManager;
+
+use App\Managers\LogsManager;
 
 class Router
 {
@@ -14,9 +17,12 @@ class Router
 
     protected $twig;
 
+    private $logsManager;
+
     public function __construct()
     {
         $this->routes = new Routes();
+        $this->logsManager = new LogsManager();
 
         $routesArray = require __dir__ . '\\..\\..\\config\\routes.php';
 
@@ -26,8 +32,6 @@ class Router
         }
 
         $pathViews = __dir__ . '/../Views/';
-
-        
 
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
         $loader = new FilesystemLoader($pathViews); // Remplacez 'path/to/templates' par le répertoire de vos templates Twig
@@ -68,18 +72,37 @@ class Router
         // Trouver la route correspondante
         $route = $this->routes->find($requestUri);
 
+        $controllerName = $route['controller'];
+        $methodName = $route['method'];
+        $params = $route['params'];
 
         if ($route) 
         {
-            $controllerName = $route['controller'];
-            $methodName = $route['method'];
-            $params = $route['params'];
-
             // Vérifier si le contrôleur existe
             if (class_exists($controllerName) && method_exists($controllerName, $methodName)) 
             {
                 $controller = new $controllerName($this->twig);
                 call_user_func_array([$controller, $methodName], $params);
+
+                if(SessionsManager::has('USERS'))
+                {
+                    $user_id = SessionsManager::get('USERS')->getID();
+                }
+                else
+                {
+                    $user_id = 0;
+                }
+                    
+
+                $this->logsManager->addLogs([
+                    'LEVEL' => 'ERROR', 
+                    'CATEGORY' => 'APPLICATION', 
+                    'MESSAGE' => 'Route exécutée : $controllerName::$methodName avec les paramètres '. json_encode($params),
+                    'USERS_ID' => $user_id,
+                    'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
+                    'METHOD' => 'GET',
+                    'URI' => $requestUri]);
+
                 return;
             }
 

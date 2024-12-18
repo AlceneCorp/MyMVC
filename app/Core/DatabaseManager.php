@@ -70,16 +70,18 @@ class DatabaseManager
     {
         $sql = '';
 
-        if (isset($parameters['groupBy'])) {
-            $sql .= ' GROUP BY ' . $parameters['groupBy'];
+        if (isset($parameters['GROUP BY'])) 
+        {
+            $sql .= ' GROUP BY ' . $parameters['GROUP BY'];
         }
 
-        if (isset($parameters['orderBy'])) {
-            $sql .= ' ORDER BY ' . $parameters['orderBy'];
+        if (isset($parameters['ORDER BY'])) 
+        {
+            $sql .= ' ORDER BY ' . $parameters['ORDER BY'];
         }
 
-        if (isset($parameters['limit'])) {
-            $sql .= ' LIMIT ' . $parameters['limit'];
+        if (isset($parameters['LIMIT'])) {
+            $sql .= ' LIMIT ' . $parameters['LIMIT'];
         }
 
         return $sql;
@@ -150,6 +152,7 @@ class DatabaseManager
 
         $sql .= $this->buildQueryParameters($parameters);
 
+
         $statement = $this->pdo->prepare($sql);
         $statement->execute($bindValues);
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
@@ -180,7 +183,6 @@ class DatabaseManager
             $placeholders = ':' . implode(', :', array_keys($data));
             $sql = "INSERT INTO $table ($columns) VALUES ($placeholders)";
 
-            var_dump($sql);
 
             $statement = $this->pdo->prepare($sql);
             $statement->execute($data);

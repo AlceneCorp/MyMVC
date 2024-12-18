@@ -2,91 +2,83 @@
 
 namespace App\Core;
 
-class SettingsManager
+class SessionsManager
 {
     /**
-     * Contenu des paramètres chargés.
-     * @var array
+     * Démarre une session si elle n'est pas déjà active.
      */
-    private static array $settings = [];
-
-    /**
-     * Charge les paramètres depuis un fichier PHP.
-     */
-    private static function load(string $filePath): void
+    public static function startSession(): void
     {
-        if (file_exists($filePath)) 
-        {
-            // Inclure le fichier PHP qui retourne le tableau de configuration
-            self::$settings = include $filePath;
-        }
-        else
-        {
-            die('Fichier de configuration introuvable.');
+        if (session_status() === PHP_SESSION_NONE) {
+            session_start();
         }
     }
 
     /**
-     * Initialise la classe avec le fichier de configuration.
+     * Définit une valeur dans la session.
      *
-     * @param string $filePath Chemin vers le fichier de configuration PHP.
+     * @param string $key La clé de la donnée.
+     * @param mixed $value La valeur associée.
      */
-    public static function init(string $filePath): void
+    public static function set(string $key, mixed $value): void
     {
-        self::load($filePath);
+        self::startSession();
+        $_SESSION[URL][$key] = $value;
     }
 
     /**
-     * Récupère une valeur de configuration.
+     * Récupère une valeur depuis la session.
      *
-     * @param string $key
+     * @param string $key La clé de la donnée.
      * @param mixed $default Valeur par défaut si la clé n'existe pas.
-     * @return mixed
+     * @return mixed La valeur de la session ou la valeur par défaut.
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key, mixed $default = null): mixed
     {
-        return self::$settings[$key] ?? $default;
+        self::startSession();
+        return $_SESSION[URL][$key] ?? $default;
     }
 
     /**
-     * Définit une valeur de configuration.
+     * Vérifie si une clé existe dans la session.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param string $key La clé à vérifier.
+     * @return bool True si la clé existe, sinon False.
      */
-    public static function set(string $key, $value): void
+    public static function has(string $key): bool
     {
-        self::$settings[$key] = $value;
+        self::startSession();
+        return isset($_SESSION[URL][$key]);
     }
 
     /**
-     * Vérifie si une clé de configuration existe.
+     * Supprime une clé de la session.
      *
-     * @param string $key
-     * @return bool
-     */
-    public static function exists(string $key): bool
-    {
-        return array_key_exists($key, self::$settings);
-    }
-
-    /**
-     * Supprime une clé de configuration.
-     *
-     * @param string $key
+     * @param string $key La clé à supprimer.
      */
     public static function remove(string $key): void
     {
-        unset(self::$settings[$key]);
+        self::startSession();
+        unset($_SESSION[URL][$key]);
     }
 
     /**
-     * Récupère tous les paramètres.
-     *
-     * @return array
+     * Vide complètement la session.
      */
-    public static function getAll(): array
+    public static function clear(): void
     {
-        return self::$settings;
+        self::startSession();
+        session_unset();
+    }
+
+    /**
+     * Détruit la session en cours.
+     */
+    public static function destroy(): void
+    {
+        if (session_status() !== PHP_SESSION_NONE) {
+            session_unset();
+            session_destroy();
+        }
     }
 }

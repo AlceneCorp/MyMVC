@@ -19,7 +19,7 @@ class AdminController extends Controller
 		$settingsCategoriesManager = new SettingsCategoriesManager();
 		$settingsManager = new SettingsManager();
 
-		if(isset($_POST))
+		if(isset($_POST['data']))
 		{
 			foreach($_POST['data'] as $key => $value)
 			{
@@ -28,7 +28,7 @@ class AdminController extends Controller
 		}
 
 		$categories = $settingsCategoriesManager->findAllSettingsCategories();
-		$settings = $settingsManager->findAllSettings([], ['NAME' => 'ASC']);
+		$settings = $settingsManager->findAllSettings([], ['ORDER BY' => 'NAME ASC']);
 
 		// On regroupe les paramètres par catégorie
 		$grouped_settings = [];

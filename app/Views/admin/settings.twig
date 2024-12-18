@@ -7,8 +7,9 @@
 {% endblock %}
 
 {% block content %}
+<div class="row">
+    <div class="col-md-10 offset-1">
         <h1><i class="fas fa-cogs"></i> Paramètres</h1>
-
         <form method="POST">
             {% for category in settings_categories %}
                 <div class="category-card">
@@ -42,6 +43,10 @@
                                                     <input type="checkbox" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
                                                     <span class="slider"></span>
                                                 </label>
+                                            {% elseif setting.TYPE == 'color' %}
+                                                <form>
+                                                    <input type="color" id="colorPicker" name="data[{{ setting.NAME }}]" value="{{ setting.VALUE }}">
+                                                </form>
                                             {% elseif setting.TYPE == 'number' %}
                                                 <input type="number" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% else %}
@@ -62,4 +67,6 @@
                 <button type="submit" class="btn-primary btn-sm ml-5" value="1">Mettre à jour</button>
             </div>
         </form>
+    </div>
+</div>
 {% endblock %}

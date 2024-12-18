@@ -199,7 +199,8 @@ tr:hover {
 }
 
 /* Fixer le bouton en bas de la page */
-.fixed-button {
+.fixed-button 
+{
     position: sticky; /* Fixe l'élément dans son conteneur lors du défilement */
     bottom: 20px; /* À 20px du bas de la page ou du conteneur parent */
     padding-left: 100%; /* À 20px du côté droit */

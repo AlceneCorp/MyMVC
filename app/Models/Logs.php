@@ -6,8 +6,8 @@ class Logs
 {
     private $ID;
     private $LEVEL;
+    private $CATEGORY;
     private $MESSAGE;
-    private $CONTEXTE;
     private $CREATED_AT;
     private $USERS_ID;
     private $IP_ADDRESS;
@@ -53,6 +53,16 @@ class Logs
         $this->LEVEL = $LEVEL;
     }
 
+    public function getCATEGORY()
+    {
+        return $this->CATEGORY;
+    }
+
+    public function setCATEGORY($CATEGORY)
+    {
+        $this->CATEGORY = $CATEGORY;
+    }
+
     public function getMESSAGE()
     {
         return $this->MESSAGE;
@@ -61,16 +71,6 @@ class Logs
     public function setMESSAGE($MESSAGE)
     {
         $this->MESSAGE = $MESSAGE;
-    }
-
-    public function getCONTEXTE()
-    {
-        return $this->CONTEXTE;
-    }
-
-    public function setCONTEXTE($CONTEXTE)
-    {
-        $this->CONTEXTE = $CONTEXTE;
     }
 
     public function getCREATED_AT()
