@@ -9,9 +9,21 @@ return
 		'params' => []
 	],
 	[
-		'url' => '/MyMVC/accueil/',
+		'url' => '/MyMVC/accueil',
 		'controller' => \App\Controllers\HomeController::class,
 		'method' => 'home',
+		'params' => []
+	],
+	[
+		'url' => '/MyMVC/login',
+		'controller' => \App\Controllers\LoginController::class,
+		'method' => 'login',
+		'params' => []
+	],
+	[
+		'url' => '/MyMVC/logout',
+		'controller' => \App\Controllers\LoginController::class,
+		'method' => 'logout',
 		'params' => []
 	],
 	[

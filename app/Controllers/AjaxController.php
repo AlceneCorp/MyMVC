@@ -17,7 +17,7 @@ class AjaxController extends Controller
         $visitor_logs = $visitorManager->findAllVisitor([], ['GROUP BY' => 'IP_ADDRESS']);
 
         // Récupérer les logs des visiteurs pour le graphique 2 (Pages visitées par mois)
-        $page_visits_logs = $visitorManager->findAllVisitor([], ['GROUP BY' => 'IP_ADDRESS, PAGE_VISITED']);
+        $page_visits_logs = $visitorManager->findAllVisitor([], ['ORDER BY' => 'PAGE_VISITED ASC', 'GROUP BY' => 'IP_ADDRESS, PAGE_VISITED']);
 
         // Initialiser les tableaux pour les données de visites
         $visitor_counts = [];

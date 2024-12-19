@@ -43,6 +43,7 @@ class Router
         ]);
 
         $this->twig->addGlobal('base_url', $this->getBaseUrl());
+        $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
 
         // Ajouter la fonction asset
         $this->twig->addFunction(new TwigFunction('asset', function ($path) {
@@ -81,7 +82,7 @@ class Router
         // Logs pour la requête initiale
         if(ConfigManager::get("SITE.debug.value"))
         {
-            $this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $requestMethod, 'URI' => BASE_URL . $requestUri]);
+            $this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $requestUri]);
         }
             
         if ($route) 

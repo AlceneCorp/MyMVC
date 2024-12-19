@@ -1,0 +1,60 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="mt-5 d-flex align-items-center justify-content-center">
+    <div class="card shadow-lg" style="width: 100%; max-width: 420px; border-radius: 15px;">
+        <!-- Card Header -->
+        <div class="card-header bg-info text-white text-center py-4" style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            <h4 class="mb-0"><i class="fas fa-user-circle me-2"></i> Bienvenue !</h4>
+            <p class="mb-0">Connectez-vous pour accéder à votre compte</p>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body p-4">
+            {% if error %}
+                <div class="alert alert-danger text-center mb-4">
+                    <i class="fas fa-exclamation-triangle me-2"></i> {{ error }}
+                </div>
+            {% endif %}
+            <form method="POST">
+                <!-- Email Input -->
+                <div class="mb-3">
+                    <label for="email" class="form-label">Identifiant</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-info text-white">
+                            <i class="fas fa-envelope"></i>
+                        </span>
+                        <input type="login" class="form-control" id="login" name="login" placeholder="Entrez votre identifiant" required>
+                    </div>
+                </div>
+                <!-- Password Input -->
+                <div class="mb-3">
+                    <label for="password" class="form-label">Mot de passe</label>
+                    <div class="input-group">
+                        <span class="input-group-text bg-info text-white">
+                            <i class="fas fa-lock"></i>
+                        </span>
+                        <input type="password" class="form-control" id="password" name="password" placeholder="Entrez votre mot de passe" required>
+                    </div>
+                </div>
+                <!-- Forgot Password Link -->
+                <div class="mb-3 text-end">
+                    <a href="{{ base_url }}/forgot-password" class="text-decoration-none text-primary small">
+                        Mot de passe oublié ?
+                    </a>
+                </div>
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary w-100 py-2">
+                    <i class="fas fa-sign-in-alt me-2"></i> Se connecter
+                </button>
+            </form>
+        </div>
+        <!-- Card Footer -->
+        <div class="card-footer text-center bg-light py-3" style="border-bottom-left-radius: 15px; border-bottom-right-radius: 15px;">
+            <small class="text-muted">Pas encore de compte ?</small>
+            <a href="{{ base_url }}/register" class="text-decoration-none text-primary fw-bold ms-1">
+                Inscrivez-vous
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

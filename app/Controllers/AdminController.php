@@ -20,13 +20,13 @@ class AdminController extends Controller
 		$usersManager = new UsersManager();
 		$logsManager = new LogsManager();
 
-
 		echo $this->render('admin/dashboard.twig',
 		[
 			'users_count' => $usersManager->countUsers(),
 			'log_count' => $logsManager->countLogs(),
 			'log_count_warning' => $logsManager->countLogs(['LEVEL' => 'WARNING']),
-			'log_count_error' => $logsManager->countLogs(['LEVEL' => 'ERROR']) + $logsManager->countLogs(['LEVEL' => 'CRITICAL'])
+			'log_count_error' => $logsManager->countLogs(['LEVEL' => 'ERROR']) + $logsManager->countLogs(['LEVEL' => 'CRITICAL']),
+			'log_recent_activity' => $logsManager->findAllLogs(['CATEGORY' => 'USERS'], ['LIMIT' => '10', 'ORDER BY' => 'ID DESC'])
 		]);
 	}
 

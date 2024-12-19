@@ -14,6 +14,13 @@ class Controller
 	// Méthode pour afficher un template Twig avec les données passées
     public function render(string $template, array $data = [])
     {
-        echo $this->twig->render($template, $data);
+		try
+		{
+			echo $this->twig->render($template, $data);
+		}
+		catch (\Exception $e)
+		{
+
+		}
     }
 }
