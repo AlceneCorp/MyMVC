@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\ConfigManager;
+use App\Core\SessionsManager;
 
 use App\Managers\SettingsCategoriesManager;
 use App\Managers\SettingsManager;
@@ -57,14 +58,35 @@ class AdminController extends Controller
 	{
 		$settingsCategoriesManager = new SettingsCategoriesManager();
 		$settingsManager = new SettingsManager();
+		$logsManager = new LogsManager();
 
+
+		if(isset($_POST['data']))
+		{
+			foreach($_POST['data'] as $category => $value)
+			{
+				foreach($_POST['data'][$category] as $key => $value)
+				{
+					if(ConfigManager::get($category.'.'.$key.'.value') != $value)
+					{
+						$settingsManager->updateSettings(['NAME' => $key, 'VALUE' => $value], $settingsManager->findOneSettings(['NAME' => $key])->getID());
+						
+						$logsManager->addLogs(['LEVEL' => 'SUCCESS', 'CATEGORY' => 'CONFIG', 'MESSAGE' => $category .'.' . $key . ' => ' . $value, 'USERS_ID' => (SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
+					}
+				}
+			}
+		}
+
+
+		/*
 		if(isset($_POST['data']))
 		{
 			foreach($_POST['data'] as $key => $value)
 			{
-				$settingsManager->updateSettings(['NAME' => $key, 'VALUE' => $value], $settingsManager->findOneSettings(['NAME' => $key])->getID());
+
+					
 			}
-		}
+		}*/
 
 		$categories = $settingsCategoriesManager->findAllSettingsCategories();
 		$settings = $settingsManager->findAllSettings([], ['ORDER BY' => 'TYPE DESC, NAME ASC']);

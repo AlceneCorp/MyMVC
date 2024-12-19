@@ -36,21 +36,21 @@
                                         <td>{{ setting.DESCRIPTION ?: setting.NAME }}</td>
                                         <td>
                                             {% if setting.TYPE == 'text' %}
-                                                <input type="text" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% elseif setting.TYPE == 'checkbox' %}
                                                 <label class="switch">
-                                                    <input type="hidden" name="data[{{ setting.NAME }}]" value="0">
-                                                    <input type="checkbox" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
+                                                    <input type="hidden" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="0">
+                                                    <input type="checkbox" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
                                                     <span class="slider"></span>
                                                 </label>
                                             {% elseif setting.TYPE == 'color' %}
                                                 <form>
-                                                    <input type="color" id="colorPicker" name="data[{{ setting.NAME }}]" value="{{ setting.VALUE }}">
+                                                    <input type="color" id="colorPicker" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="{{ setting.VALUE }}">
                                                 </form>
                                             {% elseif setting.TYPE == 'number' %}
-                                                <input type="number" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                <input type="number" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% else %}
-                                                <input type="text" id="{{ setting.NAME }}" name="data[{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
                                             {% endif %}
                                         </td>
                                     </tr>

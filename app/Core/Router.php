@@ -76,8 +76,11 @@ class Router
         $user_id = SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0;
 
         // Logs pour la requête initiale
-        //$this->logsManager->addLogs(['LEVEL' => 'INFO', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $requestMethod, 'URI' => BASE_URL . $requestUri]);
-
+        if(ConfigManager::get("SITE.debug.value"))
+        {
+            $this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $requestMethod, 'URI' => BASE_URL . $requestUri]);
+        }
+            
         if ($route) 
         {
             $controllerName = $route['controller'];
@@ -89,16 +92,19 @@ class Router
                 $controller = new $controllerName($this->twig);
                 call_user_func_array([$controller, $methodName], $params);
 
-                // Log de succès après l'exécution
-                $this->logsManager->addLogs([
-                    'LEVEL' => 'SUCCESS', 
-                    'CATEGORY' => 'APPLICATION', 
-                    'MESSAGE' => $controllerName . '::' . $methodName . '(' . json_encode($params) . ')',
-                    'USERS_ID' => $user_id,
-                    'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
-                    'METHOD' => $requestMethod,
-                    'URI' => BASE_URL . $requestUri
-                ]);
+                if(ConfigManager::get("SITE.debug.value"))
+                {
+                    // Log de succès après l'exécution
+                    $this->logsManager->addLogs([
+                        'LEVEL' => 'DEBUG', 
+                        'CATEGORY' => 'APPLICATION', 
+                        'MESSAGE' => $controllerName . '::' . $methodName . '(' . json_encode($params) . ')',
+                        'USERS_ID' => $user_id,
+                        'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
+                        'METHOD' => $requestMethod,
+                        'URI' => BASE_URL . $requestUri
+                    ]);
+                }
 
                 return;
             }
