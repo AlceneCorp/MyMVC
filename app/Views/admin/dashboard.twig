@@ -1,140 +1,241 @@
 {% extends 'base.twig' %}
 
 {% block content %}
-    <div class="container-fluid">
-        <div class="row">
-            <!-- Sidebar -->
-            <div class="col-md-3 col-lg-2 sidebar bg-dark text-white">
-                <div class="d-flex flex-column p-3">
-                    <h4 class="text-center mb-4">Admin Dashboard</h4>
-                    <div class="list-group">
-                        <a href="#" class="list-group-item list-group-item-action text-white">
-                            <i class="fas fa-tachometer-alt"></i> Dashboard
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action text-white">
-                            <i class="fas fa-users"></i> Users
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action text-white">
-                            <i class="fas fa-cogs"></i> Settings
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action text-white">
-                            <i class="fas fa-book"></i> Logs
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action text-white">
-                            <i class="fas fa-chart-line"></i> Reports
-                        </a>
-                        <a href="#" class="list-group-item list-group-item-action text-white">
-                            <i class="fas fa-sign-out-alt"></i> Logout
-                        </a>
+<div class="container-fluid">
+    <div class="row">
+        
+        {% include 'admin/include/adminMenu.twig' %}
+
+        <!-- Main Content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</h1>
+                <button class="btn btn-primary">
+                    <i class="fas fa-download me-2"></i> Export Data
+                </button>
+            </div>
+
+            <!-- Dashboard Stats -->
+            <div class="row">
+                <div class="col-xl-3 col-lg-6 col-sm-6 mb-4">
+                    <div class="card border-0 shadow-sm bg-primary text-white">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="fas fa-users fa-3x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Nombre d'utilisateurs</h5>
+                                <p class="card-text fs-4">{{users_count}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-sm-6 mb-4">
+                    <div class="card border-0 shadow-sm bg-success text-white">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="fas fa-book fa-3x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Total de logs</h5>
+                                <p class="card-text fs-4">{{log_count}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-sm-6 mb-4">
+                    <div class="card border-0 shadow-sm bg-warning text-white">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="fas fa-exclamation-triangle fa-3x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Avertissements</h5>
+                                <p class="card-text fs-4">{{log_count_warning}}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-lg-6 col-sm-6 mb-4">
+                    <div class="card border-0 shadow-sm bg-danger text-white">
+                        <div class="card-body d-flex align-items-center">
+                            <div class="me-3">
+                                <i class="fas fa-exclamation-triangle fa-3x"></i>
+                            </div>
+                            <div>
+                                <h5 class="card-title">Problèmes critiques</h5>
+                                <p class="card-text fs-4">{{log_count_error}}</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Main content -->
-            <div class="col-md-9 col-lg-10">
-                <div class="container-fluid">
-                    <div class="row mt-4">
-                        <!-- Dashboard Stats -->
-                        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                            <div class="card bg-primary text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-users"></i> Total Users</h5>
-                                    <p class="card-text">1,234</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                            <div class="card bg-success text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-chart-line"></i> Active Sessions</h5>
-                                    <p class="card-text">356</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                            <div class="card bg-warning text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-cart-plus"></i> Pending Orders</h5>
-                                    <p class="card-text">78</p>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xl-3 col-lg-4 col-md-6 mb-4">
-                            <div class="card bg-danger text-white">
-                                <div class="card-body">
-                                    <h5 class="card-title"><i class="fas fa-exclamation-triangle"></i> Critical Issues</h5>
-                                    <p class="card-text">5</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+            <!-- Recent Activity -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5><i class="fas fa-history me-2"></i> Activité Récente</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><i class="fas fa-user me-2"></i> John Doe logged in</li>
+                        <li class="list-group-item"><i class="fas fa-shopping-cart me-2"></i> Jane created an order</li>
+                        <li class="list-group-item"><i class="fas fa-cogs me-2"></i> Admin updated system settings</li>
+                    </ul>
+                </div>
+            </div>
 
-                    <!-- Recent Activity -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5><i class="fas fa-history"></i> Recent Activity</h5>
+            <!-- Section pour les graphiques -->
+            <div class="row">
+                <!-- Premier graphique - Nombre de visiteurs par mois -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5><i class="fas fa-chart-bar me-2"></i> Visiteurs par mois</h5>
                         </div>
                         <div class="card-body">
-                            <ul class="list-group">
-                                <li class="list-group-item"><i class="fas fa-user"></i> John Doe logged in</li>
-                                <li class="list-group-item"><i class="fas fa-shopping-cart"></i> Jane created an order</li>
-                                <li class="list-group-item"><i class="fas fa-cogs"></i> Admin updated system settings</li>
-                            </ul>
+                            <canvas id="visitorChart" height="300"></canvas>
                         </div>
                     </div>
+                </div>
 
-                    <!-- Sales Chart -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5><i class="fas fa-chart-bar"></i> Sales Overview</h5>
+                <!-- Deuxième graphique - Pages visitées par mois -->
+                <div class="col-md-6">
+                    <div class="card shadow-sm mb-4">
+                        <div class="card-header bg-dark text-white">
+                            <h5><i class="fas fa-chart-bar me-2"></i> Pages visitées par mois</h5>
                         </div>
                         <div class="card-body">
-                            <div class="chart-placeholder" style="height: 300px; background-color: #f2f2f2; text-align: center; line-height: 300px;">
-                                Chart here (using Chart.js)
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- User Table -->
-                    <div class="card mt-4">
-                        <div class="card-header">
-                            <h5><i class="fas fa-table"></i> User Data</h5>
-                        </div>
-                        <div class="card-body">
-                            <table class="table table-striped">
-                                <thead>
-                                    <tr>
-                                        <th>#</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>Status</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>John Doe</td>
-                                        <td>johndoe@example.com</td>
-                                        <td><span class="badge bg-success">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Jane Doe</td>
-                                        <td>janedoe@example.com</td>
-                                        <td><span class="badge bg-warning">Pending</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>3</td>
-                                        <td>Sam Smith</td>
-                                        <td>samsmith@example.com</td>
-                                        <td><span class="badge bg-danger">Inactive</span></td>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <canvas id="pageChart" height="300"></canvas>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+
+            <!-- User Data Table -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-dark text-white">
+                    <h5><i class="fas fa-table me-2"></i> Données des utilisateurs</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>#</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>John Doe</td>
+                                <td>johndoe@example.com</td>
+                                <td><span class="badge bg-success">Active</span></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Jane Doe</td>
+                                <td>janedoe@example.com</td>
+                                <td><span class="badge bg-warning">Pending</span></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Sam Smith</td>
+                                <td>samsmith@example.com</td>
+                                <td><span class="badge bg-danger">Inactive</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
     </div>
+</div>
+{% endblock %}
+
+{% block jquery %}
+<!-- Inclure Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Script pour récupérer les données PHP et afficher les graphiques -->
+<script>
+$(document).ready(function() 
+{
+    // Récupérer les données PHP via AJAX
+    $.ajax({
+        url: '{{base_url}}/admin/ajax/dashboard',  // Remplacer par le chemin de votre script PHP
+        type: 'GET',
+        success: function(response) {
+            var data = JSON.parse(response);
+
+            // Premier graphique - Nombre de visiteurs par mois
+            var ctx1 = document.getElementById('visitorChart').getContext('2d');
+            new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: data.visitor_graph.months,
+                    datasets: [{
+                        label: 'Visiteurs',
+                        data: data.visitor_graph.visitor_counts,
+                        backgroundColor: '#4e73df',
+                        borderColor: '#4e73df',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Deuxième graphique - Pages visitées par mois
+            var ctx2 = document.getElementById('pageChart').getContext('2d');
+
+            // Créer les labels des mois
+            var pageLabels = data.page_visits_graph.months;
+
+            // Créer les datasets pour chaque page
+            var pageData = data.page_visits_graph.page_names.map((page, index) => {
+                var visits = data.page_visits_graph.page_visits_data.map((monthData) => {
+                    return monthData[page] || 0; // Si aucune visite pour la page dans ce mois, mettre 0
+                });
+
+                return {
+                    label: page,
+                    data: visits,
+                    backgroundColor: `rgba(${(index + 1) * 50}, ${200 - (index + 1) * 30}, 150, 0.7)`,
+                    borderColor: `rgba(${(index + 1) * 50}, ${200 - (index + 1) * 30}, 150, 1)`,
+                    borderWidth: 1
+                };
+            });
+
+            // Créer le graphique
+            new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: pageLabels,
+                    datasets: pageData
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+    });
+
+});
+</script>
 {% endblock %}

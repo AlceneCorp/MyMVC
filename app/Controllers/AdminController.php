@@ -9,6 +9,7 @@ use App\Core\SessionsManager;
 use App\Managers\SettingsCategoriesManager;
 use App\Managers\SettingsManager;
 use App\Managers\LogsManager;
+use App\Managers\UsersManager;
 
 
 class AdminController extends Controller
@@ -16,7 +17,17 @@ class AdminController extends Controller
 	
 	public function dashboard()
 	{
-		echo $this->render('admin/dashboard.twig');
+		$usersManager = new UsersManager();
+		$logsManager = new LogsManager();
+
+
+		echo $this->render('admin/dashboard.twig',
+		[
+			'users_count' => $usersManager->countUsers(),
+			'log_count' => $logsManager->countLogs(),
+			'log_count_warning' => $logsManager->countLogs(['LEVEL' => 'WARNING']),
+			'log_count_error' => $logsManager->countLogs(['LEVEL' => 'ERROR']) + $logsManager->countLogs(['LEVEL' => 'CRITICAL'])
+		]);
 	}
 
 	public function logs($page = 1)
@@ -76,17 +87,6 @@ class AdminController extends Controller
 				}
 			}
 		}
-
-
-		/*
-		if(isset($_POST['data']))
-		{
-			foreach($_POST['data'] as $key => $value)
-			{
-
-					
-			}
-		}*/
 
 		$categories = $settingsCategoriesManager->findAllSettingsCategories();
 		$settings = $settingsManager->findAllSettings([], ['ORDER BY' => 'TYPE DESC, NAME ASC']);

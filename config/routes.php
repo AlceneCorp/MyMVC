@@ -37,5 +37,12 @@ return
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'dashboard',
 		'params' => []
+	],
+	[
+		'url' => '/MyMVC/admin/ajax/dashboard',
+		'controller' => \App\Controllers\AjaxController::class,
+		'method' => 'ajaxAdminDashboard',
+		'params' => []
 	]
+
 ];

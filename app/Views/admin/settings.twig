@@ -7,66 +7,75 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-    <div class="col-md-10 offset-1">
-        <h1><i class="fas fa-cogs"></i> Paramètres</h1>
-        <form method="POST">
-            {% for category in settings_categories %}
-                <div class="category-card">
-                    <h2 class="text-start"><i class="fa {{category.ICON}}"></i> {{ category.DESCRIPTION }}</h2>
-                    <table class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th class='col-2'>Clé</th>
-                                <th class='col-6'>Description</th>
-                                <th>Value</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% set category_settings = grouped_settings[category.ID] ?? [] %}
-                            
-                            {% if category_settings is empty %}
-                                <tr>
-                                    <td colspan="3">Aucun paramètre pour cette catégorie.</td>
-                                </tr>
-                            {% else %}
-                                {% for setting in category_settings %}
-                                    <tr>
-                                        <td>{{ setting.NAME ?: setting.NAME }}</td>
-                                        <td>{{ setting.DESCRIPTION ?: setting.NAME }}</td>
-                                        <td>
-                                            {% if setting.TYPE == 'text' %}
-                                                <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
-                                            {% elseif setting.TYPE == 'checkbox' %}
-                                                <label class="switch">
-                                                    <input type="hidden" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="0">
-                                                    <input type="checkbox" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
-                                                    <span class="slider"></span>
-                                                </label>
-                                            {% elseif setting.TYPE == 'color' %}
-                                                <form>
-                                                    <input type="color" id="colorPicker" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="{{ setting.VALUE }}">
-                                                </form>
-                                            {% elseif setting.TYPE == 'number' %}
-                                                <input type="number" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
-                                            {% else %}
-                                                <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
-                                            {% endif %}
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- Menu latéral -->
+        {% include 'admin/include/adminMenu.twig' %}
 
-                            {% endif %}
-                        </tbody>
-                    </table>
-                </div>
-            {% endfor %}
-            
-            <!-- Bouton "Mettre à jour" -->
-            <div class="fixed-button">
-                <button type="submit" class="btn-primary btn-sm ml-5" value="1">Mettre à jour</button>
+        <!-- Main content -->
+        <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="text-center mb-4"><i class="fas fa-cogs me-2"></i> Paramètres de l'application</h1>
             </div>
-        </form>
+
+            <form method="POST">
+                {% for category in settings_categories %}
+                    <div class="category-card">
+                        <h2 class="text-start"><i class="fa {{category.ICON}}"></i> {{ category.DESCRIPTION }}</h2>
+                        <table class="table table-bordered table-striped">
+                            <thead>
+                                <tr>
+                                    <th class='col-2'>Clé</th>
+                                    <th class='col-6'>Description</th>
+                                    <th>Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% set category_settings = grouped_settings[category.ID] ?? [] %}
+
+                                {% if category_settings is empty %}
+                                    <tr>
+                                        <td colspan="3">Aucun paramètre pour cette catégorie.</td>
+                                    </tr>
+                                {% else %}
+                                    {% for setting in category_settings %}
+                                        <tr>
+                                            <td>{{ setting.NAME ?: setting.NAME }}</td>
+                                            <td>{{ setting.DESCRIPTION ?: setting.NAME }}</td>
+                                            <td>
+                                                {% if setting.TYPE == 'text' %}
+                                                    <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                {% elseif setting.TYPE == 'checkbox' %}
+                                                    <label class="switch">
+                                                        <input type="hidden" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="0">
+                                                        <input type="checkbox" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
+                                                        <span class="slider"></span>
+                                                    </label>
+                                                {% elseif setting.TYPE == 'color' %}
+                                                    <form>
+                                                        <input type="color" id="colorPicker" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="{{ setting.VALUE }}">
+                                                    </form>
+                                                {% elseif setting.TYPE == 'number' %}
+                                                    <input type="number" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                {% else %}
+                                                    <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+
+                <!-- Bouton "Mettre à jour" -->
+                <div class="fixed-button">
+                    <button type="submit" class="btn-primary btn-sm ml-5" value="1">Mettre à jour</button>
+                </div>
+            </form>
+        </main>
     </div>
 </div>
 {% endblock %}

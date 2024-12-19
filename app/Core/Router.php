@@ -10,6 +10,7 @@ use App\Core\Routes;
 use App\Core\SessionsManager;
 
 use App\Managers\LogsManager;
+use App\Managers\VisitorManager;
 
 class Router
 {
@@ -18,11 +19,13 @@ class Router
     protected $twig;
 
     private $logsManager;
+    private $visitorManager;
 
     public function __construct()
     {
         $this->routes = new Routes();
         $this->logsManager = new LogsManager();
+        $this->visitorManager = new VisitorManager();
 
         $routesArray = require __dir__ . '\\..\\..\\config\\routes.php';
 
@@ -92,6 +95,11 @@ class Router
                 $controller = new $controllerName($this->twig);
                 call_user_func_array([$controller, $methodName], $params);
 
+                if(ConfigManager::get("SITE.log_visitor.value"))
+                {
+                    $this->visitorManager->addVisitor(['VISIT_DATE' => date('Y-m-d'), 'PAGE_VISITED' => (str_replace('/MyMVC/', '', $requestUri) ? str_replace('/MyMVC/', '', $requestUri) : 'accueil'), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR']]);
+                }
+
                 if(ConfigManager::get("SITE.debug.value"))
                 {
                     // Log de succès après l'exécution
@@ -129,7 +137,7 @@ class Router
         {
             // Log d'erreur pour route non trouvée
             $this->logsManager->addLogs([
-                'LEVEL' => 'WARNING', 
+                'LEVEL' => 'ERROR', 
                 'CATEGORY' => 'APPLICATION', 
                 'MESSAGE' => 'Route non trouvée pour ' . $requestUri,
                 'USERS_ID' => $user_id,

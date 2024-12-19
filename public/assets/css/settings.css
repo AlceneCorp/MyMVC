@@ -7,19 +7,6 @@ body {
     margin: 0;
 }
 
-.container {
-    max-width: 1000px;
-    margin: 30px auto;
-    padding: 20px;
-}
-
-h1 {
-    text-align: center;
-    color: #00bcd4;
-    font-size: 2rem;
-    margin-bottom: 40px;
-}
-
 /* Card styles */
 .category-card {
     background-color: #fff;
@@ -207,8 +194,7 @@ tr:hover {
     z-index: 1000; /* S'assurer que le bouton reste au-dessus des autres éléments */
 }
 
-.fixed-button > button
-{
-    margin-left:40px;
-    width:200px;
+.fixed-button > button {
+    margin-left: 40px;
+    width: 250px;
 }

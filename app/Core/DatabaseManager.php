@@ -158,6 +158,7 @@ class DatabaseManager
 
         $sql .= $this->buildQueryParameters($parameters);
 
+
         $statement = $this->pdo->prepare($sql);
         $statement->execute($bindValues);
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
