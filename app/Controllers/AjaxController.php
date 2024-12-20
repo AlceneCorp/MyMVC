@@ -82,16 +82,22 @@ class AjaxController extends Controller
         // Préparer les données pour le graphique 2 (Pages visitées par mois)
         $page_visits_data = [];
         $page_names = []; // Liste des pages visitées
-        foreach ($months as $month) {
+        foreach ($months as $month) 
+        {
             // Ajouter les pages visitées de ce mois
-            if (isset($page_visits_by_month[$month])) {
-                foreach ($page_visits_by_month[$month] as $page => $count) {
-                    if (!in_array($page, $page_names)) {
+            if (isset($page_visits_by_month[$month])) 
+            {
+                foreach ($page_visits_by_month[$month] as $page => $count) 
+                {
+                    if (!in_array($page, $page_names) && (substr_count($page, '/') == 1 || substr_count($page, '/') == 0)) 
+                    {
                         $page_names[] = $page;
                     }
                 }
                 $page_visits_data[] = $page_visits_by_month[$month];
-            } else {
+            } 
+            else 
+            {
                 $page_visits_data[] = [];
             }
         }

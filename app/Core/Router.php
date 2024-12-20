@@ -82,7 +82,8 @@ class Router
         // Logs pour la requête initiale
         if(ConfigManager::get("SITE.debug.value"))
         {
-            $this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $requestUri]);
+            //$this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
+            addLogs('DEBUG', 'APPLICATION', $requestUri);
         }
             
         if ($route) 
@@ -103,16 +104,7 @@ class Router
 
                 if(ConfigManager::get("SITE.debug.value"))
                 {
-                    // Log de succès après l'exécution
-                    $this->logsManager->addLogs([
-                        'LEVEL' => 'DEBUG', 
-                        'CATEGORY' => 'APPLICATION', 
-                        'MESSAGE' => $controllerName . '::' . $methodName . '(' . json_encode($params) . ')',
-                        'USERS_ID' => $user_id,
-                        'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
-                        'METHOD' => $requestMethod,
-                        'URI' => BASE_URL . $requestUri
-                    ]);
+                    addLogs('DEBUG', 'APPLICATION', $controllerName . '::' . $methodName . '(' . json_encode($params) . ')');
                 }
 
                 return;
@@ -123,29 +115,11 @@ class Router
             $controller->render('error/error.twig', ['error_message' => 'Erreur interne.', 'error_code' => 500]);
             http_response_code(500);
 
-            // Log d'erreur pour contrôleur/méthode introuvable
-            $this->logsManager->addLogs([
-                'LEVEL' => 'ERROR', 
-                'CATEGORY' => 'APPLICATION', 
-                'MESSAGE' => 'Controller ou méthode introuvable pour ' . $controllerName . '::' . $methodName,
-                'USERS_ID' => $user_id,
-                'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
-                'METHOD' => $requestMethod,
-                'URI' => BASE_URL . $requestUri
-            ]);
+            addLogs('ERROR', 'APPLICATION', 'Controller ou méthode introuvable pour ' . $controllerName . '::' . $methodName);
         } 
         else 
         {
-            // Log d'erreur pour route non trouvée
-            $this->logsManager->addLogs([
-                'LEVEL' => 'ERROR', 
-                'CATEGORY' => 'APPLICATION', 
-                'MESSAGE' => 'Route non trouvée pour ' . $requestUri,
-                'USERS_ID' => $user_id,
-                'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'],
-                'METHOD' => $requestMethod,
-                'URI' => BASE_URL . $requestUri
-            ]);
+            addLogs('ERROR', 'APPLICATION', 'Route non trouvée pour ' . $requestUri);
 
             // Route non trouvée
             $controller = new Controller($this->twig);

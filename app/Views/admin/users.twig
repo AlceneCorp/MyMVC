@@ -1,0 +1,189 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class='row'>
+        <!-- Menu latéral -->
+        {% include 'admin/include/adminMenu.twig' %}
+
+        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="text-center mb-4"><i class="fas fa-users me-2"></i> Liste des utilisateurs</h1>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+                </div>
+
+                <nav aria-label="Pagination">
+                    <ul class="pagination">
+                        {% if currentPage > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/{{ currentPage - 1 }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Précédent</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo; Précédent</span>
+                            </li>
+                        {% endif %}
+                            
+                        {% if currentPage > 2 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/1">1</a>
+                            </li>
+                            {% if currentPage > 3 %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                            
+                        {% for page in (currentPage - 1)..(currentPage + 1) %}
+                            {% if page > 0 and page <= totalPages %}
+                                <li class="page-item {% if page == currentPage %}active{% endif %}">
+                                    <a class="page-link" href="{{ baseUrl }}/admin/users/{{ page }}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                            
+                        {% if currentPage < totalPages - 1 %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                            
+                        {% if currentPage < totalPages %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/{{ totalPages }}" aria-label="Last">
+                                    <span aria-hidden="true">{{ totalPages }}</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/{{ currentPage + 1 }}" aria-label="Next">
+                                    <span aria-hidden="true">Suivant &raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Suivant &raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+
+            <!-- Tableau des utilisateurs -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom d'utilisateur</th>
+                            <th>Email</th>
+                            <th>Statut</th>
+                            <th>Dernière connexion</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% if users is not empty %}
+                            {% for user in users %}
+                                <tr>
+                                    <td>{{ user.ID }}</td>
+                                    <td>{{ user.USERNAME }}</td>
+                                    <td>{{ user.EMAIL }}</td>
+                                    <td>
+                                        {% if user.STATUS == 'active' %}
+                                            <span class="badge bg-success">Actif</span>
+                                        {% elseif user.STATUS == 'pending' %}
+                                            <span class="badge bg-warning text-dark">En attente</span>
+                                        {% elseif user.STATUS == 'inactive' %}
+                                            <span class="badge bg-secondary">Inactif</span>
+                                        {% elseif user.STATUS == 'banned' %}
+                                            <span class="badge bg-danger">Banni</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ user.LAST_LOGIN|date("d/m/Y H:i") }}</td>
+                                </tr>
+                            {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-muted">Aucun utilisateur trouvé</td>
+                            </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <div>
+                    <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+                </div>
+
+                <nav aria-label="Pagination">
+                    <ul class="pagination">
+                        {% if currentPage > 1 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/{{ currentPage - 1 }}" aria-label="Previous">
+                                    <span aria-hidden="true">&laquo; Précédent</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">&laquo; Précédent</span>
+                            </li>
+                        {% endif %}
+                            
+                        {% if currentPage > 2 %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/1">1</a>
+                            </li>
+                            {% if currentPage > 3 %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                        {% endif %}
+                            
+                        {% for page in (currentPage - 1)..(currentPage + 1) %}
+                            {% if page > 0 and page <= totalPages %}
+                                <li class="page-item {% if page == currentPage %}active{% endif %}">
+                                    <a class="page-link" href="{{ baseUrl }}/admin/users/{{ page }}">{{ page }}</a>
+                                </li>
+                            {% endif %}
+                        {% endfor %}
+                            
+                        {% if currentPage < totalPages - 1 %}
+                            <li class="page-item disabled">
+                                <span class="page-link">...</span>
+                            </li>
+                        {% endif %}
+                            
+                        {% if currentPage < totalPages %}
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/{{ totalPages }}" aria-label="Last">
+                                    <span aria-hidden="true">{{ totalPages }}</span>
+                                </a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="{{ baseUrl }}/admin/users/{{ currentPage + 1 }}" aria-label="Next">
+                                    <span aria-hidden="true">Suivant &raquo;</span>
+                                </a>
+                            </li>
+                        {% else %}
+                            <li class="page-item disabled">
+                                <span class="page-link">Suivant &raquo;</span>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </nav>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

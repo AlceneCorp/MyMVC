@@ -27,14 +27,19 @@ class LoginController extends Controller
 				if($user && password_verify($password, $user->getPASSWORD()))
 				{
 					SessionsManager::set('USERS', $user);
-					$logsManager->addLogs(['LEVEL' => 'SUCCESS', 'CATEGORY' => 'USERS', 'MESSAGE' => $user->getUSERNAME() . ' s\'est connecté', 'USERS_ID' => (SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
+					addLogs('SUCCESS', 'USERS', $user->getUSERNAME() . ' s\'est connecté');
+
+					//Mise a jour de 	LAST_LOGIN
+					$usersManager->updateUsers(['LAST_LOGIN' => date('Y-m-d H:i:s')], $user->getID());
+
 					header('Location:' . URL . '/admin/dashboard');
 				}
 				else 
 				{
-					$logsManager->addLogs(['LEVEL' => 'ERROR', 'CATEGORY' => 'USERS', 'MESSAGE' => 'Echec de la tentative de connexion', 'USERS_ID' => (SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
-					echo $this->twig->render('login/login.twig', [
-					'error' => 'Identifiants incorrects, veuillez réessayer.',
+					addLogs('ERROR', 'USERS', 'Echec de la tentative de connexion');
+					echo $this->twig->render('login/login.twig', 
+					[
+						'error' => 'Identifiants incorrects, veuillez réessayer.',
 					]);
 				}
 			}
@@ -50,12 +55,12 @@ class LoginController extends Controller
 
 	public function logout()
 	{
-		
-		$logsManager = new LogsManager();
-
-		$logsManager->addLogs(['LEVEL' => 'SUCCESS', 'CATEGORY' => 'USERS', 'MESSAGE' => SessionsManager::get('USERS')->getUSERNAME() . ' s\'est déconnecté', 'USERS_ID' => (SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
-
-		SessionsManager::destroy();
+		if(SessionsManager::get('USERS') !== null)
+		{
+			$logsManager = new LogsManager();
+			addLogs('SUCCESS', 'USERS', SessionsManager::get('USERS')->getUSERNAME() . ' s\'est déconnecté');
+			SessionsManager::destroy();
+		}
 
 		header("location:" . URL);
 	}

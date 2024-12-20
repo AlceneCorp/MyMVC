@@ -55,6 +55,17 @@ return
 		'controller' => \App\Controllers\AjaxController::class,
 		'method' => 'ajaxAdminDashboard',
 		'params' => []
+	],
+	[
+		'url' => '/MyMVC/admin/users/{page}',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'users',
+		'params' => []
+	],
+	[
+		'url' => '/MyMVC/admin/users',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'users',
+		'params' => ['page' => 1]
 	]
-
 ];

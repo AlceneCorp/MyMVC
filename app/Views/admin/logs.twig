@@ -127,7 +127,7 @@
                                             {% endif %}
                                         </td>
                                         <td>{{ log.MESSAGE }}</td>
-                                        <td>{{ log.USERS_ID ? 'Utilisateur #' ~ log.USERS_ID : 'Inconnu' }}</td>
+                                        <td>{{ users[log.USERS_ID] ?? 'Inconnu' }}</td>
                                         <td><span class="badge bg-secondary">{{ log.IP_ADDRESS }}</span></td>
                                         <td>
                                             {% if log.METHOD == 'GET' %}
