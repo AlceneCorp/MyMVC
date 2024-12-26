@@ -31,7 +31,7 @@ class Router
 
         foreach($routesArray as $route)
         {
-            $this->routes->add($route['url'], $route['controller'], $route['method'], $route['params']);
+            $this->routes->add($route['url'], $route['controller'], $route['method'], $route['params'], $route['perm']);
         }
 
         $pathViews = __dir__ . '/../Views/';
@@ -91,20 +91,36 @@ class Router
             $controllerName = $route['controller'];
             $methodName = $route['method'];
             $params = $route['params'];
+            $perm = $route['perm'];
 
             // Vérifier si le contrôleur existe
             if (class_exists($controllerName) && method_exists($controllerName, $methodName)) {
                 $controller = new $controllerName($this->twig);
-                call_user_func_array([$controller, $methodName], $params);
 
-                if(ConfigManager::get("SITE.log_visitor.value"))
+                if($controller->checkPerm($requestUri, $perm))
                 {
-                    $this->visitorManager->addVisitor(['VISIT_DATE' => date('Y-m-d'), 'PAGE_VISITED' => (str_replace('/MyMVC/', '', $requestUri) ? str_replace('/MyMVC/', '', $requestUri) : 'accueil'), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR']]);
+                    call_user_func_array([$controller, $methodName], $params);
+
+                    if(ConfigManager::get("SITE.log_visitor.value"))
+                    {
+                        $this->visitorManager->addVisitor(['VISIT_DATE' => date('Y-m-d'), 'PAGE_VISITED' => (str_replace('/MyMVC/', '', $requestUri) ? str_replace('/MyMVC/', '', $requestUri) : 'accueil'), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR']]);
+                    }
+
+                    if(ConfigManager::get("SITE.debug.value"))
+                    {
+                        addLogs('DEBUG', 'APPLICATION', $controllerName . '::' . $methodName . '(' . json_encode($params) . ')');
+                    }
                 }
-
-                if(ConfigManager::get("SITE.debug.value"))
+                else
                 {
-                    addLogs('DEBUG', 'APPLICATION', $controllerName . '::' . $methodName . '(' . json_encode($params) . ')');
+                    if(SessionsManager::has('USERS'))
+                    {
+                        $controller->render('error/error.twig', ['error_message' => "Vous n'avez pas accès à cette page.", 'error_code' => 402]);
+                    }
+                    else
+                    {
+                        $controller->render('error/error.twig', ['error_message' => "Vous devez être connecté pour avoir accès à cette page.", 'error_code' => 401]);
+                    }
                 }
 
                 return;

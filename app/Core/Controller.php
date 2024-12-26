@@ -2,6 +2,12 @@
 
 namespace App\Core;
 
+use App\Core\SessionsManager;
+
+use App\Managers\UsersManager;
+use App\Managers\PermissionsManager;
+use App\Managers\UsersPermissionsManager;
+
 class Controller
 {
 	protected $twig;
@@ -23,4 +29,53 @@ class Controller
 
 		}
     }
+
+	public function checkPerm($param_Slug, $param_Perm)
+	{
+		try
+		{
+			if(!empty($param_Perm))
+			{
+				if(SessionsManager::get('USERS') !== null)
+				{
+					$userManager = new UsersManager();
+					$permissionManager = new PermissionsManager();
+					$usersPermissionManager = new UsersPermissionsManager();
+
+					$permission = $permissionManager->findOnePermissions(['NAME' => $param_Perm]);
+
+
+					if($permission)
+					{
+						$usersPerm = $usersPermissionManager->findOneUsersPermissions(['USERS_ID' => SessionsManager::get('USERS')->getID(), 'PERMISSIONS_ID' => $permission->getID()]);
+
+						if($usersPerm)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					else
+					{
+						throw new \Exception('Aucunes correspondances de permissions trouvée.');
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return true;
+			}
+		}
+		catch (\Exception $e)
+		{
+
+		}
+	}
 }
