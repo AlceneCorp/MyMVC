@@ -112,17 +112,11 @@ class AjaxController extends Controller
 
         // Retourner les données au format JSON pour chaque graphique
         echo json_encode([
-            'debug' => [
-                'year' => $currentYear,
-                'visitor_counts' => $visitor_counts
-            ],
             'visitor_graph' => [
-                'year' => $currentYear,
                 'months' => $month_labels,
                 'visitor_counts' => $visitor_counts_data
             ],
             'page_visits_graph' => [
-                'year' => $currentYear,
                 'months' => $month_labels,
                 'page_names' => $page_names, // Les noms des pages
                 'page_visits_data' => $page_visits_data // Visites des pages par mois
