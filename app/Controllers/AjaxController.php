@@ -12,12 +12,14 @@ class AjaxController extends Controller
     {
         // Connexion à la base de données via votre manager
         $visitorManager = new VisitorManager();
+        
+        $currentYear = date('Y');
 
         // Récupérer les logs des visiteurs pour le graphique 1 (Nombre de visiteurs par mois)
-        $visitor_logs = $visitorManager->findAllVisitor([], ['GROUP BY' => 'IP_ADDRESS']);
+        $visitor_logs = $visitorManager->findAllVisitor(['YEAR(VISIT_DATE)' => $currentYear], ['GROUP BY' => 'IP_ADDRESS']);
 
         // Récupérer les logs des visiteurs pour le graphique 2 (Pages visitées par mois)
-        $page_visits_logs = $visitorManager->findAllVisitor([], ['ORDER BY' => 'PAGE_VISITED ASC', 'GROUP BY' => 'IP_ADDRESS, PAGE_VISITED']);
+        $page_visits_logs = $visitorManager->findAllVisitor(['YEAR(VISIT_DATE)' => $currentYear], ['ORDER BY' => 'PAGE_VISITED ASC', 'GROUP BY' => 'IP_ADDRESS, PAGE_VISITED']);
 
         // Initialiser les tableaux pour les données de visites
         $visitor_counts = [];
@@ -39,24 +41,29 @@ class AjaxController extends Controller
             12 => 'Décembre'
         ];
 
+
         // 1. Traitement des logs pour le graphique 1 (Nombre de visiteurs par mois)
-        foreach ($visitor_logs as $log) {
+        foreach ($visitor_logs as $log) 
+        {
             // Convertir la date de la visite en format "mois"
             $visit_date = new \DateTime($log->getVISIT_DATE());
-            $month = $visit_date->format('m'); // Format mois (01 à 12)
+            $month = (int) $visit_date->format('m'); // Format mois (01 à 12)
+
 
             // Comptabiliser les visiteurs par mois
-            if (!isset($visitor_counts[$month])) {
+            if (!isset($visitor_counts[$month])) 
+            {
                 $visitor_counts[$month] = 0;
             }
             $visitor_counts[$month]++;
         }
 
         // 2. Traitement des logs pour le graphique 2 (Pages visitées par mois)
-        foreach ($page_visits_logs as $log) {
+        foreach ($page_visits_logs as $log) 
+        {
             // Convertir la date de la visite en format "mois"
             $visit_date = new \DateTime($log->getVISIT_DATE());
-            $month = $visit_date->format('m'); // Format mois (01 à 12)
+            $month = (int) $visit_date->format('m'); // Format mois (01 à 12)
 
             // Comptabiliser les pages visitées par mois
             $page_visited = $log->getPAGE_VISITED(); // Récupérer la page visitée
@@ -75,7 +82,8 @@ class AjaxController extends Controller
         $visitor_counts_data = [];
 
         // Remplir les données pour chaque mois (si aucun visiteur pour le mois, mettre 0)
-        foreach ($months as $month) {
+        foreach ($months as $month) 
+        {
             $visitor_counts_data[] = isset($visitor_counts[$month]) ? $visitor_counts[$month] : 0;
         }
 
@@ -104,11 +112,17 @@ class AjaxController extends Controller
 
         // Retourner les données au format JSON pour chaque graphique
         echo json_encode([
+            'debug' => [
+                'year' => $currentYear,
+                'visitor_counts' => $visitor_counts
+            ],
             'visitor_graph' => [
+                'year' => $currentYear,
                 'months' => $month_labels,
                 'visitor_counts' => $visitor_counts_data
             ],
             'page_visits_graph' => [
+                'year' => $currentYear,
                 'months' => $month_labels,
                 'page_names' => $page_names, // Les noms des pages
                 'page_visits_data' => $page_visits_data // Visites des pages par mois

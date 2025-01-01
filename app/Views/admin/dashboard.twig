@@ -94,7 +94,7 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-dark text-white">
-                            <h5><i class="fas fa-chart-bar me-2"></i> Visiteurs par mois</h5>
+                            <h5><i class="fas fa-chart-bar me-2"></i> Visiteurs par mois sur {{ date | date('Y') }} </h5>
                         </div>
                         <div class="card-body">
                             <canvas id="visitorChart" height="300"></canvas>
@@ -106,7 +106,7 @@
                 <div class="col-md-6">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-dark text-white">
-                            <h5><i class="fas fa-chart-bar me-2"></i> Pages visitées par mois</h5>
+                            <h5><i class="fas fa-chart-bar me-2"></i> Pages visitées par mois sur {{ date | date('Y') }}</h5>
                         </div>
                         <div class="card-body">
                             <canvas id="pageChart" height="300"></canvas>
@@ -118,6 +118,7 @@
     </div>
 </div>
 {% endblock %}
+
 
 {% block jquery %}
 <!-- Inclure Chart.js -->
@@ -196,6 +197,9 @@ $(document).ready(function()
                     }
                 }
             });
+        },
+        error: function(xhr, status, error) {
+            console.error('Erreur lors de la récupération des données :', error);
         }
     });
 

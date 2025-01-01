@@ -147,20 +147,32 @@ class DatabaseManager
         $where = [];
         $bindValues = [];
 
-        foreach ($key as $column => $value) {
-            $where[] = "$column = :$column";
-            $bindValues[$column] = $value;
+        // Construction des conditions WHERE
+        foreach ($key as $condition => $value) {
+            if (strpos($condition, '(') !== false || strpos($condition, ' ') !== false) {
+                // Conditions complexes (avec fonctions ou opérateurs)
+                $where[] = "$condition = ?";
+                $bindValues[] = $value; // Ajout comme paramètre positionnel
+            } else {
+                // Conditions simples avec paramètres nommés
+                $where[] = "$condition = :$condition";
+                $bindValues[":$condition"] = $value;
+            }
         }
 
-        if ($where) {
+        // Ajouter WHERE si nécessaire
+        if (!empty($where)) {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
+        // Ajouter les paramètres supplémentaires (ORDER BY, GROUP BY, LIMIT, etc.)
         $sql .= $this->buildQueryParameters($parameters);
 
-
+        // Préparation et exécution de la requête
         $statement = $this->pdo->prepare($sql);
         $statement->execute($bindValues);
+
+        // Récupération des résultats
         $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
         // Hydratation manuelle des objets
