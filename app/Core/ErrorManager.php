@@ -9,7 +9,8 @@ class ErrorManager
      *
      * @var array
      */
-    private static array $errorMessages = [
+    private static array $errorMessages = 
+    [
         400 => "Requête invalide. Veuillez vérifier votre demande.",
         401 => "Accès non autorisé. Vous devez être connecté pour accéder à cette page.",
         402 => "Paiement requis. Cette ressource nécessite une action de paiement.",
