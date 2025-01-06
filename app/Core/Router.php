@@ -116,7 +116,7 @@ class Router
                 {
                     if(SessionsManager::has('USERS'))
                     {
-                        $controller->render('error/error.twig', ['error_message' => "Vous n'avez pas accès à cette page.", 'error_code' => 402]);
+                        $controller->render('error/error.twig', ['error_message' => "Vous n'avez pas accès à cette page.", 'error_code' => 403]);
                     }
                     else
                     {

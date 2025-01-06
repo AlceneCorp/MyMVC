@@ -9,7 +9,7 @@ use App\Core\Router;
 // Initialisation du routeur
 $router = new Router();
 
-// Simuler une requête entrante
+
 $requestUri = $_SERVER['REQUEST_URI'];
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 

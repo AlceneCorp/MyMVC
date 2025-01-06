@@ -7,28 +7,28 @@
         [
             'host' =>
             [
-                'value' => 'HOST',
+                'value' => 'localhost',
                 'type' => 'text',
                 'description' => '',
                 'readonly' => true
             ],
             'username' =>
             [
-                'value' => 'USERNAME',
+                'value' => 'MyMVC',
                 'type' => 'text',
                 'description' => '',
                 'readonly' => true
             ],
             'password' =>
             [
-                'value' => 'PASSWORD',
+                'value' => 'VZXfRXvsuBjp]43E',
                 'type' => 'text',
                 'description' => '',
                 'readonly' => true
             ],
             'dbname' =>
             [
-                'value' => 'DBNAME',
+                'value' => 'mymvc',
                 'type' => 'text',
                 'description' => '',
                 'readonly' => true

@@ -85,8 +85,8 @@
                             <thead class="thead-dark">
                                 <tr>
                                     <th>#</th>
-                                    <th>Niveau</th>
                                     <th>Catégorie</th>
+                                    <th>Niveau</th>
                                     <th>Message</th>
                                     <th>Utilisateur</th>
                                     <th>IP</th>
@@ -98,6 +98,19 @@
                                 {% for log in logs %}
                                     <tr>
                                         <td>{{ log.ID }}</td>
+                                        <td>
+                                            {% if log.CATEGORY == 'CONFIG' %}
+                                                <span class="badge bg-primary">{{ log.CATEGORY }}</span>
+                                            {% elseif log.CATEGORY == 'USERS' %}
+                                                <span class="badge bg-success">{{ log.CATEGORY }}</span>
+                                            {% elseif log.CATEGORY == 'SECURITY' %}
+                                                <span class="badge bg-warning">{{ log.CATEGORY }}</span>
+                                            {% elseif log.CATEGORY == 'SYSTEM' %}
+                                                <span class="badge bg-secondary">{{ log.CATEGORY }}</span>
+                                            {% elseif log.CATEGORY == 'APPLICATION' %}
+                                                <span class="badge bg-info">{{ log.CATEGORY }}</span>
+                                            {% endif %}
+                                        </td>
                                         <td>
                                             {% if log.LEVEL == 'ERROR' %}
                                                 <span class="badge bg-danger">{{ log.LEVEL }}</span>
@@ -111,19 +124,6 @@
                                                 <span class="badge bg-dark">{{ log.LEVEL }}</span>
                                             {% elseif log.LEVEL == 'SUCCESS' %}
                                                 <span class="badge bg-success">{{ log.LEVEL }}</span>
-                                            {% endif %}
-                                        </td>
-                                        <td>
-                                            {% if log.CATEGORY == 'CONFIG' %}
-                                                <span class="badge bg-primary">{{ log.CATEGORY }}</span>
-                                            {% elseif log.CATEGORY == 'USERS' %}
-                                                <span class="badge bg-success">{{ log.CATEGORY }}</span>
-                                            {% elseif log.CATEGORY == 'SECURITY' %}
-                                                <span class="badge bg-warning">{{ log.CATEGORY }}</span>
-                                            {% elseif log.CATEGORY == 'SYSTEM' %}
-                                                <span class="badge bg-secondary">{{ log.CATEGORY }}</span>
-                                            {% elseif log.CATEGORY == 'APPLICATION' %}
-                                                <span class="badge bg-info">{{ log.CATEGORY }}</span>
                                             {% endif %}
                                         </td>
                                         <td>{{ log.MESSAGE }}</td>
