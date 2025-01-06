@@ -6,6 +6,7 @@ use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
 
+use App\Core\CoreManager;
 use App\Core\Routes;
 use App\Core\SessionsManager;
 
@@ -83,7 +84,7 @@ class Router
         if(ConfigManager::get("SITE.debug.value"))
         {
             //$this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
-            addLogs('DEBUG', 'APPLICATION', $requestUri);
+            CoreManager::addLogs('DEBUG', 'APPLICATION', $requestUri);
         }
             
         if ($route) 
@@ -108,7 +109,7 @@ class Router
 
                     if(ConfigManager::get("SITE.debug.value"))
                     {
-                        addLogs('DEBUG', 'APPLICATION', $controllerName . '::' . $methodName . '(' . json_encode($params) . ')');
+                        CoreManager::addLogs('DEBUG', 'APPLICATION', $controllerName . '::' . $methodName . '(' . json_encode($params) . ')');
                     }
                 }
                 else
@@ -131,11 +132,11 @@ class Router
             $controller->render('error/error.twig', ['error_message' => 'Erreur interne.', 'error_code' => 500]);
             http_response_code(500);
 
-            addLogs('ERROR', 'APPLICATION', 'Controller ou méthode introuvable pour ' . $controllerName . '::' . $methodName);
+            CoreManager::addLogs('ERROR', 'APPLICATION', 'Controller ou méthode introuvable pour ' . $controllerName . '::' . $methodName);
         } 
         else 
         {
-            addLogs('ERROR', 'APPLICATION', 'Route non trouvée pour ' . $requestUri);
+            CoreManager::addLogs('ERROR', 'APPLICATION', 'Route non trouvée pour ' . $requestUri);
 
             // Route non trouvée
             $controller = new Controller($this->twig);

@@ -31,6 +31,13 @@ return
 		'perm' => ''
 	],
 	[
+		'url' => '/MyMVC/register',
+		'controller' => \App\Controllers\LoginController::class,
+		'method' => 'register',
+		'params' => [],
+		'perm' => ''
+	],
+	[
 		'url' => '/MyMVC/admin/logs/{page}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',

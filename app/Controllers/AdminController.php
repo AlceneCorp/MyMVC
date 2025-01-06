@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Core\CoreManager;
 use App\Core\Controller;
 use App\Core\ConfigManager;
 use App\Core\SessionsManager;
@@ -123,7 +124,8 @@ class AdminController extends Controller
 					{
 						$settingsManager->updateSettings(['NAME' => $key, 'VALUE' => $value], $settingsManager->findOneSettings(['NAME' => $key])->getID());
 						
-						$logsManager->addLogs(['LEVEL' => 'SUCCESS', 'CATEGORY' => 'CONFIG', 'MESSAGE' => $category .'.' . $key . ' => ' . $value, 'USERS_ID' => (SessionsManager::has('USERS') ? SessionsManager::get('USERS')->getID() : 0), 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
+						CoreManager::addLogs('SUCCESS', 'CONFIG', $category .'.' . $key . ' => ' . $value);
+
 					}
 				}
 			}
