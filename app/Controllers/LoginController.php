@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Core\CoreManager;
+use App\Core\ErrorManager;
 use App\Core\Controller;
 use App\Core\SessionsManager;
 
@@ -37,10 +38,10 @@ class LoginController extends Controller
 				}
 				else 
 				{
-					CoreManager::addLogs('ERROR', 'USERS', 'Echec de la tentative de connexion');
+					CoreManager::addLogs('ERROR', 'USERS', ErrorManager::getErrorMessage(80001));
 					echo $this->twig->render('login/login.twig', 
 					[
-						'error' => 'Identifiants incorrects, veuillez réessayer.',
+						'error' => ErrorManager::getErrorMessage(80002),
 					]);
 				}
 			}
@@ -91,31 +92,31 @@ class LoginController extends Controller
                              }
                              else
                              {
-                                 $error = 'Veuillez entrer un autre nom d\'utilisateur.';
+                                 $error = ErrorManager::getErrorMessage(80003);
                              }
                         } 
                         catch (Exception $e) 
                         {
                             // Gestion des erreurs liées à la base de données
-                            $error = 'Une erreur est survenue lors de l\'inscription. Veuillez réessayer.';
+                            $error = ErrorManager::getErrorMessage(80004);
                         }
                     } 
                     else 
                     {
                         // Email invalide ou mot de passe trop faible
-                        $error = 'Veuillez entrer un email valide et un mot de passe d\'au moins 8 caractères.';
+                        $error = ErrorManager::getErrorMessage(80005);
                     }
                 } 
                 else 
                 {
                     // Les mots de passe ne correspondent pas
-                    $error = 'Les mots de passe ne correspondent pas.';
+                    $error = ErrorManager::getErrorMessage(80006);
                 }
             } 
             else 
             {
                 // Tous les champs ne sont pas remplis
-                $error = 'Tous les champs doivent être remplis.';
+                $error = ErrorManager::getErrorMessage(80007);
             }
         }
 

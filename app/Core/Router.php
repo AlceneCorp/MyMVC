@@ -116,11 +116,11 @@ class Router
                 {
                     if(SessionsManager::has('USERS'))
                     {
-                        $controller->render('error/error.twig', ['error_message' => "Vous n'avez pas accès à cette page.", 'error_code' => 403]);
+                        $controller->render('error/error.twig', ['error_message' => ErrorManager::getErrorMessage(403), 'error_code' => 403]);
                     }
                     else
                     {
-                        $controller->render('error/error.twig', ['error_message' => "Vous devez être connecté pour avoir accès à cette page.", 'error_code' => 401]);
+                        $controller->render('error/error.twig', ['error_message' => ErrorManager::getErrorMessage(401), 'error_code' => 401]);
                     }
                 }
 
@@ -129,7 +129,7 @@ class Router
 
             // Contrôleur ou méthode introuvable
             $controller = new Controller($this->twig);
-            $controller->render('error/error.twig', ['error_message' => 'Erreur interne.', 'error_code' => 500]);
+            $controller->render('error/error.twig', ['error_message' => ErrorManager::getErrorMessage(500), 'error_code' => 500]);
             http_response_code(500);
 
             CoreManager::addLogs('ERROR', 'APPLICATION', 'Controller ou méthode introuvable pour ' . $controllerName . '::' . $methodName);
@@ -140,7 +140,7 @@ class Router
 
             // Route non trouvée
             $controller = new Controller($this->twig);
-            $controller->render('error/error.twig', ['error_message' => 'Page non trouvée.', 'error_code' => 404]);
+            $controller->render('error/error.twig', ['error_message' => ErrorManager::getErrorMessage(404), 'error_code' => 404]);
             http_response_code(404);
         }
     }
