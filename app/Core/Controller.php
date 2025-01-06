@@ -26,7 +26,7 @@ class Controller
 		}
 		catch (\Exception $e)
 		{
-
+			throw new \Exception(ErrorManager::getErrorMessage(500));
 		}
     }
 
@@ -60,7 +60,7 @@ class Controller
 					}
 					else
 					{
-						throw new \Exception('Aucunes correspondances de permissions trouvée.');
+						throw new \Exception(ErrorManager::getErrorMessage(50000));
 					}
 				}
 				else

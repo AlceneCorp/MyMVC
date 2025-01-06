@@ -38,7 +38,7 @@ class Router
         $pathViews = __dir__ . '/../Views/';
 
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
-        $loader = new FilesystemLoader($pathViews); // Remplacez 'path/to/templates' par le répertoire de vos templates Twig
+        $loader = new FilesystemLoader($pathViews);
         $this->twig = new Environment($loader, [
             'debug' => false,            // Optionnel : activer le mode debug
         ]);
@@ -47,7 +47,8 @@ class Router
         $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
 
         // Ajouter la fonction asset
-        $this->twig->addFunction(new TwigFunction('asset', function ($path) {
+        $this->twig->addFunction(new TwigFunction('asset', function ($path) 
+        {
             return '/assets/' . ltrim($path, '/');
         }));
     }

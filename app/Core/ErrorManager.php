@@ -19,6 +19,8 @@ class ErrorManager
         500 => "Erreur interne du serveur. Veuillez réessayer plus tard.",
         503 => "Service indisponible. Le serveur est actuellement surchargé ou en maintenance.",
 
+        50000 => "Aucunes correspondances de permissions trouvée.",
+
         80001 => "Echec de la tentative de connexion",
         80002 => "Identifiants incorrects, veuillez réessayer.",
         80003 => "Veuillez entrer un autre nom d\'utilisateur.",
