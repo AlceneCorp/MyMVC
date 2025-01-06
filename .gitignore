@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 config/config.php
 /config
+config/config.php
