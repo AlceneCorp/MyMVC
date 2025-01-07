@@ -2,6 +2,8 @@
 
 namespace App\Core;
 
+use App\Core\ErrorManager;
+
 use App\Managers\SettingsManager;
 use App\Managers\SettingsCategoriesManager;
 
@@ -26,12 +28,17 @@ class ConfigManager
      */
     private static function load($config): void
     {
-        if (is_array($config)) {
+        if (is_array($config)) 
+        {
             self::$settings = $config;
-        } elseif (file_exists($config)) {
+        } 
+        elseif (file_exists($config)) 
+        {
             self::$settings = include $config;
-        } else {
-            throw new \Exception("Le fichier de configuration spécifié n'existe pas ou ne peut pas être inclus.");
+        } 
+        else 
+        {
+            throw new \Exception(ErrorManager::getErrorMessage(10000));
         }
     }
 
@@ -43,7 +50,8 @@ class ConfigManager
      */
     public static function init($config): void
     {
-        try {
+        try 
+        {
             self::load($config);
 
             $settingsCategoriesManager = new SettingsCategoriesManager();
@@ -81,8 +89,10 @@ class ConfigManager
                     ConfigManager::set($categoryName, $existingCategory);
                 }
             }
-        } catch (\Exception $e) {
-            throw new \Exception("Erreur lors de l'initialisation des configurations: " . $e->getMessage());
+        } 
+        catch (\Exception $e) 
+        {
+            throw new \Exception(ErrorManager::getErrorMessage(10001) . $e->getMessage());
         }
     }
 
@@ -95,12 +105,15 @@ class ConfigManager
      */
     public static function get(string $key, $default = null)
     {
-        if (strpos($key, '.') !== false) {
+        if (strpos($key, '.') !== false) 
+        {
             $keys = explode('.', $key);
             $value = self::$settings;
 
-            foreach ($keys as $keyPart) {
-                if (!isset($value[$keyPart])) {
+            foreach ($keys as $keyPart) 
+            {
+                if (!isset($value[$keyPart])) 
+                {
                     return $default;
                 }
                 $value = $value[$keyPart];

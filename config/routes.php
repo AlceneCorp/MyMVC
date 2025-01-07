@@ -42,14 +42,14 @@ return
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',
 		'params' => [],
-		'perm' => ''
+		'perm' => 'manage_error_logs'
 	],
 	[
 		'url' => '/MyMVC/admin/logs',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',
 		'params' => ['page' => 1],
-		'perm' => ''
+		'perm' => 'manage_error_logs'
 	],
 	[
 		'url' => '/MyMVC/admin/settings',
@@ -63,34 +63,34 @@ return
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'dashboard',
 		'params' => [],
-		'perm' => ''
+		'perm' => 'view_site_statistics'
 	],
 	[
 		'url' => '/MyMVC/admin/dashboard',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'dashboard',
 		'params' => [],
-		'perm' => ''
+		'perm' => 'view_site_statistics'
 	],
 	[
 		'url' => '/MyMVC/admin/ajax/dashboard',
 		'controller' => \App\Controllers\AjaxController::class,
 		'method' => 'ajaxAdminDashboard',
 		'params' => [],
-		'perm' => ''
+		'perm' => 'view_site_statistics'
 	],
 	[
 		'url' => '/MyMVC/admin/users/{page}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'users',
 		'params' => [],
-		'perm' => ''
+		'perm' => 'manage_user_groups'
 	],
 	[
 		'url' => '/MyMVC/admin/users',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'users',
 		'params' => ['page' => 1],
-		'perm' => ''
+		'perm' => 'manage_user_groups'
 	]
 ];

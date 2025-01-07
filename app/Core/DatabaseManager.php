@@ -148,12 +148,16 @@ class DatabaseManager
         $bindValues = [];
 
         // Construction des conditions WHERE
-        foreach ($key as $condition => $value) {
-            if (strpos($condition, '(') !== false || strpos($condition, ' ') !== false) {
+        foreach ($key as $condition => $value) 
+        {
+            if (strpos($condition, '(') !== false || strpos($condition, ' ') !== false) 
+            {
                 // Conditions complexes (avec fonctions ou opérateurs)
                 $where[] = "$condition = ?";
                 $bindValues[] = $value; // Ajout comme paramètre positionnel
-            } else {
+            } 
+            else 
+            {
                 // Conditions simples avec paramètres nommés
                 $where[] = "$condition = :$condition";
                 $bindValues[":$condition"] = $value;

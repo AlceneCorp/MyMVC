@@ -19,6 +19,9 @@ class ErrorManager
         500 => "Erreur interne du serveur. Veuillez réessayer plus tard.",
         503 => "Service indisponible. Le serveur est actuellement surchargé ou en maintenance.",
 
+        10000 => "Le fichier de configuration spécifié n'existe pas ou ne peut pas être inclus.",
+        10001 => "Erreur lors de l'initialisation des configurations: ",
+
         50000 => "Aucunes correspondances de permissions trouvée.",
 
         80001 => "Echec de la tentative de connexion",

@@ -12,6 +12,10 @@ use App\Core\SessionsManager;
 
 use App\Managers\LogsManager;
 use App\Managers\VisitorManager;
+use App\Managers\MenuManager;
+use App\Managers\UsersManager;
+use App\Managers\PermissionsManager;
+use App\Managers\UsersPermissionsManager;
 
 class Router
 {
@@ -46,6 +50,46 @@ class Router
         $this->twig->addGlobal('base_url', $this->getBaseUrl());
         $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
 
+        $menuManager = new MenuManager();
+
+        $menuGenerate = "";
+        try
+        {
+            foreach($menuManager->findAllMenu(['IS_ACTIVE' => 1], ['ORDER BY' => 'ORDERS ASC']) as $menu)
+            {
+                if($menu->getPERMISSIONS_ID() === null)
+                {
+                    $menuGenerate .= '<li class="nav-item">';
+                    $menuGenerate .= '<a href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
+                    $menuGenerate .= '</li>';
+                }
+                else
+                {
+                    if(SessionsManager::get('USERS') !== null)
+                    {
+                        $route = $this->routes->find($_SERVER['REQUEST_URI']);
+                        if($route)
+                        {
+                            if($this->checkPerm($_SERVER['REQUEST_URI'], $route['perm']))
+                            {
+                                $menuGenerate .= '<li class="nav-item">';
+                                $menuGenerate .= '<a href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
+                                $menuGenerate .= '</li>';
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        catch (\Exception $e)
+        {
+            throw new \Exception($e->getMessage());
+        }
+
+
+
+        $this->twig->addGlobal('menu', $menuGenerate);
+
         // Ajouter la fonction asset
         $this->twig->addFunction(new TwigFunction('asset', function ($path) 
         {
@@ -53,7 +97,8 @@ class Router
         }));
     }
 
-    function getBaseUrl() {
+    function getBaseUrl() 
+    {
         // Détecter le protocole (HTTP ou HTTPS)
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
 
@@ -84,7 +129,6 @@ class Router
         // Logs pour la requête initiale
         if(ConfigManager::get("SITE.debug.value"))
         {
-            //$this->logsManager->addLogs(['LEVEL' => 'DEBUG', 'CATEGORY' => 'APPLICATION', 'MESSAGE' => $requestUri, 'USERS_ID' => $user_id, 'IP_ADDRESS' => $_SERVER['REMOTE_ADDR'], 'METHOD' => $_SERVER['REQUEST_METHOD'], 'URI' => BASE_URL . $_SERVER['REQUEST_URI']]);
             CoreManager::addLogs('DEBUG', 'APPLICATION', $requestUri);
         }
             
@@ -99,7 +143,7 @@ class Router
             if (class_exists($controllerName) && method_exists($controllerName, $methodName)) {
                 $controller = new $controllerName($this->twig);
 
-                if($controller->checkPerm($requestUri, $perm))
+                if($this->checkPerm($requestUri, $perm))
                 {
                     call_user_func_array([$controller, $methodName], $params);
 
@@ -146,4 +190,52 @@ class Router
         }
     }
 
+    public function checkPerm($param_Slug, $param_Perm)
+	{
+		try
+		{
+			if(!empty($param_Perm))
+			{
+				if(SessionsManager::get('USERS') !== null)
+				{
+					$userManager = new UsersManager();
+					$permissionManager = new PermissionsManager();
+					$usersPermissionManager = new UsersPermissionsManager();
+
+					$permission = $permissionManager->findOnePermissions(['NAME' => $param_Perm]);
+
+
+					if($permission)
+					{
+						$usersPerm = $usersPermissionManager->findOneUsersPermissions(['USERS_ID' => SessionsManager::get('USERS')->getID(), 'PERMISSIONS_ID' => $permission->getID()]);
+
+						if($usersPerm)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					else
+					{
+						throw new \Exception(ErrorManager::getErrorMessage(50000));
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return true;
+			}
+		}
+		catch (\Exception $e)
+		{
+
+		}
+	}
 }

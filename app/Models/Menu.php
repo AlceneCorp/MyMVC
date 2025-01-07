@@ -10,7 +10,7 @@ class Menu
     private $IS_DROPDOWN;
     private $PARENT_ID;
     private $URL;
-    private $ORDER;
+    private $ORDERS;
     private $IS_ACTIVE;
     private $PERMISSIONS_ID;
     private $CREATED_AT;
@@ -95,14 +95,14 @@ class Menu
         $this->URL = $URL;
     }
 
-    public function getORDER()
+    public function getORDERS()
     {
-        return $this->ORDER;
+        return $this->ORDERS;
     }
 
-    public function setORDER($ORDER)
+    public function setORDERS($ORDERS)
     {
-        $this->ORDER = $ORDER;
+        $this->ORDERS = $ORDERS;
     }
 
     public function getIS_ACTIVE()

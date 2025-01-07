@@ -37,15 +37,7 @@
             <nav class="d-flex align-items-center w-100">
                 <!-- Main Navigation Links -->
                 <ul class="nav me-auto">
-                    <li class="nav-item">
-                        <a href="{{base_url}}/" class="nav-link text-white">Accueil</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{base_url}}/features" class="nav-link text-white">Fonctionnalités</a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="{{base_url}}/contact" class="nav-link text-white">Contact</a>
-                    </li>
+                    {{menu | raw}}
                 </ul>
 
                 <!-- Connexion Button -->
