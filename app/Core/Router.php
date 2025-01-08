@@ -13,9 +13,6 @@ use App\Core\SessionsManager;
 use App\Managers\LogsManager;
 use App\Managers\VisitorManager;
 use App\Managers\MenuManager;
-use App\Managers\UsersManager;
-use App\Managers\PermissionsManager;
-use App\Managers\UsersPermissionsManager;
 
 class Router
 {
@@ -44,14 +41,14 @@ class Router
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
         $loader = new FilesystemLoader($pathViews);
         $this->twig = new Environment($loader, [
-            'debug' => false,            // Optionnel : activer le mode debug
+            'debug' => ConfigManager::get("SITE.twig_debug.value"),            // Optionnel : activer le mode debug
         ]);
-
+        
         $this->twig->addGlobal('base_url', $this->getBaseUrl());
         $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
+        $this->twig->addGlobal('logo', (ConfigManager::get('SITE.site_logo.value') ? ConfigManager::get('SITE.site_logo.value') : null));
 
         $menuManager = new MenuManager();
-
         $menuGenerate = "";
         try
         {
@@ -65,12 +62,12 @@ class Router
                 }
                 else
                 {
-                    if(SessionsManager::get('USERS') !== null)
+                    if(SessionsManager::has('USERS'))
                     {
                         $route = $this->routes->find($_SERVER['REQUEST_URI']);
                         if($route)
                         {
-                            if($this->checkPerm($_SERVER['REQUEST_URI'], $route['perm']))
+                            if(CoreManager::checkPerm($_SERVER['REQUEST_URI'], $route['perm']))
                             {
                                 $menuGenerate .= '<li class="nav-item">';
                                 $menuGenerate .= '<a href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
@@ -143,7 +140,7 @@ class Router
             if (class_exists($controllerName) && method_exists($controllerName, $methodName)) {
                 $controller = new $controllerName($this->twig);
 
-                if($this->checkPerm($requestUri, $perm))
+                if(CoreManager::checkPerm($requestUri, $perm))
                 {
                     call_user_func_array([$controller, $methodName], $params);
 
@@ -189,53 +186,4 @@ class Router
             http_response_code(404);
         }
     }
-
-    public function checkPerm($param_Slug, $param_Perm)
-	{
-		try
-		{
-			if(!empty($param_Perm))
-			{
-				if(SessionsManager::get('USERS') !== null)
-				{
-					$userManager = new UsersManager();
-					$permissionManager = new PermissionsManager();
-					$usersPermissionManager = new UsersPermissionsManager();
-
-					$permission = $permissionManager->findOnePermissions(['NAME' => $param_Perm]);
-
-
-					if($permission)
-					{
-						$usersPerm = $usersPermissionManager->findOneUsersPermissions(['USERS_ID' => SessionsManager::get('USERS')->getID(), 'PERMISSIONS_ID' => $permission->getID()]);
-
-						if($usersPerm)
-						{
-							return true;
-						}
-						else
-						{
-							return false;
-						}
-					}
-					else
-					{
-						throw new \Exception(ErrorManager::getErrorMessage(50000));
-					}
-				}
-				else
-				{
-					return false;
-				}
-			}
-			else
-			{
-				return true;
-			}
-		}
-		catch (\Exception $e)
-		{
-
-		}
-	}
 }

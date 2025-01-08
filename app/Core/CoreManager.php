@@ -2,11 +2,17 @@
 
 namespace App\Core;
 
-use App\Managers\LogsManager;
+
 use App\Core\SessionsManager;
 use App\Core\ConfigManager;
 use App\Core\DatabaseManager;
 use App\Core\TablesGenerator;
+use App\Core\ErrorManager;
+
+use App\Managers\LogsManager;
+use App\Managers\UsersManager;
+use App\Managers\PermissionsManager;
+use App\Managers\UsersPermissionsManager;
 
 class CoreManager
 {
@@ -24,6 +30,8 @@ class CoreManager
             'METHOD' => $_SERVER['REQUEST_METHOD'],
             'URI' => BASE_URL . $_SERVER['REQUEST_URI']
         ]);
+
+        error_log($param_Category . " | " . $param_Level . " | " . $param_Message);
     }
 
     public static function init()
@@ -56,13 +64,13 @@ class CoreManager
             ini_set('display_errors', 1); // Affiche les erreurs à l'écran
             ini_set('display_startup_errors', 1); // Affiche les erreurs lors du démarrage de PHP
             ini_set('log_errors', 1); // Active l'enregistrement des erreurs dans les logs
-            ini_set('error_log', __DIR__ . '/logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
+            ini_set('error_log', __DIR__ . '/../../logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
 
 
             $tablegen = new TablesGenerator();
             $tablegen->generateAll();
 
-            CoreManager::addLogs('DEBUG', 'SYSTEM', 'Les fichiers App\\Models et App\\Managers ont été générés et synchronisés avec le site.');
+            CoreManager::addLogs('DEBUG', 'SYSTEM', ErrorManager::getErrorMessage(20000));
         }
         else
         {
@@ -71,7 +79,56 @@ class CoreManager
             ini_set('display_errors', 0); // Ne pas afficher les erreurs à l'écran
             ini_set('display_startup_errors', 0); // Masquer les erreurs de démarrage
             ini_set('log_errors', 1); // Enregistrer les erreurs dans un fichier de log
-            ini_set('error_log', __DIR__ . '/logs/php_errors_prod.log'); // Chemin pour les logs d'erreur
+            ini_set('error_log', __DIR__ . '/../../logs/php_errors_prod.log'); // Chemin pour les logs d'erreur
         }
     }
+
+    public static function checkPerm($param_Slug, $param_Perm)
+	{
+		try
+		{
+			if(!empty($param_Perm))
+			{
+				if(SessionsManager::get('USERS') !== null)
+				{
+					$userManager = new UsersManager();
+					$permissionManager = new PermissionsManager();
+					$usersPermissionManager = new UsersPermissionsManager();
+
+					$permission = $permissionManager->findOnePermissions(['NAME' => $param_Perm]);
+
+
+					if($permission)
+					{
+						$usersPerm = $usersPermissionManager->findOneUsersPermissions(['USERS_ID' => SessionsManager::get('USERS')->getID(), 'PERMISSIONS_ID' => $permission->getID()]);
+
+						if($usersPerm)
+						{
+							return true;
+						}
+						else
+						{
+							return false;
+						}
+					}
+					else
+					{
+						throw new \Exception(ErrorManager::getErrorMessage(50000));
+					}
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else
+			{
+				return true;
+			}
+		}
+		catch (\Exception $e)
+		{
+            throw new \Exception(ErrorManager::getErrorMessage(50000));
+		}
+	}
 }
