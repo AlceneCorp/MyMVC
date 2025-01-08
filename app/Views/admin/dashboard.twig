@@ -91,7 +91,7 @@
             <!-- Section pour les graphiques -->
             <div class="row">
                 <!-- Premier graphique - Nombre de visiteurs par mois -->
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-dark text-white">
                             <h5><i class="fas fa-chart-bar me-2"></i> Visiteurs par mois sur {{ date | date('Y') }} </h5>
@@ -103,7 +103,7 @@
                 </div>
 
                 <!-- Deuxième graphique - Pages visitées par mois -->
-                <div class="col-md-6">
+                <div class="col-md-12">
                     <div class="card shadow-sm mb-4">
                         <div class="card-header bg-dark text-white">
                             <h5><i class="fas fa-chart-bar me-2"></i> Pages visitées par mois sur {{ date | date('Y') }}</h5>
@@ -129,22 +129,41 @@ $(document).ready(function()
 {
     // Récupérer les données PHP via AJAX
     $.ajax({
-        url: '{{base_url}}/admin/ajax/dashboard',  // Remplacer par le chemin de votre script PHP
+        url: '{{base_url}}/admin/ajax/dashboard',
         type: 'GET',
         success: function(response) {
             var data = JSON.parse(response);
 
             // Premier graphique - Nombre de visiteurs par mois
             var ctx1 = document.getElementById('visitorChart').getContext('2d');
-            new Chart(ctx1, {
+
+            // Fonction pour déterminer la couleur en fonction du nombre de visiteurs
+            function getBarColor(visitorCount) 
+            {
+                if (visitorCount <= 100) 
+                {
+                    return '#28a745'; // Vert pour 1 à 100
+                } 
+                else if (visitorCount <= 500) 
+                {
+                    return '#4e73df'; // Bleu pour 101 à 500
+                } 
+                else 
+                {
+                    return '#e74a3b'; // Rouge pour plus de 500
+                }
+            }
+
+            new Chart(ctx1, 
+            {
                 type: 'bar',
                 data: {
                     labels: data.visitor_graph.months,
                     datasets: [{
                         label: 'Visiteurs',
                         data: data.visitor_graph.visitor_counts,
-                        backgroundColor: '#4e73df',
-                        borderColor: '#4e73df',
+                        backgroundColor: data.visitor_graph.visitor_counts.map(getBarColor), // Appliquer la couleur dynamique
+                        borderColor: data.visitor_graph.visitor_counts.map(getBarColor), // Appliquer la couleur dynamique aux bordures aussi
                         borderWidth: 1
                     }]
                 },
@@ -171,11 +190,20 @@ $(document).ready(function()
                     return monthData[page] || 0; // Si aucune visite pour la page dans ce mois, mettre 0
                 });
 
+                // Calculer une teinte de base et générer des couleurs analogues
+                const baseHue = (index * 360 / data.page_visits_graph.page_names.length) % 360; // Répartir les teintes
+                const hueOffset = (index % 5) * 20 - 40; // Variation autour de la teinte de base (dans une plage de -40 à 40)
+                const hue = (baseHue + hueOffset + 360) % 360; // Calcul de la teinte harmonieuse
+
+                // Appliquer une saturation et luminosité constantes pour une palette harmonieuse
+                const backgroundColor = `hsla(${hue}, 80%, 50%, 1)`; // Couleur semi-transparente
+                const borderColor = `hsla(${hue}, 100%, 100%, 1)`; // Couleur pleine
+
                 return {
                     label: page,
                     data: visits,
-                    backgroundColor: `rgba(${(index + 1) * 50}, ${200 - (index + 1) * 30}, 150, 0.7)`,
-                    borderColor: `rgba(${(index + 1) * 50}, ${200 - (index + 1) * 30}, 150, 1)`,
+                    backgroundColor: backgroundColor,
+                    borderColor: borderColor,
                     borderWidth: 1
                 };
             });
