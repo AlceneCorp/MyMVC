@@ -21,6 +21,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="{{base_url}}{{ asset('css/base.css') }}">
+    
+    <style>
+        header 
+        {
+            background: linear-gradient(90deg, {{color_1}}, {{color_2}});
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        footer 
+        {
+            background: linear-gradient(90deg, {{color_1}}, {{color_2}});
+            color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* --- HERO SECTION --- */
+        .hero 
+        {
+            min-height: 100vh;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(90deg, {{color_1}}, {{color_2}});
+            color: white;
+            text-align: center;
+            background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
+        }
+    </style>
 
     {% block style %}
     {% endblock %}

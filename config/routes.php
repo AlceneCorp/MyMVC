@@ -92,5 +92,12 @@ return
 		'method' => 'users',
 		'params' => ['page' => 1],
 		'perm' => 'manage_user_groups'
+	],
+	[
+		'url' => '/MyMVC/admin/edit-permissions/{user}',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'usersPermissions',
+		'params' => [],
+		'perm' => 'manage_user_groups'
 	]
 ];

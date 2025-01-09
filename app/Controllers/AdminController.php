@@ -11,6 +11,8 @@ use App\Managers\SettingsCategoriesManager;
 use App\Managers\SettingsManager;
 use App\Managers\LogsManager;
 use App\Managers\UsersManager;
+use App\Managers\PermissionsManager;
+use App\Managers\UsersPermissionsManager;
 
 
 class AdminController extends Controller
@@ -36,30 +38,113 @@ class AdminController extends Controller
 		$usersPerPages = ConfigManager::get('SECURITY.usersPerPages.value');
 		$offset = ($page - 1) * $usersPerPages;
 
-		if ($page < 1) 
-		{
+		if ($page < 1) {
 			$page = 1; // Redirige vers la première page si la page est inférieure à 1
 		}
 
 		$usersManager = new UsersManager();
-
 		$users = $usersManager->findAllUsers([], ['ORDER BY' => 'ID ASC', 'LIMIT' => $usersPerPages, 'OFFSET' => $offset]);
 
 		$totalUsers = $usersManager->countUsers();
 		$totalPages = ceil($totalUsers / $usersPerPages);
 
-		if ($page > $totalPages) 
-		{
+		if ($page > $totalPages) {
 			$page = $totalPages; // Rediriger vers la dernière page si la page demandée est trop grande
 		}
 
-		$this->render('admin/users.twig',
-		[
-			'users' => $users,               // Tableau des utilisateurs
-			'currentPage' => $page,  // Page actuelle
+		// Utiliser un tableau pour stocker les utilisateurs avec leurs permissions
+		$usersWithPermissions = [];
+		$usersPermissionsManager = new UsersPermissionsManager();
+		$permissionsManager = new PermissionsManager();  // Utilisation de ton PermissionsManager existant
+
+		foreach ($users as $user) {
+			// Récupérer les permissions de l'utilisateur depuis UsersPermissions
+			$usersPermissions = $usersPermissionsManager->findAllUsersPermissions(['USERS_ID' => $user->getID()]);
+
+			// Créer un tableau de permissions
+			$permissions = [];
+			
+			// Si des permissions existent, les ajouter au tableau
+			foreach ($usersPermissions as $userPermission) {
+				// Utiliser findAllPermissions pour récupérer toutes les permissions, puis extraire celle correspondant à l'ID
+				$permissionsArray = $permissionsManager->findAllPermissions(['ID' => $userPermission->getPERMISSIONS_ID()]);
+				if ($permissionsArray) {
+					// Si la permission existe, l'ajouter dans le tableau
+					foreach ($permissionsArray as $permission) {
+						$permissions[] = $permission->getFULLNAME(); // Ou tout autre attribut que tu souhaites
+					}
+				}
+			}
+
+			// Ajouter l'utilisateur et ses permissions dans le tableau final
+			$usersWithPermissions[] = [
+				'user' => $user,
+				'permissions' => $permissions
+			];
+		}
+
+
+		// Rendre la vue avec les utilisateurs et leurs permissions
+		$this->render('admin/users.twig', [
+			'usersWithPermissions' => $usersWithPermissions,  // Passer les utilisateurs avec leurs permissions à la vue
+			'currentPage' => $page,
 			'totalPages' => $totalPages
 		]);
 	}
+
+	public function usersPermissions($user)
+	{
+		$usersManager = new UsersManager();
+		$permissionsManager = new PermissionsManager();
+		$usersPermissionsManager = new UsersPermissionsManager();
+
+
+		if(isset($_POST['permissions']))
+		{
+			$permissions = $_POST['permissions'] ?? [];
+			var_dump($permissions);
+
+			// Supprimer les anciennes permissions
+			$usersPermissionsManager->deleteUsersPermissions(['USERS_ID' => $user]);
+
+			// Ajouter les nouvelles permissions
+			foreach ($permissions as $permissionId) 
+			{
+				$usersPermissionsManager->addUsersPermissions(['USERS_ID' => $user, 'PERMISSIONS_ID' => $permissionId]);
+			}
+		}
+
+		// Récupérer tous les utilisateurs
+		$users = $usersManager->findAllUsers(['ID' => $user]);
+
+		// Récupérer toutes les permissions disponibles
+		$allPermissions = $permissionsManager->findAllPermissions();
+
+		// Créer un tableau avec les permissions de chaque utilisateur
+		$usersWithPermissions = [];
+		foreach ($users as $user) 
+		{
+			// Récupérer les permissions de l'utilisateur
+			$userPermissions = $usersPermissionsManager->findAllUsersPermissions(['USERS_ID' => $user->getID()]);
+			var_dump($userPermissions);
+			$permissionsIds = array_map(function ($permission) 
+			{
+				return $permission->getPERMISSIONS_ID();
+			}, $userPermissions);
+			var_dump($permissionsIds);
+			$usersWithPermissions[] = [
+				'user' => $user,
+				'permissionsIds' => $permissionsIds
+			];
+		}
+
+		$this->render('admin/users_permissions.twig', [
+			'usersWithPermissions' => $usersWithPermissions,
+			'allPermissions' => $allPermissions
+		]);
+	}
+
+
 
 	public function logs($page = 1)
 	{

@@ -47,6 +47,9 @@ class Router
         $this->twig->addGlobal('base_url', $this->getBaseUrl());
         $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
         $this->twig->addGlobal('logo', (ConfigManager::get('SITE.site_logo.value') ? ConfigManager::get('SITE.site_logo.value') : null));
+        $this->twig->addGlobal('color_1', ConfigManager::get('SITE.site_color_1.value'));
+        $this->twig->addGlobal('color_2', ConfigManager::get('SITE.site_color_2.value'));
+        
 
         $menuManager = new MenuManager();
         $menuGenerate = "";
@@ -139,6 +142,11 @@ class Router
             // Vérifier si le contrôleur existe
             if (class_exists($controllerName) && method_exists($controllerName, $methodName)) {
                 $controller = new $controllerName($this->twig);
+
+                if(ConfigManager::get("SECURITY.maintenance_mode.value") && !CoreManager::checkPerm('', 'perform_maintenance'))
+                {
+                    $controller->render('maintenance/maintenance.twig');
+                }
 
                 if(CoreManager::checkPerm($requestUri, $perm))
                 {

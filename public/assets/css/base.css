@@ -5,17 +5,6 @@ body {
     color: #333;
 }
 
-header {
-    background: linear-gradient(90deg, #6c63ff, #48c6ef);
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-footer {
-    background: linear-gradient(90deg, #6c63ff, #48c6ef);
-    color: white;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
 
 a {
     color: #48c6ef;
@@ -27,16 +16,7 @@ a:hover {
     text-decoration: underline;
 }
 
-/* --- HERO SECTION --- */
-.hero {
-    min-height: 100vh;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(135deg, #6c63ff, #48c6ef);
-    color: white;
-    text-align: center;
-    background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
-}
+
 .hero h1 {
     font-size: 3.5rem;
     font-weight: bold;

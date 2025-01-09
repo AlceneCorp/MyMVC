@@ -1,0 +1,53 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class='row'>
+        <!-- Menu latéral -->
+        {% include 'admin/include/adminMenu.twig' %}
+
+        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
+            <h1 class="text-center mb-4"><i class="fas fa-users me-2"></i> Gestion des Permissions des Utilisateurs</h1>
+
+            <!-- Liste des utilisateurs avec leurs permissions -->
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>ID</th>
+                            <th>Nom d'utilisateur</th>
+                            <th>Email</th>
+                            <th>Permissions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for entry in usersWithPermissions %}
+                            <tr>
+                                <td>{{ entry.user.getID() }}</td>
+                                <td>{{ entry.user.getUSERNAME() }}</td>
+                                <td>{{ entry.user.getEMAIL() }}</td>
+                                <td>
+                                    <form method="POST">
+                                        {% for permission in allPermissions %}
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" 
+                                                       name="permissions[]" 
+                                                       value="{{ permission.getID() }}"
+                                                       {% if permission.getID() in entry.permissionsIds %} checked {% endif %}>
+                                                <label class="form-check-label">
+                                                    {{ permission.getFULLNAME() }}
+                                                </label>
+                                            </div>
+                                        {% endfor %}
+                                        <button type="submit" class="btn btn-primary mt-3">Mettre à jour les permissions</button>
+                                    </form>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

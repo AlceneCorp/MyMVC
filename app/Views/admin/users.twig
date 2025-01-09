@@ -82,37 +82,68 @@
                 <table class="table table-bordered table-hover align-middle">
                     <thead class="table-dark">
                         <tr>
-                            <th>ID</th>
-                            <th>Nom d'utilisateur</th>
-                            <th>Email</th>
-                            <th>Statut</th>
-                            <th>Dernière connexion</th>
+                            <th class="col-1">ID</th>
+                            <th class="col-1">Nom d'utilisateur</th>
+                            <th class="col-1">Email</th>
+                            <th class="col-1">Statut</th>
+                            <th class="col-4">Permissions</th>
+                            <th class="col-2">Dernière connexion</th>
+                            <th class="col-2">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        {% if users is not empty %}
-                            {% for user in users %}
+                        {% if usersWithPermissions is not empty %}
+                            {% for entry in usersWithPermissions %}
                                 <tr>
-                                    <td>{{ user.ID }}</td>
-                                    <td>{{ user.USERNAME }}</td>
-                                    <td>{{ user.EMAIL }}</td>
-                                    <td>
-                                        {% if user.STATUS == 'active' %}
+                                    <td>{{ entry.user.getID() }}</td>
+                                    <td>{{ entry.user.getUSERNAME() }}</td>
+                                    <td>{{ entry.user.getEMAIL() }}</td>
+                                    <td style="text-align: center;">
+                                        {% if entry.user.getSTATUS() == 'active' %}
                                             <span class="badge bg-success">Actif</span>
-                                        {% elseif user.STATUS == 'pending' %}
+                                        {% elseif entry.user.getSTATUS() == 'pending' %}
                                             <span class="badge bg-warning text-dark">En attente</span>
-                                        {% elseif user.STATUS == 'inactive' %}
+                                        {% elseif entry.user.getSTATUS() == 'inactive' %}
                                             <span class="badge bg-secondary">Inactif</span>
-                                        {% elseif user.STATUS == 'banned' %}
+                                        {% elseif entry.user.getSTATUS() == 'banned' %}
                                             <span class="badge bg-danger">Banni</span>
                                         {% endif %}
                                     </td>
-                                    <td>{{ user.LAST_LOGIN|date("d/m/Y H:i") }}</td>
+                                    <td>
+                                        {% if entry.permissions is not empty %}
+                                            {% for permission in entry.permissions %}
+                                                <span style="margin:2px;" class="badge bg-info">{{ permission }}</span>
+                                            {% endfor %}
+                                        {% else %}
+                                            <span class="badge bg-secondary">Aucune permission</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ entry.user.getLAST_LOGIN()|date("d/m/Y H:i") }}</td>
+                                    <td class="text-center">
+                                        <!-- Lien pour bloquer/débloquer l'utilisateur -->
+                                        
+                                            {% if entry.user.getSTATUS() == 'active' %}
+                                                <a href="{{ base_url }}/admin/users/block-unblock/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
+                                                <i class="fas fa-lock"></i> Bloquer
+                                            {% else %}
+                                                <a href="{{ base_url }}/admin/users/block-unblock/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
+                                                <i class="fas fa-unlock"></i> Débloquer
+                                            {% endif %}
+                                        </a>
+
+                                        <!-- Espace entre les boutons -->
+                                        <span class="mx-2"></span>
+
+                                        <!-- Lien pour éditer les permissions -->
+                                        <a href="{{ base_url }}/admin/edit-permissions/{{ entry.user.getID() }}" class="btn btn-warning btn-sm">
+                                            <i class="fas fa-edit"></i> Modifier Permissions
+                                        </a>
+                                    </td>
                                 </tr>
                             {% endfor %}
                         {% else %}
                             <tr>
-                                <td colspan="5" class="text-center text-muted">Aucun utilisateur trouvé</td>
+                                <td colspan="6" class="text-center text-muted">Aucun utilisateur trouvé</td>
                             </tr>
                         {% endif %}
                     </tbody>
