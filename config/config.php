@@ -6,28 +6,28 @@ return
     [
         'host' =>
         [
-            'value' => 'HOST',
+            'value' => 'localhost',
             'type' => 'text',
             'description' => 'L\'hôte du serveur de base de données (ex. : localhost, 127.0.0.1 ou une adresse IP externe)',
             'readonly' => true
         ],
         'username' =>
         [
-            'value' => 'USERNAME',
+            'value' => 'MyMVC',
             'type' => 'text',
             'description' => 'Nom d\'utilisateur pour se connecter à la base de données.',
             'readonly' => true
         ],
         'password' =>
         [
-            'value' => 'PASSWORD',
+            'value' => 'VZXfRXvsuBjp]43E',
             'type' => 'text',
             'description' => 'Mot de passe associé au nom d\'utilisateur pour accéder à la base de données.',
             'readonly' => true
         ],
         'dbname' =>
         [
-            'value' => 'DBNAME',
+            'value' => 'mymvc',
             'type' => 'text',
             'description' => 'Nom de la base de données à utiliser pour la connexion.',
             'readonly' => true

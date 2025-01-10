@@ -54,7 +54,6 @@
                                                     </label>
                                                 {% elseif setting.TYPE == 'color' %}
                                                     <div class="mb-3">
-                                                        <label for="colorPicker" class="form-label">Choisir une couleur</label>
                                                         <input class="form-control form-control-color" type="color" id="colorPicker" name="data[{{ category.NAME }}][{{ setting.NAME }}]" value="{{ setting.VALUE }}">
                                                     </div>
                                                 {% elseif setting.TYPE == 'number' %}
