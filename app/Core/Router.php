@@ -49,7 +49,7 @@ class Router
         $this->twig->addGlobal('logo', (ConfigManager::get('SITE.site_logo.value') ? ConfigManager::get('SITE.site_logo.value') : null));
         $this->twig->addGlobal('color_1', ConfigManager::get('SITE.site_color_1.value'));
         $this->twig->addGlobal('color_2', ConfigManager::get('SITE.site_color_2.value'));
-        
+
 
         $menuManager = new MenuManager();
         $menuGenerate = "";
@@ -94,6 +94,19 @@ class Router
         $this->twig->addFunction(new TwigFunction('asset', function ($path) 
         {
             return '/assets/' . ltrim($path, '/');
+        }));
+
+        $this->twig->addFunction(new TwigFunction('checkPerm', function ($param1, $param2) 
+        {
+            return CoreManager::checkPerm($param1, $param2);
+        }));
+
+        $this->twig->addFunction(new TwigFunction('config', function (...$params) 
+        {
+            // Concaténer tous les paramètres en une seule chaîne
+            $key = implode('', $params);
+
+            return ConfigManager::get($key);
         }));
     }
 

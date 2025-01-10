@@ -10,6 +10,7 @@ use App\Core\SessionsManager;
 use App\Managers\UsersManager;
 use App\Managers\LogsManager;
 use App\Managers\UsersPermissionsManager;
+use App\Managers\UsersProfileManager;
 
 class LoginController extends Controller
 {
@@ -81,14 +82,19 @@ class LoginController extends Controller
                         try 
                         {
                              $usersManager = new UsersManager();
+                             $userProfileManager = new UsersProfileManager();
                              $usersPermissionsManager = new UsersPermissionsManager();
 
                              if(!$usersManager->findOneUsers(['USERNAME' => $username]))
                              {
                                  $user_id = $usersManager->addUsers([
                                      'USERNAME' => $username,
-                                     'EMAIL' => $email,
                                      'PASSWORD' => $hashed_password
+                                 ]);
+
+                                 $userProfileManager->addUsersProfile([
+                                     'USERS_ID' => $user_id,
+                                     'EMAIL' => $email
                                  ]);
 
                                  //Ajout de la permission 'Modification de son propre profil' à l'inscription

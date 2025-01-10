@@ -94,10 +94,32 @@ return
 		'perm' => 'manage_user_groups'
 	],
 	[
+		'url' => '/MyMVC/admin/block/{user_id}',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'blockUser',
+		'params' => [],
+		'perm' => 'block_user'
+	],
+	[
+		'url' => '/MyMVC/admin/unblock/{user_id}',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'unBlockUser',
+		'params' => [],
+		'perm' => 'unblock_user'
+	],
+	[
 		'url' => '/MyMVC/admin/edit-permissions/{user}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'usersPermissions',
 		'params' => [],
-		'perm' => 'manage_user_groups'
+		'perm' => 'manage_permissions'
+	],
+	[
+		'url' => '/MyMVC/user/myprofil',
+		'controller' => \App\Controllers\UserController::class,
+		'method' => 'myProfil',
+		'params' => [],
+		'perm' => 'edit_own_profil'
 	]
+
 ];

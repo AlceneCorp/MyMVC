@@ -6,7 +6,6 @@ class Users
 {
     private $ID;
     private $USERNAME;
-    private $EMAIL;
     private $PASSWORD;
     private $STATUS;
     private $CREATED_AT;
@@ -54,16 +53,6 @@ class Users
     public function setUSERNAME($USERNAME)
     {
         $this->USERNAME = $USERNAME;
-    }
-
-    public function getEMAIL()
-    {
-        return $this->EMAIL;
-    }
-
-    public function setEMAIL($EMAIL)
-    {
-        $this->EMAIL = $EMAIL;
     }
 
     public function getPASSWORD()

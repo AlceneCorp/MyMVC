@@ -28,7 +28,6 @@
                                 <span class="badge bg-primary">ID: {{ entry.user.getID() }}</span>
                             </div>
                             <div class="card-body">
-                                <p class="mb-1"><strong>Email :</strong> {{ entry.user.getEMAIL() }}</p>
 
                                 <!-- Ligne de séparation -->
                                 <hr class="my-3">
@@ -37,7 +36,7 @@
                                     <div class="row">
                                         {% for permission in allPermissions %}
                                             <div class="col-md-3 col-xs-12 mb-3">
-                                                <div class="custom-checkbox p-3 rounded shadow-sm position-relative" style="background-color:{{ permission.getCOLOR() }};">
+                                                <div class="custom-checkbox p-3 rounded shadow-sm position-relative" style="background-color:{{ config('SITE.color_rank_', permission.getORDERS(), '.value') }};">
                                                     <input 
                                                         id="permission-{{ permission.getID() }}" 
                                                         class="custom-checkbox-input" 

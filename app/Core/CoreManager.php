@@ -89,7 +89,7 @@ class CoreManager
 		{
 			if(!empty($param_Perm))
 			{
-				if(SessionsManager::get('USERS') !== null)
+				if(SessionsManager::has('USERS'))
 				{
 					$userManager = new UsersManager();
 					$permissionManager = new PermissionsManager();

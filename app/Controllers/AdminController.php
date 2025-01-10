@@ -65,12 +65,15 @@ class AdminController extends Controller
 			$permissions = [];
 			
 			// Si des permissions existent, les ajouter au tableau
-			foreach ($usersPermissions as $userPermission) {
+			foreach ($usersPermissions as $userPermission) 
+			{
 				// Utiliser findAllPermissions pour récupérer toutes les permissions, puis extraire celle correspondant à l'ID
 				$permissionsArray = $permissionsManager->findAllPermissions(['ID' => $userPermission->getPERMISSIONS_ID()]);
-				if ($permissionsArray) {
+				if ($permissionsArray) 
+				{
 					// Si la permission existe, l'ajouter dans le tableau
-					foreach ($permissionsArray as $permission) {
+					foreach ($permissionsArray as $permission) 
+					{
 						$permissions[] = $permission; // Ou tout autre attribut que tu souhaites
 					}
 				}
@@ -228,5 +231,23 @@ class AdminController extends Controller
 			'settings_categories' => $categories,
 			'grouped_settings' => $grouped_settings
 		]);
+	}
+
+	public function blockUser($user_id)
+	{
+		$usersManager = new UsersManager();
+
+		$usersManager->updateUsers(['STATUS' => 'banned'], $user_id);
+
+		header('Location:' . URL . '/admin/users');
+	}
+
+	public function unBlockUser($user_id)
+	{
+		$usersManager = new UsersManager();
+
+		$usersManager->updateUsers(['STATUS' => 'active'], $user_id);
+
+		header('Location:' . URL . '/admin/users');
 	}
 }

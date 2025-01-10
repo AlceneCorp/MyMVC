@@ -8,6 +8,7 @@ class UsersProfile
     private $USERS_ID;
     private $FIRST_NAME;
     private $LAST_NAME;
+    private $EMAIL;
     private $PHONE_NUMBER;
     private $ADDRESS;
     private $BIRTHDAY;
@@ -72,6 +73,16 @@ class UsersProfile
     public function setLAST_NAME($LAST_NAME)
     {
         $this->LAST_NAME = $LAST_NAME;
+    }
+
+    public function getEMAIL()
+    {
+        return $this->EMAIL;
+    }
+
+    public function setEMAIL($EMAIL)
+    {
+        $this->EMAIL = $EMAIL;
     }
 
     public function getPHONE_NUMBER()
