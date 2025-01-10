@@ -9,6 +9,7 @@ use App\Core\SessionsManager;
 
 use App\Managers\UsersManager;
 use App\Managers\LogsManager;
+use App\Managers\UsersPermissionsManager;
 
 class LoginController extends Controller
 {
@@ -52,6 +53,7 @@ class LoginController extends Controller
 
 	public function register()
     {
+        
         $error = "";
         $success = "";
         // Vérifie si la requête est POST et qu'aucun utilisateur n'est connecté
@@ -79,14 +81,19 @@ class LoginController extends Controller
                         try 
                         {
                              $usersManager = new UsersManager();
+                             $usersPermissionsManager = new UsersPermissionsManager();
 
                              if(!$usersManager->findOneUsers(['USERNAME' => $username]))
                              {
-                                 $usersManager->addUsers([
+                                 $user_id = $usersManager->addUsers([
                                      'USERNAME' => $username,
                                      'EMAIL' => $email,
                                      'PASSWORD' => $hashed_password
                                  ]);
+
+                                 //Ajout de la permission 'Modification de son propre profil' à l'inscription
+                                 $usersPermissionsManager->addUsersPermissions(['USERS_ID' => $user_id, 'PERMISSIONS_ID' => 21]);
+
                                  CoreManager::addLogs('INFO', 'USERS', 'Le compte de ' . $username . ' vient d\'être créé.');
                                  $success = 'Votre compte a été créé avec succès. <a class="text-decoration-none text-primary fw-bold ms-1" href="'.URL.'/login">Connectez-vous.</a>';
                              }

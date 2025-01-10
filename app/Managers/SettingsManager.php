@@ -5,50 +5,92 @@ namespace App\Managers; // Déclaration du namespace, indiquant que cette classe
 use App\Core\DatabaseManager; // Importation de la classe DatabaseManager qui contient les méthodes génériques pour manipuler la base de données
 use App\Models\Settings; // Importation de la classe Settings, représentant un modèle d'entité de la base de données
 
-class SettingsManager extends DatabaseManager // Déclaration de la classe SettingsManager qui hérite de la classe DatabaseManager
+/**
+ * Class SettingsManager
+ * Cette classe gère les opérations liées à la manipulation des instances de Settings dans la base de données.
+ */
+class SettingsManager extends DatabaseManager
 {
-    // Méthode pour récupérer une seule instance de Settings à partir de la base de données
+    /**
+     * Récupère une seule instance de Settings à partir de la base de données.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer la recherche.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return Settings|null Retourne une instance de Settings ou null si aucune correspondance.
+     */
     public function findOneSettings(array $param_Data = [], array $param_Parameters = []) : ?Settings
     {
         // Appel à la méthode findOne de DatabaseManager avec les paramètres nécessaires pour rechercher une seule entrée dans la table
         return parent::findOne('settings', Settings::class, $param_Data, $param_Parameters);
     }
 
-    // Méthode pour récupérer toutes les instances de Settings à partir de la base de données
+    /**
+     * Récupère toutes les instances de Settings à partir de la base de données.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer la recherche.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return array Tableau d'instances de Settings.
+     */
     public function findAllSettings(array $param_Data = [], array $param_Parameters = []) : array
     {
         // Appel à la méthode findAll de DatabaseManager pour récupérer toutes les entrées dans la table
         return parent::findAll('settings', Settings::class, $param_Data, $param_Parameters);
     }
 
-    // Méthode pour ajouter une nouvelle instance de Settings dans la base de données
+    /**
+     * Ajoute une nouvelle instance de Settings dans la base de données.
+     * 
+     * @param array $param_Data Données à insérer dans la table.
+     * @return int Retourne l'ID de l'élément inséré.
+     */
     public function addSettings(array $param_Data) : int
     {
         // Appel à la méthode insert de DatabaseManager pour insérer de nouvelles données dans la table
         return parent::insert('settings', $param_Data);
     }
 
-    // Méthode pour mettre à jour une instance de Settings dans la base de données
+    /**
+     * Met à jour une instance de Settings dans la base de données.
+     * 
+     * @param array $param_Data Données à mettre à jour.
+     * @param int $param_id ID de l'élément à mettre à jour.
+     * @return int Nombre d'éléments affectés par la mise à jour.
+     */
     public function updateSettings(array $param_Data, $param_id) : int
     {
         // Appel à la méthode update de DatabaseManager pour mettre à jour les données de la table, en utilisant l'ID spécifié comme critère de mise à jour
         return parent::update('settings', $param_Data, $param_id);
     }
 
-    // Méthode pour supprimer une instance de Settings dans la base de données
+    /**
+     * Supprime une instance de Settings dans la base de données.
+     * 
+     * @param array $param_Data Données permettant de trouver l'élément à supprimer.
+     * @return bool Retourne true si la suppression a réussi, sinon false.
+     */
     public function deleteSettings(array $param_Data) : bool
     {
         // Appel à la méthode delete de DatabaseManager pour supprimer des données de la table
         return parent::delete('settings', $param_Data);
     }
 
-    // Méthode pour compter les enregistrements avec parametres
+    /**
+     * Compte le nombre d'enregistrements de Settings dans la base de données en fonction des paramètres.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer les enregistrements.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return int Le nombre d'enregistrements correspondant aux critères.
+     */
     public function countSettings(array $param_Data = [], array $param_Parameters = []) : int
     {
         return parent::count('settings', Settings::class, $param_Data, $param_Parameters);
     }
 
-    // Méthode pour vider (TRUNCATE) la table settings
+    /**
+     * Vide (TRUNCATE) la table settings.
+     * 
+     * @return bool Retourne true si l'opération a réussi, sinon false.
+     */
     public function truncateSettings() : bool
     {
         // Appel à la méthode truncate de DatabaseManager pour supprimer toutes les lignes de la table
