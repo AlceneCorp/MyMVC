@@ -112,7 +112,7 @@
                                     <td>
                                         {% if entry.permissions is not empty %}
                                             {% for permission in entry.permissions %}
-                                                <span style="margin:2px;" class="badge bg-info">{{ permission }}</span>
+                                                <span style="margin:2px; background-color:{{ permission.getCOLOR() }};" class="badge">{{ permission.getFULLNAME() }}</span>
                                             {% endfor %}
                                         {% else %}
                                             <span class="badge bg-secondary">Aucune permission</span>

@@ -8,6 +8,8 @@ class Permissions
     private $NAME;
     private $FULLNAME;
     private $DESCRIPTION;
+    private $COLOR;
+    private $ORDERS;
 
 
     public function __construct(array $param_Data)
@@ -66,6 +68,26 @@ class Permissions
     public function setDESCRIPTION($DESCRIPTION)
     {
         $this->DESCRIPTION = $DESCRIPTION;
+    }
+
+    public function getCOLOR()
+    {
+        return $this->COLOR;
+    }
+
+    public function setCOLOR($COLOR)
+    {
+        $this->COLOR = $COLOR;
+    }
+
+    public function getORDERS()
+    {
+        return $this->ORDERS;
+    }
+
+    public function setORDERS($ORDERS)
+    {
+        $this->ORDERS = $ORDERS;
     }
 
 }

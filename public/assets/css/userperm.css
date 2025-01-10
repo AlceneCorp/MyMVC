@@ -1,0 +1,49 @@
+/* Style général du conteneur */
+.custom-checkbox {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    transition: background-color 0.3s, box-shadow 0.3s;
+    opacity:0.7;
+}
+
+.custom-checkbox:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Input invisible mais interactif */
+.custom-checkbox-input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Label stylisé comme case à cocher */
+.custom-checkbox-label {
+    display: flex;
+    align-items: center;
+    font-size: 1rem;
+    font-weight: 1000;
+    color: #000;
+    cursor: pointer;
+    padding-left: 2.5rem;
+    position: relative;
+    margin: 0;
+}
+
+/* Style de la fausse case à cocher */
+.custom-checkbox-label::before {
+    content: '';
+    position: absolute;
+    left: 0.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 2px solid #007bff;
+    border-radius: 0.25rem;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Style quand la case est cochée */
+.custom-checkbox-input:checked + .custom-checkbox-label::before {
+    background-color: #007bff;
+    border-color: #007bff;

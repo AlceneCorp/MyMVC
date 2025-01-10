@@ -1,51 +1,66 @@
 {% extends 'base.twig' %}
 
+{% block style %}
+<link rel="stylesheet" href="{{base_url}}{{ asset('css/userperm.css') }}">
+{% endblock %}
+
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class='row'>
+    <div class="row">
         <!-- Menu latéral -->
         {% include 'admin/include/adminMenu.twig' %}
 
         <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4">
-            <h1 class="text-center mb-4"><i class="fas fa-users me-2"></i> Gestion des Permissions des Utilisateurs</h1>
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="text-center mb-4"><i class="fas fa-users me-2"></i> Gestion des Permissions des Utilisateurs
+            </div>
 
-            <!-- Liste des utilisateurs avec leurs permissions -->
-            <div class="table-responsive">
-                <table class="table table-bordered table-hover align-middle">
-                    <thead class="table-dark">
-                        <tr>
-                            <th>ID</th>
-                            <th>Nom d'utilisateur</th>
-                            <th>Email</th>
-                            <th>Permissions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for entry in usersWithPermissions %}
-                            <tr>
-                                <td>{{ entry.user.getID() }}</td>
-                                <td>{{ entry.user.getUSERNAME() }}</td>
-                                <td>{{ entry.user.getEMAIL() }}</td>
-                                <td>
-                                    <form method="POST">
+            <!-- Liste des utilisateurs -->
+            <div class="row">
+                {% for entry in usersWithPermissions %}
+                    <div class="col-lg-12">
+                        <div class="card shadow-sm mb-10">
+                            <div class="card-header bg-dark text-white d-flex align-items-center justify-content-between">
+                                <div>
+                                    <i class="fas fa-user me-2"></i>{{ entry.user.getUSERNAME() }}
+                                </div>
+                                <span class="badge bg-primary">ID: {{ entry.user.getID() }}</span>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-1"><strong>Email :</strong> {{ entry.user.getEMAIL() }}</p>
+
+                                <!-- Ligne de séparation -->
+                                <hr class="my-3">
+
+                                <form method="POST">
+                                    <div class="row">
                                         {% for permission in allPermissions %}
-                                            <div class="form-check">
-                                                <input class="form-check-input" type="checkbox" 
-                                                       name="permissions[]" 
-                                                       value="{{ permission.getID() }}"
-                                                       {% if permission.getID() in entry.permissionsIds %} checked {% endif %}>
-                                                <label class="form-check-label">
-                                                    {{ permission.getFULLNAME() }}
-                                                </label>
+                                            <div class="col-md-3 col-xs-12 mb-3">
+                                                <div class="custom-checkbox p-3 rounded shadow-sm position-relative" style="background-color:{{ permission.getCOLOR() }};">
+                                                    <input 
+                                                        id="permission-{{ permission.getID() }}" 
+                                                        class="custom-checkbox-input" 
+                                                        type="checkbox" 
+                                                        name="permissions[]" 
+                                                        value="{{ permission.getID() }}" 
+                                                        {% if permission.getID() in entry.permissionsIds %} checked {% endif %}>
+
+                                                    <label for="permission-{{ permission.getID() }}" class="custom-checkbox-label">
+                                                        {{ permission.getFULLNAME() }}
+                                                    </label>
+                                                </div>
                                             </div>
                                         {% endfor %}
-                                        <button type="submit" class="btn btn-primary mt-3">Mettre à jour les permissions</button>
-                                    </form>
-                                </td>
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                                    </div>
+                                    <button type="submit" class="btn btn-primary w-100 mt-3">
+                                        <i class="fas fa-save me-1"></i> Mettre à jour
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
         </main>
     </div>

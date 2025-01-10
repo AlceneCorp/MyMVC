@@ -71,7 +71,7 @@ class AdminController extends Controller
 				if ($permissionsArray) {
 					// Si la permission existe, l'ajouter dans le tableau
 					foreach ($permissionsArray as $permission) {
-						$permissions[] = $permission->getFULLNAME(); // Ou tout autre attribut que tu souhaites
+						$permissions[] = $permission; // Ou tout autre attribut que tu souhaites
 					}
 				}
 			}
@@ -102,7 +102,6 @@ class AdminController extends Controller
 		if(isset($_POST['permissions']))
 		{
 			$permissions = $_POST['permissions'] ?? [];
-			var_dump($permissions);
 
 			// Supprimer les anciennes permissions
 			$usersPermissionsManager->deleteUsersPermissions(['USERS_ID' => $user]);
@@ -118,7 +117,7 @@ class AdminController extends Controller
 		$users = $usersManager->findAllUsers(['ID' => $user]);
 
 		// Récupérer toutes les permissions disponibles
-		$allPermissions = $permissionsManager->findAllPermissions();
+		$allPermissions = $permissionsManager->findAllPermissions([], ['ORDER BY' => 'ORDERS ASC']);
 
 		// Créer un tableau avec les permissions de chaque utilisateur
 		$usersWithPermissions = [];
@@ -126,12 +125,10 @@ class AdminController extends Controller
 		{
 			// Récupérer les permissions de l'utilisateur
 			$userPermissions = $usersPermissionsManager->findAllUsersPermissions(['USERS_ID' => $user->getID()]);
-			var_dump($userPermissions);
 			$permissionsIds = array_map(function ($permission) 
 			{
 				return $permission->getPERMISSIONS_ID();
 			}, $userPermissions);
-			var_dump($permissionsIds);
 			$usersWithPermissions[] = [
 				'user' => $user,
 				'permissionsIds' => $permissionsIds
