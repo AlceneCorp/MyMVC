@@ -216,7 +216,7 @@ class AdminController extends Controller
 			}
 		}
 
-		$categories = $settingsCategoriesManager->findAllSettingsCategories();
+		$categories = $settingsCategoriesManager->findAllSettingsCategories([], ['ORDER BY' => 'ORDERS ASC']);
 		$settings = $settingsManager->findAllSettings([], ['ORDER BY' => 'TYPE DESC, NAME ASC']);
 
 		// On regroupe les paramètres par catégorie

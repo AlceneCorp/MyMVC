@@ -16,10 +16,10 @@ class AjaxController extends Controller
         $currentYear = date('Y');
 
         // Récupérer les logs des visiteurs pour le graphique 1 (Nombre de visiteurs par mois)
-        $visitor_logs = $visitorManager->findAllVisitor(['YEAR(VISIT_DATE)' => $currentYear], ['GROUP BY' => 'IP_ADDRESS']);
+        $visitor_logs = $visitorManager->findAllVisitor(['YEAR(VISIT_DATE)' => $currentYear], ['GROUP BY' => 'IP_ADDRESS, MONTH(VISIT_DATE)']);
 
         // Récupérer les logs des visiteurs pour le graphique 2 (Pages visitées par mois)
-        $page_visits_logs = $visitorManager->findAllVisitor(['YEAR(VISIT_DATE)' => $currentYear], ['ORDER BY' => 'PAGE_VISITED ASC', 'GROUP BY' => 'IP_ADDRESS, PAGE_VISITED']);
+        $page_visits_logs = $visitorManager->findAllVisitor(['YEAR(VISIT_DATE)' => $currentYear], ['ORDER BY' => 'PAGE_VISITED ASC', 'GROUP BY' => 'IP_ADDRESS, PAGE_VISITED, MONTH(VISIT_DATE)']);
 
         // Initialiser les tableaux pour les données de visites
         $visitor_counts = [];

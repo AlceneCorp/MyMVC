@@ -8,6 +8,7 @@ class SettingsCategories
     private $NAME;
     private $DESCRIPTION;
     private $ICON;
+    private $ORDERS;
 
 
     public function __construct(array $param_Data)
@@ -66,6 +67,16 @@ class SettingsCategories
     public function setICON($ICON)
     {
         $this->ICON = $ICON;
+    }
+
+    public function getORDERS()
+    {
+        return $this->ORDERS;
+    }
+
+    public function setORDERS($ORDERS)
+    {
+        $this->ORDERS = $ORDERS;
     }
 
 }

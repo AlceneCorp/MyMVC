@@ -45,7 +45,7 @@
                                             <td>{{ setting.DESCRIPTION ?: setting.NAME }}</td>
                                             <td>
                                                 {% if setting.TYPE == 'text' %}
-                                                    <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                    <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" {% if not setting.VALUE %} placeholder="Pas de valeurs" {% endif %} value="{{ setting.VALUE }}">
                                                 {% elseif setting.TYPE == 'checkbox' %}
                                                     <label class="switch">
                                                         <input type="hidden" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="0">
