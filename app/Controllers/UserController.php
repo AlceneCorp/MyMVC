@@ -20,8 +20,6 @@ class UserController extends Controller
         $usersProfileManager = new UsersProfileManager();
         $user_id = SessionsManager::get('USERS')->getID();
 
-        
-
         if(isset($_POST))
         {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {

@@ -16,23 +16,6 @@ use App\Managers\UsersPermissionsManager;
 
 class CoreManager
 {
-    
-    private static array $mainMenu =
-    [
-        0 => 
-        [
-            'url' => URL . '/accueil',
-            'name' => 'Accueil',
-            'perm' => ''
-        ],
-        1 => 
-        [
-            'url' => URL . '/user/myprofil',
-            'name' => 'Mon espace',
-            'perm' => 'edit_own_profil'
-        ]
-    ];
-
 	public static function addLogs($param_Level, $param_Category, $param_Message)
     {
 	    $logManager = new LogsManager();
@@ -148,13 +131,4 @@ class CoreManager
             throw new \Exception(ErrorManager::getErrorMessage(50000));
 		}
 	}
-
-    public static function getMenu()
-    {
-        $generateMenu = '';
-        foreach($mainMenu as $menu)
-        {
-
-        }
-    }
 }
