@@ -40,7 +40,7 @@ class __TwigTemplate_db078c5b951c14b2181a6403e5d43214 extends Template
         $macros = $this->macros;
         // line 1
         yield "<!-- Sidebar -->
-<nav class=\"col-12 col-sm-12 col-md-2 col-lg-2 d-md-block bg-dark sidebar\" id=\"sidebar\">
+<nav class=\"col-12 col-sm-12 col-md-12 col-lg-2 d-md-block bg-dark sidebar\" id=\"sidebar\">
 \t<div class=\"position-sticky\">
 \t\t<h4 class=\"text-center text-white py-4 fs-4\">Menu</h4>
 \t\t<ul class=\"nav flex-column\">
@@ -174,7 +174,7 @@ class __TwigTemplate_db078c5b951c14b2181a6403e5d43214 extends Template
     public function getSourceContext(): Source
     {
         return new Source("<!-- Sidebar -->
-<nav class=\"col-12 col-sm-12 col-md-2 col-lg-2 d-md-block bg-dark sidebar\" id=\"sidebar\">
+<nav class=\"col-12 col-sm-12 col-md-12 col-lg-2 d-md-block bg-dark sidebar\" id=\"sidebar\">
 \t<div class=\"position-sticky\">
 \t\t<h4 class=\"text-center text-white py-4 fs-4\">Menu</h4>
 \t\t<ul class=\"nav flex-column\">

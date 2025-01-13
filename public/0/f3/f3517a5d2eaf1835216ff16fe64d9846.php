@@ -63,7 +63,7 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
         yield from $this->loadTemplate("admin/include/adminMenu.twig", "admin/users.twig", 7)->unwrap()->yield($context);
         // line 8
         yield "
-        <main class=\"col-md-10 ms-sm-auto col-lg-10 px-md-4\">
+        <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
             <!-- Header Section -->
             <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                 <h1 class=\"text-center mb-4\"><i class=\"fas fa-users me-2\"></i> Liste des utilisateurs</h1>
@@ -583,7 +583,7 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
         <!-- Menu latéral -->
         {% include 'admin/include/adminMenu.twig' %}
 
-        <main class=\"col-md-10 ms-sm-auto col-lg-10 px-md-4\">
+        <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
             <!-- Header Section -->
             <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                 <h1 class=\"text-center mb-4\"><i class=\"fas fa-users me-2\"></i> Liste des utilisateurs</h1>

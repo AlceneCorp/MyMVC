@@ -35,7 +35,6 @@ class LoginController extends Controller
 					    SessionsManager::set('USERS', $user);
 					    CoreManager::addLogs('INFO', 'USERS', $user->getUSERNAME() . ' s\'est connecté');
 
-					    //Mise a jour de 	LAST_LOGIN
 					    $usersManager->updateUsers(['LAST_LOGIN' => date('Y-m-d H:i:s')], $user->getID());
 
 					    header('Location:' . URL . '/admin/dashboard');

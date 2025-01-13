@@ -226,78 +226,75 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
         </nav>
     </header>
 
-
     <!-- Main Content -->
     <main class=\"pt-3 pb-3 hero\" id=\"main-content\">
-        <section class=\"\" data-aos=\"fade-up\">
+        <section class=\"container-fluid\" data-aos=\"fade-up\">
             <div class=\"row\">
                 <div class=\"col-md-10 offset-1\">
                     ";
-        // line 122
+        // line 121
         yield from $this->unwrap()->yieldBlock('content', $context, $blocks);
-        // line 125
+        // line 124
         yield "                </div>
             </div>
         </section>
     </main>
 
-    
-
     <!-- Footer Section -->
     <footer class=\"py-2\">
-        <div class=\"container text-center\">
+        <div class=\"container-fluid text-center\">
             ";
-        // line 135
+        // line 132
         if (((($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value") && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value"))) {
-            // line 136
+            // line 133
             yield "            <div class=\"social-buttons mb-3\">
                 ";
-            // line 137
+            // line 134
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value")) {
-                // line 138
+                // line 135
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-facebook\"></i></a>
                 ";
             }
-            // line 140
+            // line 137
             yield "
                 ";
-            // line 141
+            // line 138
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) {
-                // line 142
+                // line 139
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-instagram\"></i></a>
                 ";
             }
-            // line 144
+            // line 141
             yield "                
                 ";
-            // line 145
+            // line 142
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) {
-                // line 146
+                // line 143
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-linkedin\"></i></a>
                 ";
             }
-            // line 148
+            // line 145
             yield "
                 ";
-            // line 149
+            // line 146
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value")) {
-                // line 150
+                // line 147
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-x-twitter\"></i></a>
                 ";
             }
-            // line 152
+            // line 149
             yield "            </div>
             ";
         }
-        // line 154
+        // line 151
         yield "            <p>&copy; 2022 - ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(($context["date"] ?? null), "Y"), "html", null, true);
         yield " ";
@@ -316,9 +313,9 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
     </script>
     
     ";
-        // line 167
+        // line 164
         yield from $this->unwrap()->yieldBlock('jquery', $context, $blocks);
-        // line 170
+        // line 167
         yield "</body>
 </html>
 ";
@@ -337,27 +334,27 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
         yield from [];
     }
 
-    // line 122
+    // line 121
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_content(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 123
+        // line 122
         yield "
                     ";
         yield from [];
     }
 
-    // line 167
+    // line 164
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_jquery(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 168
+        // line 165
         yield "
     ";
         yield from [];
@@ -384,7 +381,7 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  361 => 168,  354 => 167,  348 => 123,  341 => 122,  336 => 62,  329 => 61,  322 => 170,  320 => 167,  301 => 154,  297 => 152,  291 => 150,  289 => 149,  286 => 148,  280 => 146,  278 => 145,  275 => 144,  269 => 142,  267 => 141,  264 => 140,  258 => 138,  256 => 137,  253 => 136,  251 => 135,  239 => 125,  237 => 122,  223 => 110,  215 => 105,  212 => 104,  204 => 99,  201 => 98,  199 => 97,  191 => 92,  183 => 87,  176 => 83,  172 => 82,  169 => 81,  161 => 77,  155 => 75,  153 => 74,  140 => 63,  138 => 61,  128 => 54,  113 => 46,  95 => 35,  81 => 28,  72 => 23,  52 => 6,  45 => 1,);
+        return array (  358 => 165,  351 => 164,  345 => 122,  338 => 121,  333 => 62,  326 => 61,  319 => 167,  317 => 164,  298 => 151,  294 => 149,  288 => 147,  286 => 146,  283 => 145,  277 => 143,  275 => 142,  272 => 141,  266 => 139,  264 => 138,  261 => 137,  255 => 135,  253 => 134,  250 => 133,  248 => 132,  238 => 124,  236 => 121,  223 => 110,  215 => 105,  212 => 104,  204 => 99,  201 => 98,  199 => 97,  191 => 92,  183 => 87,  176 => 83,  172 => 82,  169 => 81,  161 => 77,  155 => 75,  153 => 74,  140 => 63,  138 => 61,  128 => 54,  113 => 46,  95 => 35,  81 => 28,  72 => 23,  52 => 6,  45 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -504,10 +501,9 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
         </nav>
     </header>
 
-
     <!-- Main Content -->
     <main class=\"pt-3 pb-3 hero\" id=\"main-content\">
-        <section class=\"\" data-aos=\"fade-up\">
+        <section class=\"container-fluid\" data-aos=\"fade-up\">
             <div class=\"row\">
                 <div class=\"col-md-10 offset-1\">
                     {% block content %}
@@ -518,11 +514,9 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
         </section>
     </main>
 
-    
-
     <!-- Footer Section -->
     <footer class=\"py-2\">
-        <div class=\"container text-center\">
+        <div class=\"container-fluid text-center\">
             {% if config('SOCIALNETWORK.sn_facebook.value') and config('SOCIALNETWORK.sn_instagram.value') and config('SOCIALNETWORK.sn_linkedin.value') and config('SOCIALNETWORK.sn_x.value') %}
             <div class=\"social-buttons mb-3\">
                 {% if config('SOCIALNETWORK.sn_facebook.value') %}

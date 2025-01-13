@@ -74,7 +74,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
         yield from $this->loadTemplate("admin/include/adminMenu.twig", "user/myprofil.twig", 8)->unwrap()->yield($context);
         // line 9
         yield "
-        <main class=\"col-md-10 ms-sm-auto col-lg-10 px-md-4\">
+        <main class=\"col-md-9 col-lg-9 px-md-4\">
             <!-- Header Section -->
             <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                 <h1 class=\"text-center mb-4\"><i class=\"fas fa-user me-2\"></i> Mon Profil</h1>
@@ -94,7 +94,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
             </div>
 
 
-            <div class=\"container mt-5\">
+            <div class=\"container\">
                 <form method=\"POST\" enctype=\"multipart/form-data\" class=\"needs-validation\" novalidate>
                     <!-- Informations personnelles -->
                     <div class=\"card mb-4 shadow\">
@@ -263,7 +263,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
     <div class='row'>
         {% include 'admin/include/adminMenu.twig' %}
 
-        <main class=\"col-md-10 ms-sm-auto col-lg-10 px-md-4\">
+        <main class=\"col-md-9 col-lg-9 px-md-4\">
             <!-- Header Section -->
             <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                 <h1 class=\"text-center mb-4\"><i class=\"fas fa-user me-2\"></i> Mon Profil</h1>
@@ -273,7 +273,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
             </div>
 
 
-            <div class=\"container mt-5\">
+            <div class=\"container\">
                 <form method=\"POST\" enctype=\"multipart/form-data\" class=\"needs-validation\" novalidate>
                     <!-- Informations personnelles -->
                     <div class=\"card mb-4 shadow\">

@@ -64,7 +64,7 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
         // line 8
         yield "
             <!-- Contenu principal -->
-            <main class=\"col-md-10 ms-sm-auto col-lg-10 px-md-4\">
+            <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
                 <!-- Header Section -->
                 <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                     <h1 class=\"text-center mb-4\"><i class=\"fas fa-book me-2\"></i> Logs de l'application</h1>
@@ -592,7 +592,7 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
             {% include 'admin/include/adminMenu.twig' %}
 
             <!-- Contenu principal -->
-            <main class=\"col-md-10 ms-sm-auto col-lg-10 px-md-4\">
+            <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
                 <!-- Header Section -->
                 <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                     <h1 class=\"text-center mb-4\"><i class=\"fas fa-book me-2\"></i> Logs de l'application</h1>

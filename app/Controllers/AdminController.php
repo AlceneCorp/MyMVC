@@ -6,6 +6,7 @@ use App\Core\CoreManager;
 use App\Core\Controller;
 use App\Core\ConfigManager;
 use App\Core\SessionsManager;
+use App\Core\DatabaseManager;
 
 use App\Managers\SettingsCategoriesManager;
 use App\Managers\SettingsManager;
@@ -22,16 +23,83 @@ class AdminController extends Controller
 	{
 		$usersManager = new UsersManager();
 		$logsManager = new LogsManager();
+		$dataBaseManager = new DatabaseManager();
 
-		echo $this->render('admin/dashboard.twig',
-		[
+		// Récupération de l'OS
+		$os = PHP_OS;
+
+		// Variables par défaut
+		$activeQueries = [];
+		$openFiles = 0;
+		$mysqlVersion = '';
+		$apacheProcesses = 0;
+		$uptime = 'Indisponible';
+		
+
+		// Vérification de l'OS pour exécuter les commandes spécifiques
+		if (stripos($os, 'WIN') !== false) 
+		{
+			// Windows : Commandes spécifiques à Windows
+			$activeQueries = $dataBaseManager->rawQuery("SHOW PROCESSLIST");
+
+			$openFiles = 0;
+			$mysqlVersion = $dataBaseManager->rawQuery("SELECT VERSION() AS version")[0]['version'];
+
+			// Nombre de processus Apache actifs
+			$apacheProcesses = shell_exec('tasklist /FI "IMAGENAME eq httpd.exe"');
+			$apacheProcesses = substr_count($apacheProcesses, 'httpd.exe');
+
+			// Temps écoulé depuis le dernier redémarrage (Windows)
+			$uptime = shell_exec('powershell -Command "get-date (gcim Win32_OperatingSystem).LastBootUpTime"');
+			$uptime = $uptime ? trim($uptime) : 'Indisponible';
+
+		} 
+		else 
+		{
+			// Linux / Unix-like : Commandes spécifiques à Unix
+			$activeQueries = $dataBaseManager->rawQuery("SHOW PROCESSLIST");
+			$openFiles = shell_exec('lsof -u www-data | wc -l');
+			$mysqlVersion = $dataBaseManager->rawQuery("SELECT VERSION() AS version")[0]['version'];
+
+			// Nombre de processus Apache actifs (Linux)
+			$apacheProcesses = shell_exec('ps -C apache2 --no-header | wc -l');
+
+			// Temps écoulé depuis le dernier redémarrage (Linux)
+			$uptime = shell_exec('uptime -p');
+			$uptime = $uptime ? trim($uptime) : 'Indisponible';
+		}
+
+		// Rassembler l'état du serveur
+		$status = [
+			'mysql' => $dataBaseManager->isConnectionActive(),
+			'php_version' => PHP_VERSION,
+			'os' => $os,
+			'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
+			'server_ip' => gethostbyname(gethostname()),
+			'max_execution_time' => ini_get('max_execution_time') . ' secondes',
+			'upload_max_filesize' => ini_get('upload_max_filesize'),
+			'post_max_size' => ini_get('post_max_size'),
+			'response_time' => round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) . ' secondes',
+			'mysql_active_queries' => count($activeQueries),
+			'php_memory_usage' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
+			'open_files' => $openFiles ?? 0,
+			'mysql_version' => $mysqlVersion,
+			'apache_processes' => $apacheProcesses ?? 0,
+			'server_uptime' => $uptime,
+		];
+
+		// Rendu de la vue
+		echo $this->render('admin/dashboard.twig', [
 			'users_count' => $usersManager->countUsers(),
 			'log_count' => $logsManager->countLogs(),
 			'log_count_warning' => $logsManager->countLogs(['LEVEL' => 'WARNING']),
-			'log_count_error' => $logsManager->countLogs(['LEVEL' => 'ERROR']) + $logsManager->countLogs(['LEVEL' => 'CRITICAL']),
-			'log_recent_activity' => $logsManager->findAllLogs(['CATEGORY' => 'USERS'], ['LIMIT' => '10', 'ORDER BY' => 'ID DESC'])
+			'log_count_error' => $logsManager->countLogs(['LEVEL' => 'ERROR']),
+			'log_count_critical' => $logsManager->countLogs(['LEVEL' => 'CRITICAL']),
+			'log_recent_activity' => $logsManager->findAllLogs(['CATEGORY' => 'USERS'], ['LIMIT' => '10', 'ORDER BY' => 'ID DESC']),
+			'server_status' => $status
 		]);
 	}
+
 
 	public function users($page = 1)
 	{

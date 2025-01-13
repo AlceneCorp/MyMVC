@@ -449,6 +449,23 @@ class DatabaseManager
         return $columnDetails;
     }
 
+    /**
+     * Vérifie si la connexion PDO est active.
+     *
+     * @return bool True si la connexion est active, False sinon.
+     */
+    public function isConnectionActive(): bool
+    {
+        try {
+            // Utilise rawQuery pour exécuter une requête simple
+            $this->rawQuery('SELECT 1');
+            return true;
+        } catch (PDOException $e) {
+            // Si une exception est levée, la connexion est inactive
+            return false;
+        }
+    }
+
     // Méthode pour déterminer le type PHP en fonction du type de base de données
     private function getPropertyType(string $dbType): string
     {

@@ -436,7 +436,7 @@ $context["setting"], "TYPE", [], "any", false, false, false, 121) == "range")) {
         yield "
                 <!-- Bouton \"Mettre à jour\" -->
                 <div class=\"fixed-button\">
-                    <button type=\"submit\" class=\"btn-primary btn-sm ml-5\" value=\"1\" style=\"background-color:";
+                    <button type=\"submit\" class=\"btn-primary btn-sm ml-2\" value=\"1\" style=\"background-color:";
         // line 155
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
         yield ";\">Mettre à jour</button>
@@ -650,7 +650,7 @@ $context["setting"], "TYPE", [], "any", false, false, false, 121) == "range")) {
 
                 <!-- Bouton \"Mettre à jour\" -->
                 <div class=\"fixed-button\">
-                    <button type=\"submit\" class=\"btn-primary btn-sm ml-5\" value=\"1\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\">Mettre à jour</button>
+                    <button type=\"submit\" class=\"btn-primary btn-sm ml-2\" value=\"1\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\">Mettre à jour</button>
                 </div>
             </form>
         </main>

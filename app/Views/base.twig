@@ -113,10 +113,9 @@
         </nav>
     </header>
 
-
     <!-- Main Content -->
     <main class="pt-3 pb-3 hero" id="main-content">
-        <section class="" data-aos="fade-up">
+        <section class="container-fluid" data-aos="fade-up">
             <div class="row">
                 <div class="col-md-10 offset-1">
                     {% block content %}
@@ -127,11 +126,9 @@
         </section>
     </main>
 
-    
-
     <!-- Footer Section -->
     <footer class="py-2">
-        <div class="container text-center">
+        <div class="container-fluid text-center">
             {% if config('SOCIALNETWORK.sn_facebook.value') and config('SOCIALNETWORK.sn_instagram.value') and config('SOCIALNETWORK.sn_linkedin.value') and config('SOCIALNETWORK.sn_x.value') %}
             <div class="social-buttons mb-3">
                 {% if config('SOCIALNETWORK.sn_facebook.value') %}
