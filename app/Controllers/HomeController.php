@@ -10,4 +10,9 @@ class HomeController extends Controller
 	{
 		$this->render('home/home.twig');
 	}
+
+	public function contact()
+	{
+		$this->render('home/contact.twig');
+	}
 }

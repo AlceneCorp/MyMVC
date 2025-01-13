@@ -28,11 +28,13 @@ class ErrorManager
 
         80001 => "Echec de la tentative de connexion",
         80002 => "Identifiants incorrects, veuillez réessayer.",
-        80003 => "Veuillez entrer un autre nom d\'utilisateur.",
-        80004 => "Une erreur est survenue lors de l\'inscription. Veuillez réessayer.",
-        80005 => "Veuillez entrer un email valide et un mot de passe d\'au moins 8 caractères.",
+        80003 => "Veuillez entrer un autre nom d'utilisateur.",
+        80004 => "Une erreur est survenue lors de l'inscription. Veuillez réessayer.",
+        80005 => "Veuillez entrer un email valide et un mot de passe d'au moins 8 caractères.",
         80006 => "Les mots de passe ne correspondent pas.",
-        80007 => "Tous les champs doivent être remplis."
+        80007 => "Tous les champs doivent être remplis.",
+        80008 => "Tentative de connexion d'un utilisateur banni",
+        80009 => "Votre compte semble être banni, vous ne pouvez pas vous connecter."
     ];
 
     /**

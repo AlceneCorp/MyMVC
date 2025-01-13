@@ -123,12 +123,12 @@
                                             {% if entry.user.getSTATUS() == 'active' %}
                                                 {% if checkPerm('block_user') %}
                                                     <a href="{{ base_url }}/admin/block/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
-                                                    <i class="fas fa-lock"></i> Bloquer
+                                                    <i class="fas fa-lock"></i> Bannir
                                                 {% endif %}
                                             {% else %}
                                                 {% if checkPerm('unblock_user') %}
                                                     <a href="{{ base_url }}/admin/unblock/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
-                                                    <i class="fas fa-unlock"></i> Débloquer
+                                                    <i class="fas fa-unlock"></i> Débannir
                                                 {% endif %}
                                             {% endif %}
                                         </a>

@@ -25,14 +25,14 @@
     <style>
         header 
         {
-            background: linear-gradient(90deg, {{ config('SITE.site_color_1.value') }}, {{ config('SITE.site_color_2.value') }});
+            background: linear-gradient({{ config('SITE.site_color_angle.value') }}deg, {{ config('SITE.site_color_1.value') }}, {{ config('SITE.site_color_2.value') }});
             color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
 
         footer 
         {
-            background: linear-gradient(90deg, {{ config('SITE.site_color_1.value') }}, {{ config('SITE.site_color_2.value') }});
+            background: linear-gradient({{ config('SITE.site_color_angle.value') }}deg, {{ config('SITE.site_color_1.value') }}, {{ config('SITE.site_color_2.value') }});
             color: white;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
         }
@@ -43,7 +43,7 @@
             min-height: 100vh;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(90deg, {{ config('SITE.site_color_1.value') }}, {{ config('SITE.site_color_2.value') }});
+            background: linear-gradient({{ config('SITE.site_color_angle.value') }}deg, {{ config('SITE.site_color_1.value') }}, {{ config('SITE.site_color_2.value') }});
             color: white;
             text-align: center;
             background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
@@ -65,16 +65,20 @@
                 <!-- Logo or Title -->
                 {% if config('SITE.site_logo.value') %}
                     <a class="navbar-brand text-center my-4 me-3" href="{{ base_url }}/accueil">
-					    <div class="d-inline-block rounded-circle overflow-hidden shadow" style="width: 80px; height: 80px;">
-                            <img src="{{ base_url }}{{ asset(config('SITE.site_logo.value')) }}" class="img-fluid" alt="Logo" style="width: 100%; height: 100%; object-fit: cover;" />
+                        <div class="d-inline-block rounded-circle overflow-hidden shadow-sm logo-container">
+                            <img src="{{ base_url }}{{ asset(config('SITE.site_logo.value')) }}" class="img-fluid logo-img" alt="Logo" />
                         </div>
-				    </a>
+                    </a>
                 {% endif %}
                 <span class="navbar-subtext text-secondary me-5">
-				    <a class="navbar-brand brand" href="{{ base_url }}/accueil"><h1 class="h4 text-white mb-0">{{ config('SITE.site_name.value') }}</h1></a>
-				    <br />
-				    <span class="subbrand"><h2 class="h5 text-white mb-0">{{ config('SITE.brand.value') }}</h2></span>
-			    </span>
+                    <a class="navbar-brand brand" href="{{ base_url }}/accueil">
+                        <h1 class="h4 text-white mb-0 site-title">{{ config('SITE.site_name.value') }}</h1>
+                    </a>
+                    <br />
+                    <span class="subbrand">
+                        <h2 class="h5 text-white mb-0">{{ config('SITE.brand.value') }}</h2>
+                    </span>
+                </span>
                 <div class="collapse navbar-collapse" id="navbarToggler">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         {{menu | raw}}

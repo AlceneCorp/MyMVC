@@ -319,7 +319,7 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                         yield "/admin/block/";
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 125), "getID", [], "method", false, false, false, 125), "html", null, true);
                         yield "\" class=\"btn btn-danger btn-sm mb-1\">
-                                                    <i class=\"fas fa-lock\"></i> Bloquer
+                                                    <i class=\"fas fa-lock\"></i> Bannir
                                                 ";
                     }
                     // line 128
@@ -334,7 +334,7 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                         yield "/admin/unblock/";
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 130), "getID", [], "method", false, false, false, 130), "html", null, true);
                         yield "\" class=\"btn btn-danger btn-sm mb-1\">
-                                                    <i class=\"fas fa-unlock\"></i> Débloquer
+                                                    <i class=\"fas fa-unlock\"></i> Débannir
                                                 ";
                     }
                     // line 133
@@ -700,12 +700,12 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                                             {% if entry.user.getSTATUS() == 'active' %}
                                                 {% if checkPerm('block_user') %}
                                                     <a href=\"{{ base_url }}/admin/block/{{ entry.user.getID() }}\" class=\"btn btn-danger btn-sm mb-1\">
-                                                    <i class=\"fas fa-lock\"></i> Bloquer
+                                                    <i class=\"fas fa-lock\"></i> Bannir
                                                 {% endif %}
                                             {% else %}
                                                 {% if checkPerm('unblock_user') %}
                                                     <a href=\"{{ base_url }}/admin/unblock/{{ entry.user.getID() }}\" class=\"btn btn-danger btn-sm mb-1\">
-                                                    <i class=\"fas fa-unlock\"></i> Débloquer
+                                                    <i class=\"fas fa-unlock\"></i> Débannir
                                                 {% endif %}
                                             {% endif %}
                                         </a>

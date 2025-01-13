@@ -30,13 +30,24 @@ class LoginController extends Controller
 
 				if($user && password_verify($password, $user->getPASSWORD()))
 				{
-					SessionsManager::set('USERS', $user);
-					CoreManager::addLogs('INFO', 'USERS', $user->getUSERNAME() . ' s\'est connecté');
+                    if($user->getSTATUS() !== 'banned')
+                    {
+					    SessionsManager::set('USERS', $user);
+					    CoreManager::addLogs('INFO', 'USERS', $user->getUSERNAME() . ' s\'est connecté');
 
-					//Mise a jour de 	LAST_LOGIN
-					$usersManager->updateUsers(['LAST_LOGIN' => date('Y-m-d H:i:s')], $user->getID());
+					    //Mise a jour de 	LAST_LOGIN
+					    $usersManager->updateUsers(['LAST_LOGIN' => date('Y-m-d H:i:s')], $user->getID());
 
-					header('Location:' . URL . '/admin/dashboard');
+					    header('Location:' . URL . '/admin/dashboard');
+                    }
+                    else
+                    {
+                        CoreManager::addLogs('WARNING', 'USERS', ErrorManager::getErrorMessage(80008) . ' ([ID : '. $user->getID() .']'. $user->getUSERNAME() .')');
+					    echo $this->twig->render('login/login.twig', 
+					    [
+						    'error' => ErrorManager::getErrorMessage(80009),
+					    ]);
+                    }
 				}
 				else 
 				{

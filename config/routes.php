@@ -38,6 +38,13 @@ return
 		'perm' => ''
 	],
 	[
+		'url' => '/MyMVC/contact',
+		'controller' => \App\Controllers\HomeController::class,
+		'method' => 'contact',
+		'params' => [],
+		'perm' => ''
+	],
+	[
 		'url' => '/MyMVC/admin/logs/{page}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',

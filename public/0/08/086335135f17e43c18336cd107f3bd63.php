@@ -211,8 +211,11 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
 
                     <!-- Boutons d'action -->
                     <div class=\"d-flex justify-content-between\">
-                        <button type=\"reset\" class=\"btn btn-outline-secondary\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
-                        <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fas fa-save\"></i> Enregistrer</button>
+                        <button type=\"reset\" class=\"btn bg-warning btn-outline-secondary\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
+                        <button type=\"submit\" class=\"btn btn-primary\" style=\"background-color:";
+        // line 89
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
+        yield ";\"><i class=\"fas fa-save\"></i> Enregistrer</button>
                     </div>
                 </form>
             </div>
@@ -246,7 +249,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  202 => 77,  195 => 73,  175 => 58,  169 => 57,  163 => 56,  157 => 55,  151 => 54,  143 => 49,  136 => 45,  129 => 41,  122 => 37,  115 => 33,  109 => 30,  84 => 15,  76 => 9,  74 => 8,  70 => 6,  63 => 5,  52 => 3,  41 => 1,);
+        return array (  217 => 89,  202 => 77,  195 => 73,  175 => 58,  169 => 57,  163 => 56,  157 => 55,  151 => 54,  143 => 49,  136 => 45,  129 => 41,  122 => 37,  115 => 33,  109 => 30,  84 => 15,  76 => 9,  74 => 8,  70 => 6,  63 => 5,  52 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -338,8 +341,8 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
 
                     <!-- Boutons d'action -->
                     <div class=\"d-flex justify-content-between\">
-                        <button type=\"reset\" class=\"btn btn-outline-secondary\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
-                        <button type=\"submit\" class=\"btn btn-primary\"><i class=\"fas fa-save\"></i> Enregistrer</button>
+                        <button type=\"reset\" class=\"btn bg-warning btn-outline-secondary\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
+                        <button type=\"submit\" class=\"btn btn-primary\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\"><i class=\"fas fa-save\"></i> Enregistrer</button>
                     </div>
                 </form>
             </div>

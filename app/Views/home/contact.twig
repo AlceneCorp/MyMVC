@@ -1,0 +1,53 @@
+{% extends "base.twig" %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Contactez-nous</h2>
+            <p class="lead">Nous serions ravis de répondre à vos questions. Remplissez le formulaire ci-dessous et nous vous répondrons dans les plus brefs délais.</p>
+            <form action="#" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
+                </div>
+                <div class="mb-3">
+                    <label for="email" class="form-label">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="Votre email" required>
+                </div>
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="4" placeholder="Votre message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            {% if config('ADMIN.admin_address.value') or config('ADMIN.admin_mail.value') or config('ADMIN.admin_phone.value') %}
+            <h3>Informations de contact</h3>
+            <ul class="list-unstyled">
+                {% if config('ADMIN.admin_address.value') %}
+                <li class="mb-3">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <strong>Adresse :</strong> {{ config('ADMIN.admin_address.value') }}
+                </li>
+                {% endif %}
+                {% if config('ADMIN.admin_phone.value') %}
+                <li class="mb-3">
+                    <i class="fas fa-phone-alt"></i>
+                    <strong>Téléphone :</strong> {{ config('ADMIN.admin_phone.value') }}
+                </li>
+                {% endif %}
+
+                {% if config('ADMIN.admin_mail.value') %}
+                <li class="mb-3">
+                    <i class="fas fa-envelope"></i>
+                    <strong>Email :</strong> <a class="link-light link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover" href="mailto:{{config('ADMIN.admin_mail.value')}}">{{config('ADMIN.admin_mail.value')}}</a>
+                </li>
+                {% endif %}
+            </ul>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

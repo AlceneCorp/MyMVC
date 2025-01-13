@@ -239,6 +239,12 @@ class AdminController extends Controller
 
 		$usersManager->updateUsers(['STATUS' => 'banned'], $user_id);
 
+		CoreManager::addLogs(
+			'WARNING', 
+			'USERS', 
+			"L'utilisateur [ID: {$user_id}] a été banni par ". SessionsManager::get('USERS')->getUSERNAME() ."."
+		);
+
 		header('Location:' . URL . '/admin/users');
 	}
 
@@ -247,6 +253,12 @@ class AdminController extends Controller
 		$usersManager = new UsersManager();
 
 		$usersManager->updateUsers(['STATUS' => 'active'], $user_id);
+
+		CoreManager::addLogs(
+			'SUCCESS', 
+			'USERS', 
+			"L'utilisateur [ID: {$user_id}] a été débanni par ". SessionsManager::get('USERS')->getUSERNAME() ."."
+		);
 
 		header('Location:' . URL . '/admin/users');
 	}

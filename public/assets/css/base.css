@@ -64,3 +64,184 @@ a:hover
     color: white;
     transform: scale(2);
 }
+
+
+
+/* Styles pour le menu */
+.nav-item 
+{
+    margin-bottom: 1rem; /* Espacement entre les éléments du menu */
+    
+}
+
+.nav-item a 
+{
+    padding: 0.75rem 1rem; /* Espacement autour du texte */
+    border-radius: 8px; /* Coins arrondis pour les liens */
+    font-size: 1.1rem; /* Augmenter la taille du texte pour plus de lisibilité */
+    transition: all 0.3s ease-in-out; /* Animation au survol */
+    text-decoration: none;
+}
+
+/* Survol des éléments du menu */
+.nav-item a:hover 
+{
+    background-color: #34495e; /* Fond sombre au survol */
+    transform: translateX(5px); /* Déplacer légèrement le lien vers la droite au survol */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre portée subtile */
+    color: #ecf0f1; /* Changer la couleur du texte au survol */
+}
+
+/* Mise en évidence des éléments actifs ou de la page courante */
+.nav-item a.active 
+{
+    background-color: #1abc9c; /* Fond vert clair pour l'élément actif */
+    color: white; /* Texte en blanc pour l'élément actif */
+    transform: translateX(10px); /* Décalage plus marqué pour l'élément actif */
+    font-weight: bold; /* Gras pour l'élément actif */
+}
+
+    /* Ajout d'une animation au survol */
+.nav-item a 
+{
+    position: relative;
+}
+
+
+.nav-item a::after 
+{
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #ecf0f1;
+    bottom: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: bottom right;
+    transition: transform 0.25s ease-out;
+}
+
+.nav-item a:hover::after 
+{
+    transform: scaleX(1);
+    transform-origin: bottom left;
+}
+
+/* Espacement à gauche du menu */
+.ms-3 
+{
+    margin-left: 1rem;
+}
+
+/* Conteneur du logo avec bordure et effet de zoom */
+.logo-container {
+    position: relative;
+    width: 80px;
+    height: 80px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+    .logo-container:hover {
+        transform: scale(1.1); /* Zoom léger au survol */
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Ombre portée pour effet de profondeur */
+    }
+
+/* Image du logo */
+.logo-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* S'assure que l'image couvre complètement le conteneur */
+}
+
+/* Style pour le titre de site (h1) */
+.site-title {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; /* Typographie moderne */
+    letter-spacing: 1px; /* Espacement des lettres pour un effet plus élégant */
+    font-weight: 600; /* Gras pour un impact visuel */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4); /* Ombre légère pour améliorer la lisibilité */
+}
+
+/* Sous-titre de la marque (h2) */
+.subbrand {
+    font-family: 'Arial', sans-serif;
+    letter-spacing: 0.5px;
+    font-weight: 400;
+    color: #bdc3c7; /* Couleur plus douce pour le sous-titre */
+}
+
+/* Responsive : ajustement pour petits écrans */
+@media (max-width: 768px) {
+    .logo-container {
+        width: 60px;
+        height: 60px;
+    }
+
+    .site-title {
+        font-size: 1.2rem; /* Réduire légèrement la taille du titre pour les petits écrans */
+    }
+
+    .subbrand h2 {
+        font-size: 1rem; /* Réduire la taille du sous-titre pour les petits écrans */
+    }
+}
+
+
+/* Design global de la sidebar */
+#sidebar {
+    background-color: #2c3e50;
+    border-right: 2px solid #34495e;
+}
+
+/* Titre de la sidebar */
+#sidebar h4 
+{
+    font-size: 1.5rem;
+    color: #ecf0f1;
+}
+
+/* Espacement entre les liens de la sidebar */
+.nav-item 
+{
+    margin-bottom: 1rem;
+}
+
+/* Design des liens */
+.nav-link 
+{
+    color: #ecf0f1;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+/* Ajout d'un fond sombre au survol */
+.nav-link:hover 
+{
+    background-color: #34495e;
+    border-radius: 10px;
+    color: #ecf0f1;
+}
+
+/* Ajout d'une couleur de fond au survol pour un effet visuel */
+.hover-bg-dark:hover 
+{
+    background-color: #34495e;
+}
+
+/* Espacement entre les icônes et le texte */
+.nav-link i 
+{
+    font-size: 1.3rem;
+}
+
+/* Amélioration du style des éléments avec une bordure arrondie */
+.nav-link.d-flex 
+{
+    border-radius: 8px;
+}
+
+/* Animation des liens */
+.nav-link:hover 
+{
+    transform: translateX(10px);
+}

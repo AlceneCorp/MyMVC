@@ -31,6 +31,7 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
 
         $this->blocks = [
             'content' => [$this, 'block_content'],
+            'style' => [$this, 'block_style'],
         ];
     }
 
@@ -58,7 +59,10 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
         yield "<div class=\"mt-5 d-flex align-items-center justify-content-center\">
     <div class=\"card shadow-lg\" style=\"width: 100%; max-width: 420px; border-radius: 15px;\">
         <!-- Card Header -->
-        <div class=\"card-header bg-info text-white text-center py-4\" style=\"border-top-left-radius: 15px; border-top-right-radius: 15px;\">
+        <div class=\"card-header text-white text-center py-4\" style=\"background-color:";
+        // line 7
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
+        yield "; border-top-left-radius: 15px; border-top-right-radius: 15px;\">
             <h4 class=\"mb-0\"><i class=\"fas fa-user-circle me-2\"></i> Bienvenue !</h4>
             <p class=\"mb-0\">Connectez-vous pour accéder à votre compte</p>
         </div>
@@ -82,7 +86,10 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
                 <div class=\"mb-3\">
                     <label for=\"login\" class=\"form-label\">Identifiant</label>
                     <div class=\"input-group\">
-                        <span class=\"input-group-text bg-info text-white\">
+                        <span class=\"input-group-text text-white\" style=\"background-color:";
+        // line 23
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
+        yield ";\">
                             <i class=\"fas fa-user\"></i>
                         </span>
                         <input type=\"login\" class=\"form-control\" id=\"login\" name=\"login\" placeholder=\"Entrez votre identifiant\" required>
@@ -92,7 +99,10 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
                 <div class=\"mb-3\">
                     <label for=\"password\" class=\"form-label\">Mot de passe</label>
                     <div class=\"input-group\">
-                        <span class=\"input-group-text bg-info text-white\">
+                        <span class=\"input-group-text text-white\" style=\"background-color:";
+        // line 33
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
+        yield ";\">
                             <i class=\"fas fa-lock\"></i>
                         </span>
                         <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"Entrez votre mot de passe\" required>
@@ -108,7 +118,10 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
                     </a>
                 </div>
                 <!-- Submit Button -->
-                <button type=\"submit\" class=\"btn btn-primary w-100 py-2\">
+                <button type=\"submit\" class=\"btn btn-primary w-100 py-2\" style=\"background-color:";
+        // line 46
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
+        yield ";\">
                     <i class=\"fas fa-sign-in-alt me-2\"></i> Se connecter
                 </button>
             </form>
@@ -125,6 +138,22 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
         </div>
     </div>
 </div>
+";
+        yield from [];
+    }
+
+    // line 62
+    /**
+     * @return iterable<null|scalar|\Stringable>
+     */
+    public function block_style(array $context, array $blocks = []): iterable
+    {
+        $macros = $this->macros;
+        // line 63
+        yield "<link rel=\"stylesheet\" href=\"";
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('asset')->getCallable()("css/login.css"), "html", null, true);
+        yield "\">
 ";
         yield from [];
     }
@@ -150,7 +179,7 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  121 => 54,  105 => 41,  80 => 18,  74 => 15,  71 => 14,  69 => 13,  58 => 4,  51 => 3,  40 => 1,);
+        return array (  153 => 63,  146 => 62,  134 => 54,  123 => 46,  115 => 41,  104 => 33,  91 => 23,  84 => 18,  78 => 15,  75 => 14,  73 => 13,  64 => 7,  59 => 4,  52 => 3,  41 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -161,7 +190,7 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
 <div class=\"mt-5 d-flex align-items-center justify-content-center\">
     <div class=\"card shadow-lg\" style=\"width: 100%; max-width: 420px; border-radius: 15px;\">
         <!-- Card Header -->
-        <div class=\"card-header bg-info text-white text-center py-4\" style=\"border-top-left-radius: 15px; border-top-right-radius: 15px;\">
+        <div class=\"card-header text-white text-center py-4\" style=\"background-color:{{ config('SITE.site_color_1.value') }}; border-top-left-radius: 15px; border-top-right-radius: 15px;\">
             <h4 class=\"mb-0\"><i class=\"fas fa-user-circle me-2\"></i> Bienvenue !</h4>
             <p class=\"mb-0\">Connectez-vous pour accéder à votre compte</p>
         </div>
@@ -177,7 +206,7 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
                 <div class=\"mb-3\">
                     <label for=\"login\" class=\"form-label\">Identifiant</label>
                     <div class=\"input-group\">
-                        <span class=\"input-group-text bg-info text-white\">
+                        <span class=\"input-group-text text-white\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\">
                             <i class=\"fas fa-user\"></i>
                         </span>
                         <input type=\"login\" class=\"form-control\" id=\"login\" name=\"login\" placeholder=\"Entrez votre identifiant\" required>
@@ -187,7 +216,7 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
                 <div class=\"mb-3\">
                     <label for=\"password\" class=\"form-label\">Mot de passe</label>
                     <div class=\"input-group\">
-                        <span class=\"input-group-text bg-info text-white\">
+                        <span class=\"input-group-text text-white\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\">
                             <i class=\"fas fa-lock\"></i>
                         </span>
                         <input type=\"password\" class=\"form-control\" id=\"password\" name=\"password\" placeholder=\"Entrez votre mot de passe\" required>
@@ -200,7 +229,7 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
                     </a>
                 </div>
                 <!-- Submit Button -->
-                <button type=\"submit\" class=\"btn btn-primary w-100 py-2\">
+                <button type=\"submit\" class=\"btn btn-primary w-100 py-2\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\">
                     <i class=\"fas fa-sign-in-alt me-2\"></i> Se connecter
                 </button>
             </form>
@@ -214,6 +243,10 @@ class __TwigTemplate_7ae53f6c99245dfcd4ccb05c4f575ef6 extends Template
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block style %}
+<link rel=\"stylesheet\" href=\"{{base_url}}{{ asset('css/login.css') }}\">
 {% endblock %}
 ", "login/login.twig", "C:\\wamp64\\www\\MyMVC\\app\\Views\\login\\login.twig");
     }

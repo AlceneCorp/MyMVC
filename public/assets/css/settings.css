@@ -177,9 +177,7 @@ tr:hover {
     transition: 0.4s;
 }
 
-.switch input:checked + .slider {
-    background-color: #00bcd4;
-}
+
 
 .switch input:checked + .slider:before {
     transform: translateX(26px);
@@ -198,3 +196,5 @@ tr:hover {
     margin-left: 40px;
     width: 250px;
 }
+
+

@@ -59,7 +59,7 @@ class Router
                 if($menu->getPERMISSIONS_ID() === null)
                 {
                     $menuGenerate .= '<li class="nav-item">';
-                    $menuGenerate .= '<a href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
+                    $menuGenerate .= '<a class="link-light ms-3" href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
                     $menuGenerate .= '</li>';
                 }
                 else
@@ -72,7 +72,7 @@ class Router
                             if(CoreManager::checkPerm($route['perm']))
                             {
                                 $menuGenerate .= '<li class="nav-item">';
-                                $menuGenerate .= '<a href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
+                                $menuGenerate .= '<a class="link-light ms-3" href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
                                 $menuGenerate .= '</li>';
                             }
                         }
