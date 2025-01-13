@@ -211,7 +211,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
 
                     <!-- Boutons d'action -->
                     <div class=\"d-flex justify-content-between\">
-                        <button type=\"reset\" class=\"btn bg-warning btn-outline-secondary\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
+                        <button type=\"reset\" class=\"btn btn-primary bg-warning\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
                         <button type=\"submit\" class=\"btn btn-primary\" style=\"background-color:";
         // line 89
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
@@ -341,7 +341,7 @@ class __TwigTemplate_ab7842e23e9b26d290867daf0b54ad29 extends Template
 
                     <!-- Boutons d'action -->
                     <div class=\"d-flex justify-content-between\">
-                        <button type=\"reset\" class=\"btn bg-warning btn-outline-secondary\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
+                        <button type=\"reset\" class=\"btn btn-primary bg-warning\"><i class=\"fas fa-undo\"></i> Réinitialiser</button>
                         <button type=\"submit\" class=\"btn btn-primary\" style=\"background-color:{{ config('SITE.site_color_1.value') }};\"><i class=\"fas fa-save\"></i> Enregistrer</button>
                     </div>
                 </form>

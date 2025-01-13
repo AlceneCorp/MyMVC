@@ -48,6 +48,14 @@
             text-align: center;
             background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
         }
+        /* Survol des éléments du menu */
+        .nav-item a:hover 
+        {
+            background-color:{{ config('SITE.site_color_1.value') }}; /* Fond sombre au survol */
+            transform: translateX(5px); /* Déplacer légèrement le lien vers la droite au survol */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre portée subtile */
+            color: #ecf0f1; /* Changer la couleur du texte au survol */
+        }
     </style>
 
     {% block style %}

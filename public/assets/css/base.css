@@ -142,10 +142,10 @@ a:hover
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
-    .logo-container:hover {
-        transform: scale(1.1); /* Zoom léger au survol */
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Ombre portée pour effet de profondeur */
-    }
+.logo-container:hover {
+    transform: scale(1.1); /* Zoom léger au survol */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15); /* Ombre portée pour effet de profondeur */
+}
 
 /* Image du logo */
 .logo-img {

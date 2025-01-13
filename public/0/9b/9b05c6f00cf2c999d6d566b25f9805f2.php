@@ -120,12 +120,23 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
             text-align: center;
             background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
         }
+        /* Survol des éléments du menu */
+        .nav-item a:hover 
+        {
+            background-color:";
+        // line 54
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_color_1.value"), "html", null, true);
+        yield "; /* Fond sombre au survol */
+            transform: translateX(5px); /* Déplacer légèrement le lien vers la droite au survol */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre portée subtile */
+            color: #ecf0f1; /* Changer la couleur du texte au survol */
+        }
     </style>
 
     ";
-        // line 53
+        // line 61
         yield from $this->unwrap()->yieldBlock('style', $context, $blocks);
-        // line 55
+        // line 63
         yield "</head>
 <body>
 
@@ -138,15 +149,15 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                 </button>
                 <!-- Logo or Title -->
                 ";
-        // line 66
+        // line 74
         if ($this->env->getFunction('config')->getCallable()("SITE.site_logo.value")) {
-            // line 67
+            // line 75
             yield "                    <a class=\"navbar-brand text-center my-4 me-3\" href=\"";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/accueil\">
                         <div class=\"d-inline-block rounded-circle overflow-hidden shadow-sm logo-container\">
                             <img src=\"";
-            // line 69
+            // line 77
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('asset')->getCallable()($this->env->getFunction('config')->getCallable()("SITE.site_logo.value")), "html", null, true);
             yield "\" class=\"img-fluid logo-img\" alt=\"Logo\" />
@@ -154,21 +165,21 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                     </a>
                 ";
         }
-        // line 73
+        // line 81
         yield "                <span class=\"navbar-subtext text-secondary me-5\">
                     <a class=\"navbar-brand brand\" href=\"";
-        // line 74
+        // line 82
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
         yield "/accueil\">
                         <h1 class=\"h4 text-white mb-0 site-title\">";
-        // line 75
+        // line 83
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_name.value"), "html", null, true);
         yield "</h1>
                     </a>
                     <br />
                     <span class=\"subbrand\">
                         <h2 class=\"h5 text-white mb-0\">";
-        // line 79
+        // line 87
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.brand.value"), "html", null, true);
         yield "</h2>
                     </span>
@@ -176,7 +187,7 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                 <div class=\"collapse navbar-collapse\" id=\"navbarToggler\">
                     <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">
                         ";
-        // line 84
+        // line 92
         yield ($context["menu"] ?? null);
         yield "
                     </ul>
@@ -184,12 +195,12 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                      <!-- Connexion Button -->
                     <ul class=\"nav\">
                         ";
-        // line 89
+        // line 97
         if (($context["is_login"] ?? null)) {
-            // line 90
+            // line 98
             yield "                            <li class=\"nav-item\">
                                 <a href=\"";
-            // line 91
+            // line 99
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/logout\" class=\"btn btn-outline-light\">
                                     <i class=\"fas fa-sign-out-alt me-2\"></i> Déconnexion
@@ -197,10 +208,10 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                             </li>
                         ";
         } else {
-            // line 96
+            // line 104
             yield "                            <li class=\"nav-item\">
                                 <a href=\"";
-            // line 97
+            // line 105
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/login\" class=\"btn btn-outline-light\">
                                     <i class=\"fas fa-sign-in-alt me-2\"></i> Connexion
@@ -208,7 +219,7 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                             </li>
                         ";
         }
-        // line 102
+        // line 110
         yield "                    </ul>
                 </div>
             </div>
@@ -222,9 +233,9 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
             <div class=\"row\">
                 <div class=\"col-md-10 offset-1\">
                     ";
-        // line 114
+        // line 122
         yield from $this->unwrap()->yieldBlock('content', $context, $blocks);
-        // line 117
+        // line 125
         yield "                </div>
             </div>
         </section>
@@ -236,57 +247,57 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
     <footer class=\"py-2\">
         <div class=\"container text-center\">
             ";
-        // line 127
+        // line 135
         if (((($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value") && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value"))) {
-            // line 128
+            // line 136
             yield "            <div class=\"social-buttons mb-3\">
                 ";
-            // line 129
+            // line 137
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value")) {
-                // line 130
+                // line 138
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-facebook\"></i></a>
-                ";
-            }
-            // line 132
-            yield "
-                ";
-            // line 133
-            if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) {
-                // line 134
-                yield "                    <a href=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value"), "html", null, true);
-                yield "\"><i class=\"fab fa-instagram\"></i></a>
-                ";
-            }
-            // line 136
-            yield "                
-                ";
-            // line 137
-            if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) {
-                // line 138
-                yield "                    <a href=\"";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value"), "html", null, true);
-                yield "\"><i class=\"fab fa-linkedin\"></i></a>
                 ";
             }
             // line 140
             yield "
                 ";
             // line 141
-            if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value")) {
+            if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) {
                 // line 142
+                yield "                    <a href=\"";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value"), "html", null, true);
+                yield "\"><i class=\"fab fa-instagram\"></i></a>
+                ";
+            }
+            // line 144
+            yield "                
+                ";
+            // line 145
+            if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) {
+                // line 146
+                yield "                    <a href=\"";
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value"), "html", null, true);
+                yield "\"><i class=\"fab fa-linkedin\"></i></a>
+                ";
+            }
+            // line 148
+            yield "
+                ";
+            // line 149
+            if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value")) {
+                // line 150
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-x-twitter\"></i></a>
                 ";
             }
-            // line 144
+            // line 152
             yield "            </div>
             ";
         }
-        // line 146
+        // line 154
         yield "            <p>&copy; 2022 - ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(($context["date"] ?? null), "Y"), "html", null, true);
         yield " ";
@@ -305,48 +316,48 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
     </script>
     
     ";
-        // line 159
+        // line 167
         yield from $this->unwrap()->yieldBlock('jquery', $context, $blocks);
-        // line 162
+        // line 170
         yield "</body>
 </html>
 ";
         yield from [];
     }
 
-    // line 53
+    // line 61
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_style(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 54
+        // line 62
         yield "    ";
         yield from [];
     }
 
-    // line 114
+    // line 122
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_content(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 115
+        // line 123
         yield "
                     ";
         yield from [];
     }
 
-    // line 159
+    // line 167
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_jquery(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 160
+        // line 168
         yield "
     ";
         yield from [];
@@ -373,7 +384,7 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  350 => 160,  343 => 159,  337 => 115,  330 => 114,  325 => 54,  318 => 53,  311 => 162,  309 => 159,  290 => 146,  286 => 144,  280 => 142,  278 => 141,  275 => 140,  269 => 138,  267 => 137,  264 => 136,  258 => 134,  256 => 133,  253 => 132,  247 => 130,  245 => 129,  242 => 128,  240 => 127,  228 => 117,  226 => 114,  212 => 102,  204 => 97,  201 => 96,  193 => 91,  190 => 90,  188 => 89,  180 => 84,  172 => 79,  165 => 75,  161 => 74,  158 => 73,  150 => 69,  144 => 67,  142 => 66,  129 => 55,  127 => 53,  113 => 46,  95 => 35,  81 => 28,  72 => 23,  52 => 6,  45 => 1,);
+        return array (  361 => 168,  354 => 167,  348 => 123,  341 => 122,  336 => 62,  329 => 61,  322 => 170,  320 => 167,  301 => 154,  297 => 152,  291 => 150,  289 => 149,  286 => 148,  280 => 146,  278 => 145,  275 => 144,  269 => 142,  267 => 141,  264 => 140,  258 => 138,  256 => 137,  253 => 136,  251 => 135,  239 => 125,  237 => 122,  223 => 110,  215 => 105,  212 => 104,  204 => 99,  201 => 98,  199 => 97,  191 => 92,  183 => 87,  176 => 83,  172 => 82,  169 => 81,  161 => 77,  155 => 75,  153 => 74,  140 => 63,  138 => 61,  128 => 54,  113 => 46,  95 => 35,  81 => 28,  72 => 23,  52 => 6,  45 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -427,6 +438,14 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
             color: white;
             text-align: center;
             background-attachment: fixed; /* Pour garder l'arrière-plan fixe pendant le défilement */
+        }
+        /* Survol des éléments du menu */
+        .nav-item a:hover 
+        {
+            background-color:{{ config('SITE.site_color_1.value') }}; /* Fond sombre au survol */
+            transform: translateX(5px); /* Déplacer légèrement le lien vers la droite au survol */
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Ombre portée subtile */
+            color: #ecf0f1; /* Changer la couleur du texte au survol */
         }
     </style>
 
