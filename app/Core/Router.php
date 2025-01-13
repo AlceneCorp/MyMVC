@@ -41,8 +41,11 @@ class Router
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
         $loader = new FilesystemLoader($pathViews);
         $this->twig = new Environment($loader, [
-            'debug' => ConfigManager::get("SITE.twig_debug.value"),            // Optionnel : activer le mode debug
+            'debug' => ConfigManager::get("SITE.twig_debug.value"),      
+            'cache' => ConfigManager::get("SITE.twig_cache.value")
         ]);
+
+        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
         
         $this->twig->addGlobal('base_url', $this->getBaseUrl());
         $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
@@ -66,7 +69,7 @@ class Router
                         $route = $this->routes->find($_SERVER['REQUEST_URI']);
                         if($route)
                         {
-                            if(CoreManager::checkPerm($_SERVER['REQUEST_URI'], $route['perm']))
+                            if(CoreManager::checkPerm($route['perm']))
                             {
                                 $menuGenerate .= '<li class="nav-item">';
                                 $menuGenerate .= '<a href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
@@ -92,9 +95,9 @@ class Router
             return '/assets/' . ltrim($path, '/');
         }));
 
-        $this->twig->addFunction(new TwigFunction('checkPerm', function ($param1, $param2) 
+        $this->twig->addFunction(new TwigFunction('checkPerm', function ($param1) 
         {
-            return CoreManager::checkPerm($param1, $param2);
+            return CoreManager::checkPerm($param1,);
         }));
 
         $this->twig->addFunction(new TwigFunction('config', function (...$params) 
@@ -157,7 +160,7 @@ class Router
                     $controller->render('maintenance/maintenance.twig');
                 }
 
-                if(CoreManager::checkPerm($requestUri, $perm))
+                if(CoreManager::checkPerm($perm))
                 {
                     call_user_func_array([$controller, $methodName], $params);
 

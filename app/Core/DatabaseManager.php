@@ -240,18 +240,21 @@ class DatabaseManager
         $primaryKey = $this->getPrimaryKey($table);
 
         // Si aucune clé primaire auto-incrémentée n'est trouvée, on ne fait rien
-        if ($primaryKey === null) {
+        if ($primaryKey === null) 
+        {
             return 0; // Aucun champ mis à jour
         }
 
         // Vérifier que $param_id est défini
-        if (empty($param_id)) {
+        if (empty($param_id)) 
+        {
             throw new Exception("Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
         }
 
         // Construire la clause SET
         $setClauses = [];
-        foreach ($data as $key => $value) {
+        foreach ($data as $key => $value) 
+        {
             $setClauses[] = "`$key` = :$key";
         }
 
@@ -286,7 +289,8 @@ class DatabaseManager
     {
         $whereClauses = [];
         $parameters = [];
-        foreach ($where as $key => $value) {
+        foreach ($where as $key => $value) 
+        {
             $whereClauses[] = "$key = :$key";
             $parameters[$key] = $value;
         }

@@ -121,12 +121,12 @@
                                         <!-- Lien pour bloquer/débloquer l'utilisateur -->
                                         
                                             {% if entry.user.getSTATUS() == 'active' %}
-                                                {% if checkPerm('', 'block_user') %}
+                                                {% if checkPerm('block_user') %}
                                                     <a href="{{ base_url }}/admin/block/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
                                                     <i class="fas fa-lock"></i> Bloquer
                                                 {% endif %}
                                             {% else %}
-                                                {% if checkPerm('', 'unblock_user') %}
+                                                {% if checkPerm('unblock_user') %}
                                                     <a href="{{ base_url }}/admin/unblock/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
                                                     <i class="fas fa-unlock"></i> Débloquer
                                                 {% endif %}
@@ -134,14 +134,14 @@
                                         </a>
 
                                         
-                                        {% if checkPerm('', 'manage_permissions') %}
+                                        {% if checkPerm('manage_permissions') %}
                                             <!-- Lien pour éditer les permissions -->
                                             <a href="{{ base_url }}/admin/edit-permissions/{{ entry.user.getID() }}" class="btn btn-warning btn-sm mb-1">
                                                 <i class="fas fa-edit"></i> Modifier Permissions
                                             </a>
                                         {% endif %}
 
-                                        {% if checkPerm('', 'view_other_profiles') %}
+                                        {% if checkPerm('view_other_profiles') %}
                                             <!-- Voir le profil de l'utilisateur -->
                                             <a href="{{ base_url }}/admin/users/view-profil/{{ entry.user.getID() }}" class="btn btn-success btn-sm mb-1">
                                                 <i class="fas fa-edit"></i> Voir le profil

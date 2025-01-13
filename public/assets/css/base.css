@@ -1,34 +1,40 @@
 /* --- GLOBAL STYLES --- */
-body {
+body 
+{
     font-family: 'Poppins', sans-serif;
     background-color: #f4f4f9;
     color: #333;
 }
 
 
-a {
+a 
+{
     color: #48c6ef;
     transition: all 0.3s ease;
 }
 
-a:hover {
+a:hover 
+{
     color: #A0A0a0;
     text-decoration: none;
 }
 
 
-.hero h1 {
+.hero h1 
+{
     font-size: 3.5rem;
     font-weight: bold;
     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
 }
 
-.hero p {
+.hero p 
+{
     font-size: 1.2rem;
     margin: 20px 0;
 }
 
-.btn-primary {
+.btn-primary 
+{
     background: #48c6ef;
     border: none;
     padding: 12px 25px;
@@ -36,14 +42,16 @@ a:hover {
     transition: all 0.3s ease;
 }
 
-.btn-primary:hover {
+.btn-primary:hover 
+{
     background: #6c63ff;
 }
 
 
 
 /* --- FOOTER --- */
-.social-buttons a {
+.social-buttons a 
+{
     display: inline-block; /* Ou block */
     font-size: 1.5rem;
     color: #ddd;
@@ -51,7 +59,8 @@ a:hover {
     transition: all 0.3s ease;
 }
 
-.social-buttons a:hover {
+.social-buttons a:hover 
+{
     color: white;
     transform: scale(2);
 }
