@@ -191,36 +191,6 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
         yield ($context["menu"] ?? null);
         yield "
                     </ul>
-
-                     <!-- Connexion Button -->
-                    <ul class=\"nav\">
-                        ";
-        // line 97
-        if (($context["is_login"] ?? null)) {
-            // line 98
-            yield "                            <li class=\"nav-item\">
-                                <a href=\"";
-            // line 99
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
-            yield "/logout\" class=\"btn btn-outline-light\">
-                                    <i class=\"fas fa-sign-out-alt me-2\"></i> Déconnexion
-                                </a>
-                            </li>
-                        ";
-        } else {
-            // line 104
-            yield "                            <li class=\"nav-item\">
-                                <a href=\"";
-            // line 105
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
-            yield "/login\" class=\"btn btn-outline-light\">
-                                    <i class=\"fas fa-sign-in-alt me-2\"></i> Connexion
-                                </a>
-                            </li>
-                        ";
-        }
-        // line 110
-        yield "                    </ul>
                 </div>
             </div>
         </nav>
@@ -232,9 +202,9 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
             <div class=\"row\">
                 <div class=\"col-md-10 offset-1\">
                     ";
-        // line 121
+        // line 104
         yield from $this->unwrap()->yieldBlock('content', $context, $blocks);
-        // line 124
+        // line 107
         yield "                </div>
             </div>
         </section>
@@ -244,61 +214,61 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
     <footer class=\"py-2\">
         <div class=\"container-fluid text-center\">
             ";
-        // line 132
+        // line 115
         if (((($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value") && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) && $this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value"))) {
-            // line 133
+            // line 116
             yield "            <div class=\"social-buttons mb-3\">
                 ";
-            // line 134
+            // line 117
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value")) {
-                // line 135
+                // line 118
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_facebook.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-facebook\"></i></a>
                 ";
             }
-            // line 137
+            // line 120
             yield "
                 ";
-            // line 138
+            // line 121
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value")) {
-                // line 139
+                // line 122
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_instagram.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-instagram\"></i></a>
                 ";
             }
-            // line 141
+            // line 124
             yield "                
                 ";
-            // line 142
+            // line 125
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value")) {
-                // line 143
+                // line 126
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_linkedin.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-linkedin\"></i></a>
                 ";
             }
-            // line 145
+            // line 128
             yield "
                 ";
-            // line 146
+            // line 129
             if ($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value")) {
-                // line 147
+                // line 130
                 yield "                    <a href=\"";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SOCIALNETWORK.sn_x.value"), "html", null, true);
                 yield "\"><i class=\"fab fa-x-twitter\"></i></a>
                 ";
             }
-            // line 149
+            // line 132
             yield "            </div>
             ";
         }
-        // line 151
+        // line 134
         yield "            <p>&copy; 2022 - ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(($context["date"] ?? null), "Y"), "html", null, true);
         yield " ";
-        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.site_name.value"), "html", null, true);
+        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.brand.value"), "html", null, true);
         yield ". Tous droits réservés.</p>
         </div>
     </footer>
@@ -313,9 +283,9 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
     </script>
     
     ";
-        // line 164
+        // line 147
         yield from $this->unwrap()->yieldBlock('jquery', $context, $blocks);
-        // line 167
+        // line 150
         yield "</body>
 </html>
 ";
@@ -334,27 +304,27 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
         yield from [];
     }
 
-    // line 121
+    // line 104
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_content(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 122
+        // line 105
         yield "
                     ";
         yield from [];
     }
 
-    // line 164
+    // line 147
     /**
      * @return iterable<null|scalar|\Stringable>
      */
     public function block_jquery(array $context, array $blocks = []): iterable
     {
         $macros = $this->macros;
-        // line 165
+        // line 148
         yield "
     ";
         yield from [];
@@ -381,7 +351,7 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
      */
     public function getDebugInfo(): array
     {
-        return array (  358 => 165,  351 => 164,  345 => 122,  338 => 121,  333 => 62,  326 => 61,  319 => 167,  317 => 164,  298 => 151,  294 => 149,  288 => 147,  286 => 146,  283 => 145,  277 => 143,  275 => 142,  272 => 141,  266 => 139,  264 => 138,  261 => 137,  255 => 135,  253 => 134,  250 => 133,  248 => 132,  238 => 124,  236 => 121,  223 => 110,  215 => 105,  212 => 104,  204 => 99,  201 => 98,  199 => 97,  191 => 92,  183 => 87,  176 => 83,  172 => 82,  169 => 81,  161 => 77,  155 => 75,  153 => 74,  140 => 63,  138 => 61,  128 => 54,  113 => 46,  95 => 35,  81 => 28,  72 => 23,  52 => 6,  45 => 1,);
+        return array (  328 => 148,  321 => 147,  315 => 105,  308 => 104,  303 => 62,  296 => 61,  289 => 150,  287 => 147,  268 => 134,  264 => 132,  258 => 130,  256 => 129,  253 => 128,  247 => 126,  245 => 125,  242 => 124,  236 => 122,  234 => 121,  231 => 120,  225 => 118,  223 => 117,  220 => 116,  218 => 115,  208 => 107,  206 => 104,  191 => 92,  183 => 87,  176 => 83,  172 => 82,  169 => 81,  161 => 77,  155 => 75,  153 => 74,  140 => 63,  138 => 61,  128 => 54,  113 => 46,  95 => 35,  81 => 28,  72 => 23,  52 => 6,  45 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -479,23 +449,6 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                     <ul class=\"navbar-nav me-auto mb-2 mb-lg-0\">
                         {{menu | raw}}
                     </ul>
-
-                     <!-- Connexion Button -->
-                    <ul class=\"nav\">
-                        {% if is_login %}
-                            <li class=\"nav-item\">
-                                <a href=\"{{base_url}}/logout\" class=\"btn btn-outline-light\">
-                                    <i class=\"fas fa-sign-out-alt me-2\"></i> Déconnexion
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class=\"nav-item\">
-                                <a href=\"{{base_url}}/login\" class=\"btn btn-outline-light\">
-                                    <i class=\"fas fa-sign-in-alt me-2\"></i> Connexion
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
                 </div>
             </div>
         </nav>
@@ -536,7 +489,7 @@ class __TwigTemplate_2ae5baf3da4dbc34838f3491087c178b extends Template
                 {% endif %}
             </div>
             {% endif %}
-            <p>&copy; 2022 - {{ date | date('Y') }} {{ config('SITE.site_name.value') }}. Tous droits réservés.</p>
+            <p>&copy; 2022 - {{ date | date('Y') }} {{ config('SITE.brand.value') }}. Tous droits réservés.</p>
         </div>
     </footer>
 

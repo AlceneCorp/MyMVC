@@ -58,12 +58,8 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
         yield "<div class=\"container-fluid mt-4\">
     <div class='row'>
         <!-- Menu latéral -->
-        ";
-        // line 7
-        yield from $this->loadTemplate("admin/include/adminMenu.twig", "admin/users.twig", 7)->unwrap()->yield($context);
-        // line 8
-        yield "
-        <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
+
+        <main class=\"col-md-12 ms-sm-auto col-lg-12 px-md-12\">
             <!-- Header Section -->
             <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                 <h1 class=\"text-center mb-4\"><i class=\"fas fa-users me-2\"></i> Liste des utilisateurs</h1>
@@ -73,7 +69,7 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
             <div class=\"d-flex justify-content-between align-items-center mt-4\">
                 <div>
                     <span>Page ";
-        // line 18
+        // line 17
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["currentPage"] ?? null), "html", null, true);
         yield " sur ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
@@ -83,12 +79,12 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
                 <nav aria-label=\"Pagination\">
                     <ul class=\"pagination\">
                         ";
-        // line 23
+        // line 22
         if ((($context["currentPage"] ?? null) > 1)) {
-            // line 24
+            // line 23
             yield "                            <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 25
+            // line 24
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) - 1), "html", null, true);
@@ -98,54 +94,54 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
                             </li>
                         ";
         } else {
-            // line 30
+            // line 29
             yield "                            <li class=\"page-item disabled\">
                                 <span class=\"page-link\">&laquo; Précédent</span>
                             </li>
                         ";
         }
-        // line 34
+        // line 33
         yield "                            
                         ";
-        // line 35
+        // line 34
         if ((($context["currentPage"] ?? null) > 2)) {
-            // line 36
+            // line 35
             yield "                            <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 37
+            // line 36
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/1\">1</a>
                             </li>
                             ";
-            // line 39
+            // line 38
             if ((($context["currentPage"] ?? null) > 3)) {
-                // line 40
+                // line 39
                 yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">...</span>
                                 </li>
                             ";
             }
-            // line 44
+            // line 43
             yield "                        ";
         }
-        // line 45
+        // line 44
         yield "                            
                         ";
-        // line 46
+        // line 45
         $context['_parent'] = $context;
         $context['_seq'] = CoreExtension::ensureTraversable(range((($context["currentPage"] ?? null) - 1), (($context["currentPage"] ?? null) + 1)));
         foreach ($context['_seq'] as $context["_key"] => $context["page"]) {
-            // line 47
+            // line 46
             yield "                            ";
             if ((($context["page"] > 0) && ($context["page"] <= ($context["totalPages"] ?? null)))) {
-                // line 48
+                // line 47
                 yield "                                <li class=\"page-item ";
                 if (($context["page"] == ($context["currentPage"] ?? null))) {
                     yield "active";
                 }
                 yield "\">
                                     <a class=\"page-link\" href=\"";
-                // line 49
+                // line 48
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
                 yield "/admin/users/";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["page"], "html", null, true);
@@ -155,45 +151,45 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
                                 </li>
                             ";
             }
-            // line 52
+            // line 51
             yield "                        ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['page'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 53
+        // line 52
         yield "                            
                         ";
-        // line 54
+        // line 53
         if ((($context["currentPage"] ?? null) < (($context["totalPages"] ?? null) - 1))) {
-            // line 55
+            // line 54
             yield "                            <li class=\"page-item disabled\">
                                 <span class=\"page-link\">...</span>
                             </li>
                         ";
         }
-        // line 59
+        // line 58
         yield "                            
                         ";
-        // line 60
+        // line 59
         if ((($context["currentPage"] ?? null) < ($context["totalPages"] ?? null))) {
-            // line 61
+            // line 60
             yield "                            <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 62
+            // line 61
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "\" aria-label=\"Last\">
                                     <span aria-hidden=\"true\">";
-            // line 63
+            // line 62
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "</span>
                                 </a>
                             </li>
                             <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 67
+            // line 66
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) + 1), "html", null, true);
@@ -203,13 +199,13 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
                             </li>
                         ";
         } else {
-            // line 72
+            // line 71
             yield "                            <li class=\"page-item disabled\">
                                 <span class=\"page-link\">Suivant &raquo;</span>
                             </li>
                         ";
         }
-        // line 76
+        // line 75
         yield "                    </ul>
                 </nav>
             </div>
@@ -229,154 +225,154 @@ class __TwigTemplate_d504458d2e455c044ed3cd87f7164db8 extends Template
                     </thead>
                     <tbody>
                         ";
-        // line 94
+        // line 93
         if ( !Twig\Extension\CoreExtension::testEmpty(($context["usersWithPermissions"] ?? null))) {
-            // line 95
+            // line 94
             yield "                            ";
             $context['_parent'] = $context;
             $context['_seq'] = CoreExtension::ensureTraversable(($context["usersWithPermissions"] ?? null));
             foreach ($context['_seq'] as $context["_key"] => $context["entry"]) {
-                // line 96
+                // line 95
                 yield "                                <tr>
                                     <td>";
-                // line 97
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 97), "getID", [], "method", false, false, false, 97), "html", null, true);
+                // line 96
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 96), "getID", [], "method", false, false, false, 96), "html", null, true);
                 yield "</td>
                                     <td>";
-                // line 98
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 98), "getUSERNAME", [], "method", false, false, false, 98), "html", null, true);
+                // line 97
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 97), "getUSERNAME", [], "method", false, false, false, 97), "html", null, true);
                 yield "</td>
                                     <td style=\"text-align: center;\">
                                         ";
-                // line 100
-                if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 100), "getSTATUS", [], "method", false, false, false, 100) == "active")) {
-                    // line 101
+                // line 99
+                if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 99), "getSTATUS", [], "method", false, false, false, 99) == "active")) {
+                    // line 100
                     yield "                                            <span class=\"badge bg-success\">Actif</span>
                                         ";
-                } elseif ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,                 // line 102
-$context["entry"], "user", [], "any", false, false, false, 102), "getSTATUS", [], "method", false, false, false, 102) == "pending")) {
-                    // line 103
+                } elseif ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,                 // line 101
+$context["entry"], "user", [], "any", false, false, false, 101), "getSTATUS", [], "method", false, false, false, 101) == "pending")) {
+                    // line 102
                     yield "                                            <span class=\"badge bg-warning text-dark\">En attente</span>
                                         ";
-                } elseif ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,                 // line 104
-$context["entry"], "user", [], "any", false, false, false, 104), "getSTATUS", [], "method", false, false, false, 104) == "inactive")) {
-                    // line 105
+                } elseif ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,                 // line 103
+$context["entry"], "user", [], "any", false, false, false, 103), "getSTATUS", [], "method", false, false, false, 103) == "inactive")) {
+                    // line 104
                     yield "                                            <span class=\"badge bg-secondary\">Inactif</span>
                                         ";
-                } elseif ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,                 // line 106
-$context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", [], "method", false, false, false, 106) == "banned")) {
-                    // line 107
+                } elseif ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source,                 // line 105
+$context["entry"], "user", [], "any", false, false, false, 105), "getSTATUS", [], "method", false, false, false, 105) == "banned")) {
+                    // line 106
                     yield "                                            <span class=\"badge bg-danger\">Banni</span>
                                         ";
                 }
-                // line 109
+                // line 108
                 yield "                                    </td>
                                     <td>
                                         ";
-                // line 111
-                if ( !Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "permissions", [], "any", false, false, false, 111))) {
-                    // line 112
+                // line 110
+                if ( !Twig\Extension\CoreExtension::testEmpty(CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "permissions", [], "any", false, false, false, 110))) {
+                    // line 111
                     yield "                                            ";
                     $context['_parent'] = $context;
-                    $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "permissions", [], "any", false, false, false, 112));
+                    $context['_seq'] = CoreExtension::ensureTraversable(CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "permissions", [], "any", false, false, false, 111));
                     foreach ($context['_seq'] as $context["_key"] => $context["permission"]) {
-                        // line 113
+                        // line 112
                         yield "                                                <span style=\"margin:2px; background-color:";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.color_rank_", CoreExtension::getAttribute($this->env, $this->source, $context["permission"], "getORDERS", [], "method", false, false, false, 113), ".value"), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->env->getFunction('config')->getCallable()("SITE.color_rank_", CoreExtension::getAttribute($this->env, $this->source, $context["permission"], "getORDERS", [], "method", false, false, false, 112), ".value"), "html", null, true);
                         yield ";\" class=\"badge\">";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["permission"], "getFULLNAME", [], "method", false, false, false, 113), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["permission"], "getFULLNAME", [], "method", false, false, false, 112), "html", null, true);
                         yield "</span>
                                             ";
                     }
                     $_parent = $context['_parent'];
                     unset($context['_seq'], $context['_key'], $context['permission'], $context['_parent']);
                     $context = array_intersect_key($context, $_parent) + $_parent;
-                    // line 115
+                    // line 114
                     yield "                                        ";
                 } else {
-                    // line 116
+                    // line 115
                     yield "                                            <span class=\"badge bg-secondary\">Aucune permission</span>
                                         ";
                 }
-                // line 118
+                // line 117
                 yield "                                    </td>
                                     <td>";
-                // line 119
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 119), "getLAST_LOGIN", [], "method", false, false, false, 119), "d/m/Y H:i"), "html", null, true);
+                // line 118
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 118), "getLAST_LOGIN", [], "method", false, false, false, 118), "d/m/Y H:i"), "html", null, true);
                 yield "</td>
                                     <td class=\"text-center\">
                                         <!-- Lien pour bloquer/débloquer l'utilisateur -->
                                         
                                             ";
-                // line 123
-                if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 123), "getSTATUS", [], "method", false, false, false, 123) == "active")) {
-                    // line 124
+                // line 122
+                if ((CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 122), "getSTATUS", [], "method", false, false, false, 122) == "active")) {
+                    // line 123
                     yield "                                                ";
                     if ($this->env->getFunction('checkPerm')->getCallable()("block_user")) {
-                        // line 125
+                        // line 124
                         yield "                                                    <a href=\"";
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
                         yield "/admin/block/";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 125), "getID", [], "method", false, false, false, 125), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 124), "getID", [], "method", false, false, false, 124), "html", null, true);
                         yield "\" class=\"btn btn-danger btn-sm mb-1\">
                                                     <i class=\"fas fa-lock\"></i> Bannir
                                                 ";
                     }
-                    // line 128
+                    // line 127
                     yield "                                            ";
                 } else {
-                    // line 129
+                    // line 128
                     yield "                                                ";
                     if ($this->env->getFunction('checkPerm')->getCallable()("unblock_user")) {
-                        // line 130
+                        // line 129
                         yield "                                                    <a href=\"";
                         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
                         yield "/admin/unblock/";
-                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 130), "getID", [], "method", false, false, false, 130), "html", null, true);
+                        yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 129), "getID", [], "method", false, false, false, 129), "html", null, true);
                         yield "\" class=\"btn btn-danger btn-sm mb-1\">
                                                     <i class=\"fas fa-unlock\"></i> Débannir
                                                 ";
                     }
-                    // line 133
+                    // line 132
                     yield "                                            ";
                 }
-                // line 134
+                // line 133
                 yield "                                        </a>
 
                                         
                                         ";
-                // line 137
+                // line 136
                 if ($this->env->getFunction('checkPerm')->getCallable()("manage_permissions")) {
-                    // line 138
+                    // line 137
                     yield "                                            <!-- Lien pour éditer les permissions -->
                                             <a href=\"";
-                    // line 139
+                    // line 138
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
                     yield "/admin/edit-permissions/";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 139), "getID", [], "method", false, false, false, 139), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 138), "getID", [], "method", false, false, false, 138), "html", null, true);
                     yield "\" class=\"btn btn-warning btn-sm mb-1\">
                                                 <i class=\"fas fa-edit\"></i> Modifier Permissions
                                             </a>
                                         ";
                 }
-                // line 143
+                // line 142
                 yield "
                                         ";
-                // line 144
+                // line 143
                 if ($this->env->getFunction('checkPerm')->getCallable()("view_other_profiles")) {
-                    // line 145
+                    // line 144
                     yield "                                            <!-- Voir le profil de l'utilisateur -->
                                             <a href=\"";
-                    // line 146
+                    // line 145
                     yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
                     yield "/admin/users/view-profil/";
-                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 146), "getID", [], "method", false, false, false, 146), "html", null, true);
+                    yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, CoreExtension::getAttribute($this->env, $this->source, $context["entry"], "user", [], "any", false, false, false, 145), "getID", [], "method", false, false, false, 145), "html", null, true);
                     yield "\" class=\"btn btn-success btn-sm mb-1\">
                                                 <i class=\"fas fa-edit\"></i> Voir le profil
                                             </a>
                                         ";
                 }
-                // line 150
+                // line 149
                 yield "                                    </td>
                                 </tr>
                             ";
@@ -384,16 +380,16 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
             $_parent = $context['_parent'];
             unset($context['_seq'], $context['_key'], $context['entry'], $context['_parent']);
             $context = array_intersect_key($context, $_parent) + $_parent;
-            // line 153
+            // line 152
             yield "                        ";
         } else {
-            // line 154
+            // line 153
             yield "                            <tr>
                                 <td colspan=\"6\" class=\"text-center text-muted\">Aucun utilisateur trouvé</td>
                             </tr>
                         ";
         }
-        // line 158
+        // line 157
         yield "                    </tbody>
                 </table>
             </div>
@@ -402,7 +398,7 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
             <div class=\"d-flex justify-content-between align-items-center mt-4\">
                 <div>
                     <span>Page ";
-        // line 165
+        // line 164
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["currentPage"] ?? null), "html", null, true);
         yield " sur ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
@@ -412,12 +408,12 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                 <nav aria-label=\"Pagination\">
                     <ul class=\"pagination\">
                         ";
-        // line 170
+        // line 169
         if ((($context["currentPage"] ?? null) > 1)) {
-            // line 171
+            // line 170
             yield "                            <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 172
+            // line 171
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) - 1), "html", null, true);
@@ -427,54 +423,54 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                             </li>
                         ";
         } else {
-            // line 177
+            // line 176
             yield "                            <li class=\"page-item disabled\">
                                 <span class=\"page-link\">&laquo; Précédent</span>
                             </li>
                         ";
         }
-        // line 181
+        // line 180
         yield "                            
                         ";
-        // line 182
+        // line 181
         if ((($context["currentPage"] ?? null) > 2)) {
-            // line 183
+            // line 182
             yield "                            <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 184
+            // line 183
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/1\">1</a>
                             </li>
                             ";
-            // line 186
+            // line 185
             if ((($context["currentPage"] ?? null) > 3)) {
-                // line 187
+                // line 186
                 yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">...</span>
                                 </li>
                             ";
             }
-            // line 191
+            // line 190
             yield "                        ";
         }
-        // line 192
+        // line 191
         yield "                            
                         ";
-        // line 193
+        // line 192
         $context['_parent'] = $context;
         $context['_seq'] = CoreExtension::ensureTraversable(range((($context["currentPage"] ?? null) - 1), (($context["currentPage"] ?? null) + 1)));
         foreach ($context['_seq'] as $context["_key"] => $context["page"]) {
-            // line 194
+            // line 193
             yield "                            ";
             if ((($context["page"] > 0) && ($context["page"] <= ($context["totalPages"] ?? null)))) {
-                // line 195
+                // line 194
                 yield "                                <li class=\"page-item ";
                 if (($context["page"] == ($context["currentPage"] ?? null))) {
                     yield "active";
                 }
                 yield "\">
                                     <a class=\"page-link\" href=\"";
-                // line 196
+                // line 195
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
                 yield "/admin/users/";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["page"], "html", null, true);
@@ -484,45 +480,45 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                                 </li>
                             ";
             }
-            // line 199
+            // line 198
             yield "                        ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['page'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 200
+        // line 199
         yield "                            
                         ";
-        // line 201
+        // line 200
         if ((($context["currentPage"] ?? null) < (($context["totalPages"] ?? null) - 1))) {
-            // line 202
+            // line 201
             yield "                            <li class=\"page-item disabled\">
                                 <span class=\"page-link\">...</span>
                             </li>
                         ";
         }
-        // line 206
+        // line 205
         yield "                            
                         ";
-        // line 207
+        // line 206
         if ((($context["currentPage"] ?? null) < ($context["totalPages"] ?? null))) {
-            // line 208
+            // line 207
             yield "                            <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 209
+            // line 208
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "\" aria-label=\"Last\">
                                     <span aria-hidden=\"true\">";
-            // line 210
+            // line 209
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "</span>
                                 </a>
                             </li>
                             <li class=\"page-item\">
                                 <a class=\"page-link\" href=\"";
-            // line 214
+            // line 213
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["base_url"] ?? null), "html", null, true);
             yield "/admin/users/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) + 1), "html", null, true);
@@ -532,13 +528,13 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
                             </li>
                         ";
         } else {
-            // line 219
+            // line 218
             yield "                            <li class=\"page-item disabled\">
                                 <span class=\"page-link\">Suivant &raquo;</span>
                             </li>
                         ";
         }
-        // line 223
+        // line 222
         yield "                    </ul>
                 </nav>
             </div>
@@ -570,7 +566,7 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
      */
     public function getDebugInfo(): array
     {
-        return array (  542 => 223,  536 => 219,  526 => 214,  519 => 210,  513 => 209,  510 => 208,  508 => 207,  505 => 206,  499 => 202,  497 => 201,  494 => 200,  488 => 199,  478 => 196,  471 => 195,  468 => 194,  464 => 193,  461 => 192,  458 => 191,  452 => 187,  450 => 186,  445 => 184,  442 => 183,  440 => 182,  437 => 181,  431 => 177,  421 => 172,  418 => 171,  416 => 170,  406 => 165,  397 => 158,  391 => 154,  388 => 153,  380 => 150,  371 => 146,  368 => 145,  366 => 144,  363 => 143,  354 => 139,  351 => 138,  349 => 137,  344 => 134,  341 => 133,  332 => 130,  329 => 129,  326 => 128,  317 => 125,  314 => 124,  312 => 123,  305 => 119,  302 => 118,  298 => 116,  295 => 115,  284 => 113,  279 => 112,  277 => 111,  273 => 109,  269 => 107,  267 => 106,  264 => 105,  262 => 104,  259 => 103,  257 => 102,  254 => 101,  252 => 100,  247 => 98,  243 => 97,  240 => 96,  235 => 95,  233 => 94,  213 => 76,  207 => 72,  197 => 67,  190 => 63,  184 => 62,  181 => 61,  179 => 60,  176 => 59,  170 => 55,  168 => 54,  165 => 53,  159 => 52,  149 => 49,  142 => 48,  139 => 47,  135 => 46,  132 => 45,  129 => 44,  123 => 40,  121 => 39,  116 => 37,  113 => 36,  111 => 35,  108 => 34,  102 => 30,  92 => 25,  89 => 24,  87 => 23,  77 => 18,  65 => 8,  63 => 7,  58 => 4,  51 => 3,  40 => 1,);
+        return array (  538 => 222,  532 => 218,  522 => 213,  515 => 209,  509 => 208,  506 => 207,  504 => 206,  501 => 205,  495 => 201,  493 => 200,  490 => 199,  484 => 198,  474 => 195,  467 => 194,  464 => 193,  460 => 192,  457 => 191,  454 => 190,  448 => 186,  446 => 185,  441 => 183,  438 => 182,  436 => 181,  433 => 180,  427 => 176,  417 => 171,  414 => 170,  412 => 169,  402 => 164,  393 => 157,  387 => 153,  384 => 152,  376 => 149,  367 => 145,  364 => 144,  362 => 143,  359 => 142,  350 => 138,  347 => 137,  345 => 136,  340 => 133,  337 => 132,  328 => 129,  325 => 128,  322 => 127,  313 => 124,  310 => 123,  308 => 122,  301 => 118,  298 => 117,  294 => 115,  291 => 114,  280 => 112,  275 => 111,  273 => 110,  269 => 108,  265 => 106,  263 => 105,  260 => 104,  258 => 103,  255 => 102,  253 => 101,  250 => 100,  248 => 99,  243 => 97,  239 => 96,  236 => 95,  231 => 94,  229 => 93,  209 => 75,  203 => 71,  193 => 66,  186 => 62,  180 => 61,  177 => 60,  175 => 59,  172 => 58,  166 => 54,  164 => 53,  161 => 52,  155 => 51,  145 => 48,  138 => 47,  135 => 46,  131 => 45,  128 => 44,  125 => 43,  119 => 39,  117 => 38,  112 => 36,  109 => 35,  107 => 34,  104 => 33,  98 => 29,  88 => 24,  85 => 23,  83 => 22,  73 => 17,  58 => 4,  51 => 3,  40 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -581,9 +577,8 @@ $context["entry"], "user", [], "any", false, false, false, 106), "getSTATUS", []
 <div class=\"container-fluid mt-4\">
     <div class='row'>
         <!-- Menu latéral -->
-        {% include 'admin/include/adminMenu.twig' %}
 
-        <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
+        <main class=\"col-md-12 ms-sm-auto col-lg-12 px-md-12\">
             <!-- Header Section -->
             <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                 <h1 class=\"text-center mb-4\"><i class=\"fas fa-users me-2\"></i> Liste des utilisateurs</h1>

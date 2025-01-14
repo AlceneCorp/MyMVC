@@ -14,18 +14,21 @@ class Routes
      * @param string $method Nom de la méthode à appeler dans le contrôleur.
      * @param array $params Paramètres optionnels pour la route (comme les valeurs par défaut).
      */
-    public function add(string $url, string $controller, string $method, array $params = [], String $perm = '')
+    public function add(string $name, string $url, string $controller, string $method, array $params = [], String $perm = '', $inMenu = false, array $child = [])
     {
         // Normaliser le chemin et définir les paramètres dynamiques
         $this->routes[] = [
+            'name' => $name,
             'url' => $this->normalizePath($url),
             'controller' => $controller,
             'method' => $method,
             'params' => $params,
-            'perm' => $perm
+            'perm' => $perm,
+            'inMenu' => $inMenu,
+            'children' => $child
         ];
     }
-
+    
     /**
      * Trouve la route correspondante à une URL.
      * 

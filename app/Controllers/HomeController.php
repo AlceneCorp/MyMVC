@@ -13,6 +13,14 @@ class HomeController extends Controller
 
 	public function contact()
 	{
+		if(isset($_POST))
+		{
+			if(isset($_POST['name']) && isset($_POST['email']) && isset($_POST['message']))
+			{
+
+			}
+		}
+
 		$this->render('home/contact.twig');
 	}
 }

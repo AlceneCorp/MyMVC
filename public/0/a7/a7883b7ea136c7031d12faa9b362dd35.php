@@ -57,14 +57,8 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
         // line 4
         yield "    <div class=\"container-fluid mt-4\">
         <div class=\"row\">
-            <!-- Menu latéral -->
-            ";
-        // line 7
-        yield from $this->loadTemplate("admin/include/adminMenu.twig", "admin/logs.twig", 7)->unwrap()->yield($context);
-        // line 8
-        yield "
             <!-- Contenu principal -->
-            <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
+            <main class=\"col-md-12 ms-sm-auto col-lg-12 px-md-12\">
                 <!-- Header Section -->
                 <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                     <h1 class=\"text-center mb-4\"><i class=\"fas fa-book me-2\"></i> Logs de l'application</h1>
@@ -74,7 +68,7 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
                 <div class=\"d-flex justify-content-between align-items-center mt-4\">
                     <div>
                         <span>Page ";
-        // line 19
+        // line 16
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["currentPage"] ?? null), "html", null, true);
         yield " sur ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
@@ -84,12 +78,12 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
                     <nav aria-label=\"Pagination\">
                         <ul class=\"pagination\">
                             ";
-        // line 24
+        // line 21
         if ((($context["currentPage"] ?? null) > 1)) {
-            // line 25
+            // line 22
             yield "                                <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 26
+            // line 23
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) - 1), "html", null, true);
@@ -99,54 +93,54 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
                                 </li>
                             ";
         } else {
-            // line 31
+            // line 28
             yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">&laquo; Précédent</span>
                                 </li>
                             ";
         }
-        // line 35
+        // line 32
         yield "                            
                             ";
-        // line 36
+        // line 33
         if ((($context["currentPage"] ?? null) > 2)) {
-            // line 37
+            // line 34
             yield "                                <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 38
+            // line 35
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/1\">1</a>
                                 </li>
                                 ";
-            // line 40
+            // line 37
             if ((($context["currentPage"] ?? null) > 3)) {
-                // line 41
+                // line 38
                 yield "                                    <li class=\"page-item disabled\">
                                         <span class=\"page-link\">...</span>
                                     </li>
                                 ";
             }
-            // line 45
+            // line 42
             yield "                            ";
         }
-        // line 46
+        // line 43
         yield "                            
                             ";
-        // line 47
+        // line 44
         $context['_parent'] = $context;
         $context['_seq'] = CoreExtension::ensureTraversable(range((($context["currentPage"] ?? null) - 1), (($context["currentPage"] ?? null) + 1)));
         foreach ($context['_seq'] as $context["_key"] => $context["page"]) {
-            // line 48
+            // line 45
             yield "                                ";
             if ((($context["page"] > 0) && ($context["page"] <= ($context["totalPages"] ?? null)))) {
-                // line 49
+                // line 46
                 yield "                                    <li class=\"page-item ";
                 if (($context["page"] == ($context["currentPage"] ?? null))) {
                     yield "active";
                 }
                 yield "\">
                                         <a class=\"page-link\" href=\"";
-                // line 50
+                // line 47
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
                 yield "/admin/logs/";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["page"], "html", null, true);
@@ -156,45 +150,45 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
                                     </li>
                                 ";
             }
-            // line 53
+            // line 50
             yield "                            ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['page'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 54
+        // line 51
         yield "                            
                             ";
-        // line 55
+        // line 52
         if ((($context["currentPage"] ?? null) < (($context["totalPages"] ?? null) - 1))) {
-            // line 56
+            // line 53
             yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">...</span>
                                 </li>
                             ";
         }
-        // line 60
+        // line 57
         yield "                            
                             ";
-        // line 61
+        // line 58
         if ((($context["currentPage"] ?? null) < ($context["totalPages"] ?? null))) {
-            // line 62
+            // line 59
             yield "                                <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 63
+            // line 60
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "\" aria-label=\"Last\">
                                         <span aria-hidden=\"true\">";
-            // line 64
+            // line 61
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "</span>
                                     </a>
                                 </li>
                                 <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 68
+            // line 65
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) + 1), "html", null, true);
@@ -204,13 +198,13 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
                                 </li>
                             ";
         } else {
-            // line 73
+            // line 70
             yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">Suivant &raquo;</span>
                                 </li>
                             ";
         }
-        // line 77
+        // line 74
         yield "                        </ul>
                     </nav>
                 </div>
@@ -233,165 +227,165 @@ class __TwigTemplate_56f183a53f05bb8a69839d845d477d33 extends Template
                             </thead>
                             <tbody>
                                 ";
-        // line 98
+        // line 95
         $context['_parent'] = $context;
         $context['_seq'] = CoreExtension::ensureTraversable(($context["logs"] ?? null));
         $context['_iterated'] = false;
         foreach ($context['_seq'] as $context["_key"] => $context["log"]) {
-            // line 99
+            // line 96
             yield "                                    <tr>
                                         <td>";
-            // line 100
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "ID", [], "any", false, false, false, 100), "html", null, true);
+            // line 97
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "ID", [], "any", false, false, false, 97), "html", null, true);
             yield "</td>
                                         <td>
                                             ";
-            // line 102
-            if ((CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 102) == "CONFIG")) {
-                // line 103
+            // line 99
+            if ((CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 99) == "CONFIG")) {
+                // line 100
                 yield "                                                <span class=\"badge bg-primary\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 103), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 100), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 104
-$context["log"], "CATEGORY", [], "any", false, false, false, 104) == "USERS")) {
-                // line 105
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 101
+$context["log"], "CATEGORY", [], "any", false, false, false, 101) == "USERS")) {
+                // line 102
                 yield "                                                <span class=\"badge bg-success\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 105), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 102), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 106
-$context["log"], "CATEGORY", [], "any", false, false, false, 106) == "SECURITY")) {
-                // line 107
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 103
+$context["log"], "CATEGORY", [], "any", false, false, false, 103) == "SECURITY")) {
+                // line 104
                 yield "                                                <span class=\"badge bg-warning\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 107), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 104), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 108
-$context["log"], "CATEGORY", [], "any", false, false, false, 108) == "SYSTEM")) {
-                // line 109
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 105
+$context["log"], "CATEGORY", [], "any", false, false, false, 105) == "SYSTEM")) {
+                // line 106
                 yield "                                                <span class=\"badge bg-secondary\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 109), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 106), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 110
-$context["log"], "CATEGORY", [], "any", false, false, false, 110) == "APPLICATION")) {
-                // line 111
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 107
+$context["log"], "CATEGORY", [], "any", false, false, false, 107) == "APPLICATION")) {
+                // line 108
                 yield "                                                <span class=\"badge bg-info\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 111), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CATEGORY", [], "any", false, false, false, 108), "html", null, true);
                 yield "</span>
                                             ";
             }
-            // line 113
+            // line 110
             yield "                                        </td>
                                         <td>
                                             ";
-            // line 115
-            if ((CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 115) == "ERROR")) {
-                // line 116
+            // line 112
+            if ((CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 112) == "ERROR")) {
+                // line 113
                 yield "                                                <span class=\"badge bg-danger\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 116), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 113), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 117
-$context["log"], "LEVEL", [], "any", false, false, false, 117) == "INFO")) {
-                // line 118
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 114
+$context["log"], "LEVEL", [], "any", false, false, false, 114) == "INFO")) {
+                // line 115
                 yield "                                                <span class=\"badge bg-info\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 118), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 115), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 119
-$context["log"], "LEVEL", [], "any", false, false, false, 119) == "WARNING")) {
-                // line 120
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 116
+$context["log"], "LEVEL", [], "any", false, false, false, 116) == "WARNING")) {
+                // line 117
                 yield "                                                <span class=\"badge bg-warning\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 120), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 117), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 121
-$context["log"], "LEVEL", [], "any", false, false, false, 121) == "DEBUG")) {
-                // line 122
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 118
+$context["log"], "LEVEL", [], "any", false, false, false, 118) == "DEBUG")) {
+                // line 119
                 yield "                                                <span class=\"badge bg-secondary\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 122), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 119), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 123
-$context["log"], "LEVEL", [], "any", false, false, false, 123) == "CRITICAL")) {
-                // line 124
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 120
+$context["log"], "LEVEL", [], "any", false, false, false, 120) == "CRITICAL")) {
+                // line 121
                 yield "                                                <span class=\"badge bg-dark\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 124), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 121), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 125
-$context["log"], "LEVEL", [], "any", false, false, false, 125) == "SUCCESS")) {
-                // line 126
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 122
+$context["log"], "LEVEL", [], "any", false, false, false, 122) == "SUCCESS")) {
+                // line 123
                 yield "                                                <span class=\"badge bg-success\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 126), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "LEVEL", [], "any", false, false, false, 123), "html", null, true);
                 yield "</span>
                                             ";
             }
-            // line 128
+            // line 125
             yield "                                        </td>
                                         <td>";
-            // line 129
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "MESSAGE", [], "any", false, false, false, 129), "html", null, true);
+            // line 126
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "MESSAGE", [], "any", false, false, false, 126), "html", null, true);
             yield "</td>
                                         <td>";
-            // line 130
-            yield (((CoreExtension::getAttribute($this->env, $this->source, ($context["users"] ?? null), CoreExtension::getAttribute($this->env, $this->source, $context["log"], "USERS_ID", [], "any", false, false, false, 130), [], "array", true, true, false, 130) &&  !(null === (($_v0 = ($context["users"] ?? null)) && is_array($_v0) || $_v0 instanceof ArrayAccess ? ($_v0[CoreExtension::getAttribute($this->env, $this->source, $context["log"], "USERS_ID", [], "any", false, false, false, 130)] ?? null) : null)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($_v1 = ($context["users"] ?? null)) && is_array($_v1) || $_v1 instanceof ArrayAccess ? ($_v1[CoreExtension::getAttribute($this->env, $this->source, $context["log"], "USERS_ID", [], "any", false, false, false, 130)] ?? null) : null), "html", null, true)) : ("Inconnu"));
+            // line 127
+            yield (((CoreExtension::getAttribute($this->env, $this->source, ($context["users"] ?? null), CoreExtension::getAttribute($this->env, $this->source, $context["log"], "USERS_ID", [], "any", false, false, false, 127), [], "array", true, true, false, 127) &&  !(null === (($_v0 = ($context["users"] ?? null)) && is_array($_v0) || $_v0 instanceof ArrayAccess ? ($_v0[CoreExtension::getAttribute($this->env, $this->source, $context["log"], "USERS_ID", [], "any", false, false, false, 127)] ?? null) : null)))) ? ($this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($_v1 = ($context["users"] ?? null)) && is_array($_v1) || $_v1 instanceof ArrayAccess ? ($_v1[CoreExtension::getAttribute($this->env, $this->source, $context["log"], "USERS_ID", [], "any", false, false, false, 127)] ?? null) : null), "html", null, true)) : ("Inconnu"));
             yield "</td>
                                         <td><span class=\"badge bg-secondary\">";
-            // line 131
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "IP_ADDRESS", [], "any", false, false, false, 131), "html", null, true);
+            // line 128
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "IP_ADDRESS", [], "any", false, false, false, 128), "html", null, true);
             yield "</span></td>
                                         <td>
                                             ";
-            // line 133
-            if ((CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 133) == "GET")) {
-                // line 134
+            // line 130
+            if ((CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 130) == "GET")) {
+                // line 131
                 yield "                                                <span class=\"badge bg-info\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 134), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 131), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 135
-$context["log"], "METHOD", [], "any", false, false, false, 135) == "POST")) {
-                // line 136
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 132
+$context["log"], "METHOD", [], "any", false, false, false, 132) == "POST")) {
+                // line 133
                 yield "                                                <span class=\"badge bg-success\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 136), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 133), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 137
-$context["log"], "METHOD", [], "any", false, false, false, 137) == "PUT")) {
-                // line 138
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 134
+$context["log"], "METHOD", [], "any", false, false, false, 134) == "PUT")) {
+                // line 135
                 yield "                                                <span class=\"badge bg-warning\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 138), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 135), "html", null, true);
                 yield "</span>
                                             ";
-            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 139
-$context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
-                // line 140
+            } elseif ((CoreExtension::getAttribute($this->env, $this->source,             // line 136
+$context["log"], "METHOD", [], "any", false, false, false, 136) == "DELETE")) {
+                // line 137
                 yield "                                                <span class=\"badge bg-danger\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 140), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 137), "html", null, true);
                 yield "</span>
                                             ";
             } else {
-                // line 142
+                // line 139
                 yield "                                                <span class=\"badge bg-secondary\">";
-                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 142), "html", null, true);
+                yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "METHOD", [], "any", false, false, false, 139), "html", null, true);
                 yield "</span>
                                             ";
             }
-            // line 144
+            // line 141
             yield "                                        </td>
                                         <td>";
-            // line 145
-            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CREATED_AT", [], "any", false, false, false, 145), "d-m-Y H:i"), "html", null, true);
+            // line 142
+            yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($this->extensions['Twig\Extension\CoreExtension']->formatDate(CoreExtension::getAttribute($this->env, $this->source, $context["log"], "CREATED_AT", [], "any", false, false, false, 142), "d-m-Y H:i"), "html", null, true);
             yield "</td>
                                     </tr>
                                 ";
             $context['_iterated'] = true;
         }
         if (!$context['_iterated']) {
-            // line 148
+            // line 145
             yield "                                    <tr>
                                         <td colspan=\"8\" class=\"text-center\">Aucun log disponible.</td>
                                     </tr>
@@ -400,7 +394,7 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['log'], $context['_parent'], $context['_iterated']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 152
+        // line 149
         yield "                            </tbody>
                         </table>
                     </div>
@@ -410,7 +404,7 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
                 <div class=\"d-flex justify-content-between align-items-center mt-4\">
                     <div>
                         <span>Page ";
-        // line 160
+        // line 157
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["currentPage"] ?? null), "html", null, true);
         yield " sur ";
         yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
@@ -420,12 +414,12 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
                     <nav aria-label=\"Pagination\">
                         <ul class=\"pagination\">
                             ";
-        // line 165
+        // line 162
         if ((($context["currentPage"] ?? null) > 1)) {
-            // line 166
+            // line 163
             yield "                                <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 167
+            // line 164
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) - 1), "html", null, true);
@@ -435,54 +429,54 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
                                 </li>
                             ";
         } else {
-            // line 172
+            // line 169
             yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">&laquo; Précédent</span>
                                 </li>
                             ";
         }
-        // line 176
+        // line 173
         yield "                            
                             ";
-        // line 177
+        // line 174
         if ((($context["currentPage"] ?? null) > 2)) {
-            // line 178
+            // line 175
             yield "                                <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 179
+            // line 176
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/1\">1</a>
                                 </li>
                                 ";
-            // line 181
+            // line 178
             if ((($context["currentPage"] ?? null) > 3)) {
-                // line 182
+                // line 179
                 yield "                                    <li class=\"page-item disabled\">
                                         <span class=\"page-link\">...</span>
                                     </li>
                                 ";
             }
-            // line 186
+            // line 183
             yield "                            ";
         }
-        // line 187
+        // line 184
         yield "                            
                             ";
-        // line 188
+        // line 185
         $context['_parent'] = $context;
         $context['_seq'] = CoreExtension::ensureTraversable(range((($context["currentPage"] ?? null) - 1), (($context["currentPage"] ?? null) + 1)));
         foreach ($context['_seq'] as $context["_key"] => $context["page"]) {
-            // line 189
+            // line 186
             yield "                                ";
             if ((($context["page"] > 0) && ($context["page"] <= ($context["totalPages"] ?? null)))) {
-                // line 190
+                // line 187
                 yield "                                    <li class=\"page-item ";
                 if (($context["page"] == ($context["currentPage"] ?? null))) {
                     yield "active";
                 }
                 yield "\">
                                         <a class=\"page-link\" href=\"";
-                // line 191
+                // line 188
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
                 yield "/admin/logs/";
                 yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape($context["page"], "html", null, true);
@@ -492,45 +486,45 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
                                     </li>
                                 ";
             }
-            // line 194
+            // line 191
             yield "                            ";
         }
         $_parent = $context['_parent'];
         unset($context['_seq'], $context['_key'], $context['page'], $context['_parent']);
         $context = array_intersect_key($context, $_parent) + $_parent;
-        // line 195
+        // line 192
         yield "                            
                             ";
-        // line 196
+        // line 193
         if ((($context["currentPage"] ?? null) < (($context["totalPages"] ?? null) - 1))) {
-            // line 197
+            // line 194
             yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">...</span>
                                 </li>
                             ";
         }
-        // line 201
+        // line 198
         yield "                            
                             ";
-        // line 202
+        // line 199
         if ((($context["currentPage"] ?? null) < ($context["totalPages"] ?? null))) {
-            // line 203
+            // line 200
             yield "                                <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 204
+            // line 201
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "\" aria-label=\"Last\">
                                         <span aria-hidden=\"true\">";
-            // line 205
+            // line 202
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["totalPages"] ?? null), "html", null, true);
             yield "</span>
                                     </a>
                                 </li>
                                 <li class=\"page-item\">
                                     <a class=\"page-link\" href=\"";
-            // line 209
+            // line 206
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape(($context["baseUrl"] ?? null), "html", null, true);
             yield "/admin/logs/";
             yield $this->env->getRuntime('Twig\Runtime\EscaperRuntime')->escape((($context["currentPage"] ?? null) + 1), "html", null, true);
@@ -540,13 +534,13 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
                                 </li>
                             ";
         } else {
-            // line 214
+            // line 211
             yield "                                <li class=\"page-item disabled\">
                                     <span class=\"page-link\">Suivant &raquo;</span>
                                 </li>
                             ";
         }
-        // line 218
+        // line 215
         yield "                        </ul>
                     </nav>
                 </div>
@@ -578,7 +572,7 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
      */
     public function getDebugInfo(): array
     {
-        return array (  550 => 218,  544 => 214,  534 => 209,  527 => 205,  521 => 204,  518 => 203,  516 => 202,  513 => 201,  507 => 197,  505 => 196,  502 => 195,  496 => 194,  486 => 191,  479 => 190,  476 => 189,  472 => 188,  469 => 187,  466 => 186,  460 => 182,  458 => 181,  453 => 179,  450 => 178,  448 => 177,  445 => 176,  439 => 172,  429 => 167,  426 => 166,  424 => 165,  414 => 160,  404 => 152,  395 => 148,  387 => 145,  384 => 144,  378 => 142,  372 => 140,  370 => 139,  365 => 138,  363 => 137,  358 => 136,  356 => 135,  351 => 134,  349 => 133,  344 => 131,  340 => 130,  336 => 129,  333 => 128,  327 => 126,  325 => 125,  320 => 124,  318 => 123,  313 => 122,  311 => 121,  306 => 120,  304 => 119,  299 => 118,  297 => 117,  292 => 116,  290 => 115,  286 => 113,  280 => 111,  278 => 110,  273 => 109,  271 => 108,  266 => 107,  264 => 106,  259 => 105,  257 => 104,  252 => 103,  250 => 102,  245 => 100,  242 => 99,  237 => 98,  214 => 77,  208 => 73,  198 => 68,  191 => 64,  185 => 63,  182 => 62,  180 => 61,  177 => 60,  171 => 56,  169 => 55,  166 => 54,  160 => 53,  150 => 50,  143 => 49,  140 => 48,  136 => 47,  133 => 46,  130 => 45,  124 => 41,  122 => 40,  117 => 38,  114 => 37,  112 => 36,  109 => 35,  103 => 31,  93 => 26,  90 => 25,  88 => 24,  78 => 19,  65 => 8,  63 => 7,  58 => 4,  51 => 3,  40 => 1,);
+        return array (  544 => 215,  538 => 211,  528 => 206,  521 => 202,  515 => 201,  512 => 200,  510 => 199,  507 => 198,  501 => 194,  499 => 193,  496 => 192,  490 => 191,  480 => 188,  473 => 187,  470 => 186,  466 => 185,  463 => 184,  460 => 183,  454 => 179,  452 => 178,  447 => 176,  444 => 175,  442 => 174,  439 => 173,  433 => 169,  423 => 164,  420 => 163,  418 => 162,  408 => 157,  398 => 149,  389 => 145,  381 => 142,  378 => 141,  372 => 139,  366 => 137,  364 => 136,  359 => 135,  357 => 134,  352 => 133,  350 => 132,  345 => 131,  343 => 130,  338 => 128,  334 => 127,  330 => 126,  327 => 125,  321 => 123,  319 => 122,  314 => 121,  312 => 120,  307 => 119,  305 => 118,  300 => 117,  298 => 116,  293 => 115,  291 => 114,  286 => 113,  284 => 112,  280 => 110,  274 => 108,  272 => 107,  267 => 106,  265 => 105,  260 => 104,  258 => 103,  253 => 102,  251 => 101,  246 => 100,  244 => 99,  239 => 97,  236 => 96,  231 => 95,  208 => 74,  202 => 70,  192 => 65,  185 => 61,  179 => 60,  176 => 59,  174 => 58,  171 => 57,  165 => 53,  163 => 52,  160 => 51,  154 => 50,  144 => 47,  137 => 46,  134 => 45,  130 => 44,  127 => 43,  124 => 42,  118 => 38,  116 => 37,  111 => 35,  108 => 34,  106 => 33,  103 => 32,  97 => 28,  87 => 23,  84 => 22,  82 => 21,  72 => 16,  58 => 4,  51 => 3,  40 => 1,);
     }
 
     public function getSourceContext(): Source
@@ -588,11 +582,8 @@ $context["log"], "METHOD", [], "any", false, false, false, 139) == "DELETE")) {
 {% block content %}
     <div class=\"container-fluid mt-4\">
         <div class=\"row\">
-            <!-- Menu latéral -->
-            {% include 'admin/include/adminMenu.twig' %}
-
             <!-- Contenu principal -->
-            <main class=\"col-md-12 ms-sm-auto col-lg-10 px-md-4\">
+            <main class=\"col-md-12 ms-sm-auto col-lg-12 px-md-12\">
                 <!-- Header Section -->
                 <div class=\"d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom\">
                     <h1 class=\"text-center mb-4\"><i class=\"fas fa-book me-2\"></i> Logs de l'application</h1>

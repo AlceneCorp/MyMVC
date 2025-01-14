@@ -37,7 +37,7 @@ class LoginController extends Controller
 
 					    $usersManager->updateUsers(['LAST_LOGIN' => date('Y-m-d H:i:s')], $user->getID());
 
-					    header('Location:' . URL . '/admin/dashboard');
+					    header('Location:' . URL . '/accueil');
                     }
                     else
                     {

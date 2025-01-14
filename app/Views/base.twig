@@ -91,23 +91,6 @@
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         {{menu | raw}}
                     </ul>
-
-                     <!-- Connexion Button -->
-                    <ul class="nav">
-                        {% if is_login %}
-                            <li class="nav-item">
-                                <a href="{{base_url}}/logout" class="btn btn-outline-light">
-                                    <i class="fas fa-sign-out-alt me-2"></i> Déconnexion
-                                </a>
-                            </li>
-                        {% else %}
-                            <li class="nav-item">
-                                <a href="{{base_url}}/login" class="btn btn-outline-light">
-                                    <i class="fas fa-sign-in-alt me-2"></i> Connexion
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
                 </div>
             </div>
         </nav>
@@ -148,7 +131,7 @@
                 {% endif %}
             </div>
             {% endif %}
-            <p>&copy; 2022 - {{ date | date('Y') }} {{ config('SITE.site_name.value') }}. Tous droits réservés.</p>
+            <p>&copy; 2022 - {{ date | date('Y') }} {{ config('SITE.brand.value') }}. Tous droits réservés.</p>
         </div>
     </footer>
 

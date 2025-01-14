@@ -23,20 +23,28 @@ class Router
     private $logsManager;
     private $visitorManager;
 
-    public function __construct()
+
+   public function __construct()
     {
         $this->routes = new Routes();
         $this->logsManager = new LogsManager();
         $this->visitorManager = new VisitorManager();
 
-        $routesArray = require __dir__ . '\\..\\..\\config\\routes.php';
+        $routesArray = require __DIR__ . '\\..\\..\\config\\routes.php';
 
-        foreach($routesArray as $route)
+
+        foreach ($routesArray as $route) 
         {
-            $this->routes->add($route['url'], $route['controller'], $route['method'], $route['params'], $route['perm']);
+            $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm']);
+
+            // Vérification des enfants
+            if (!empty($route['children'])) 
+            {
+                $this->addChildRoutes($route['children']);
+            }
         }
 
-        $pathViews = __dir__ . '/../Views/';
+        $pathViews = __DIR__ . '/../Views/';
 
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
         $loader = new FilesystemLoader($pathViews);
@@ -46,68 +54,106 @@ class Router
         ]);
 
         $this->twig->addExtension(new \Twig\Extension\DebugExtension());
-        
         $this->twig->addGlobal('base_url', $this->getBaseUrl());
-        $this->twig->addGlobal('is_login', (SessionsManager::get('USERS') ? SessionsManager::get('USERS') : null));
+        $this->twig->addGlobal('is_login', SessionsManager::get('USERS') ?? null);
 
-        $menuManager = new MenuManager();
-        $menuGenerate = "";
-        try
-        {
-            foreach($menuManager->findAllMenu(['IS_ACTIVE' => 1], ['ORDER BY' => 'ORDERS ASC']) as $menu)
-            {
-                if($menu->getPERMISSIONS_ID() === null)
-                {
-                    $menuGenerate .= '<li class="nav-item">';
-                    $menuGenerate .= '<a class="link-light ms-3" href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
-                    $menuGenerate .= '</li>';
-                }
-                else
-                {
-                    if(SessionsManager::has('USERS'))
-                    {
-                        $route = $this->routes->find($_SERVER['REQUEST_URI']);
-                        if($route)
-                        {
-                            if(CoreManager::checkPerm($route['perm']))
-                            {
-                                $menuGenerate .= '<li class="nav-item">';
-                                $menuGenerate .= '<a class="link-light ms-3" href="'. $this->getBaseUrl() . $menu->getURL() . '" class="nav-link text-white">'.$menu->getTITLE().'</a>';
-                                $menuGenerate .= '</li>';
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        catch (\Exception $e)
-        {
-            throw new \Exception($e->getMessage());
-        }
-
-
+        // Génération du menu à partir des routes
+        $menuGenerate = $this->generateMenu($routesArray);
 
         $this->twig->addGlobal('menu', $menuGenerate);
 
         // Ajouter la fonction asset
-        $this->twig->addFunction(new TwigFunction('asset', function ($path) 
-        {
-            return '/assets/' . ltrim($path, '/');
-        }));
+        $this->twig->addFunction(new TwigFunction('asset', fn($path) => '/assets/' . ltrim($path, '/')));
 
-        $this->twig->addFunction(new TwigFunction('checkPerm', function ($param1) 
-        {
-            return CoreManager::checkPerm($param1,);
-        }));
+        $this->twig->addFunction(new TwigFunction('checkPerm', fn($param1) => CoreManager::checkPerm($param1)));
 
         $this->twig->addFunction(new TwigFunction('config', function (...$params) 
         {
             // Concaténer tous les paramètres en une seule chaîne
             $key = implode('', $params);
-
             return ConfigManager::get($key);
         }));
     }
+
+    /**
+     * Génère le menu HTML à partir des routes.
+     *
+     * @param array $routes
+     * @return string
+     */
+    private function generateMenu(array $routes): string
+    {
+        $menuGenerate = '';
+
+        foreach ($routes as $route) 
+        {
+            if (!empty($route['perm']) && CoreManager::checkPerm($route['perm'])) 
+            {
+                continue;
+            }
+
+            $menuGenerate .= '<li class="nav-item">';
+        
+            if (!empty($route['children'])) 
+            {
+                if($route['inMenu'])
+                {
+                    $menuGenerate .= '<div class="dropend">';
+                    // Menu déroulant
+                    $menuGenerate .= '<a class="nav-link text-white me-4" href="#" id="' . $route['name'] . '" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
+                    $menuGenerate .= $route['icon'] . ' ' . $route['name'];
+                    $menuGenerate .= '</a>';
+                    $menuGenerate .= '<ul class="dropdown-menu bg-dark text-white" aria-labelledby="' . $route['name'] . '">';
+            
+                    foreach ($route['children'] as $child) 
+                    {
+                        if (CoreManager::checkPerm($child['perm'])) 
+                        {
+                            $menuGenerate .= '<li><a class="dropdown-item text-white p-4" href="' . $child['url'] . '">' . $child['icon'] . ' ' . $child['name'] . '</a></li>';
+                        }
+                    }
+
+                    $menuGenerate .= '</ul>';
+                    $menuGenerate .= '</div>';
+
+                }
+            } 
+            else 
+            {
+                if($route['inMenu'] && CoreManager::checkPerm($route['perm']))
+                {
+                    $menuGenerate .= '<div class="dropend">';
+                    // Lien simple
+                    $menuGenerate .= '<a class="nav-link text-white me-4" href="' . $route['url'] . '">' . $route['icon'] . ' ' . $route['name'] . '</a>';
+                    $menuGenerate .= '</div>';
+                }
+            }
+
+            $menuGenerate .= '</li>';
+        }
+
+        return $menuGenerate;
+    }
+
+    /**
+     * Fonction récursive pour ajouter les routes enfants.
+     *
+     * @param array $children
+     * @return void
+     */
+    private function addChildRoutes(array $children)
+    {
+        foreach ($children as $child) 
+        {
+            $this->routes->add($child['name'], $child['url'], $child['controller'], $child['method'], $child['params'], $child['perm']);
+    
+            if (!empty($child['children'])) 
+            {
+                $this->addChildRoutes($child['children']); // Appel récursif pour les enfants
+            }
+        }
+    }
+
 
     function getBaseUrl() 
     {
