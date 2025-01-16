@@ -46,11 +46,12 @@ class Router
 
         $pathViews = __DIR__ . '/../Views/';
 
+
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
         $loader = new FilesystemLoader($pathViews);
         $this->twig = new Environment($loader, [
             'debug' => ConfigManager::get("SITE.twig_debug.value"),      
-            'cache' => ConfigManager::get("SITE.twig_cache.value")
+            'cache' => false
         ]);
 
         $this->twig->addExtension(new \Twig\Extension\DebugExtension());

@@ -34,59 +34,67 @@ class AdminController extends Controller
 		$mysqlVersion = '';
 		$apacheProcesses = 0;
 		$uptime = 'Indisponible';
+
 		
-
-		// Vérification de l'OS pour exécuter les commandes spécifiques
-		if (stripos($os, 'WIN') !== false) 
+		if(ConfigManager::get('SITE.show_informations_details.value'))
 		{
-			// Windows : Commandes spécifiques à Windows
-			$activeQueries = $dataBaseManager->rawQuery("SHOW PROCESSLIST");
+			// Vérification de l'OS pour exécuter les commandes spécifiques
+			if (stripos($os, 'WIN') !== false) 
+			{
+				// Windows : Commandes spécifiques à Windows
+				$activeQueries = $dataBaseManager->rawQuery("SHOW PROCESSLIST");
 
-			$openFiles = 0;
-			$mysqlVersion = $dataBaseManager->rawQuery("SELECT VERSION() AS version")[0]['version'];
+				$openFiles = 0;
+				$mysqlVersion = $dataBaseManager->rawQuery("SELECT VERSION() AS version")[0]['version'];
 
-			// Nombre de processus Apache actifs
-			$apacheProcesses = shell_exec('tasklist /FI "IMAGENAME eq httpd.exe"');
-			$apacheProcesses = substr_count($apacheProcesses, 'httpd.exe');
+				// Nombre de processus Apache actifs
+				$apacheProcesses = shell_exec('tasklist /FI "IMAGENAME eq httpd.exe"');
+				$apacheProcesses = substr_count($apacheProcesses, 'httpd.exe');
 
-			// Temps écoulé depuis le dernier redémarrage (Windows)
-			$uptime = shell_exec('powershell -Command "get-date (gcim Win32_OperatingSystem).LastBootUpTime"');
-			$uptime = $uptime ? trim($uptime) : 'Indisponible';
+				// Temps écoulé depuis le dernier redémarrage (Windows)
+				$uptime = shell_exec('powershell -Command "get-date (gcim Win32_OperatingSystem).LastBootUpTime"');
+				$uptime = $uptime ? trim($uptime) : 'Indisponible';
 
-		} 
-		else 
-		{
-			// Linux / Unix-like : Commandes spécifiques à Unix
-			$activeQueries = $dataBaseManager->rawQuery("SHOW PROCESSLIST");
-			$openFiles = shell_exec('lsof -u www-data | wc -l');
-			$mysqlVersion = $dataBaseManager->rawQuery("SELECT VERSION() AS version")[0]['version'];
+			} 
+			else 
+			{
+				// Linux / Unix-like : Commandes spécifiques à Unix
+				$activeQueries = $dataBaseManager->rawQuery("SHOW PROCESSLIST");
+				$openFiles = shell_exec('lsof -u www-data | wc -l');
+				$mysqlVersion = $dataBaseManager->rawQuery("SELECT VERSION() AS version")[0]['version'];
 
-			// Nombre de processus Apache actifs (Linux)
-			$apacheProcesses = shell_exec('ps -C apache2 --no-header | wc -l');
+				// Nombre de processus Apache actifs (Linux)
+				$apacheProcesses = shell_exec('ps -C apache2 --no-header | wc -l');
 
-			// Temps écoulé depuis le dernier redémarrage (Linux)
-			$uptime = shell_exec('uptime -p');
-			$uptime = $uptime ? trim($uptime) : 'Indisponible';
+				// Temps écoulé depuis le dernier redémarrage (Linux)
+				$uptime = shell_exec('uptime -p');
+				$uptime = $uptime ? trim($uptime) : 'Indisponible';
+			}
+
+			// Rassembler l'état du serveur
+			$status = [
+				'mysql' => $dataBaseManager->isConnectionActive(),
+				'php_version' => PHP_VERSION,
+				'os' => $os,
+				'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
+				'server_ip' => gethostbyname(gethostname()),
+				'max_execution_time' => ini_get('max_execution_time') . ' secondes',
+				'upload_max_filesize' => ini_get('upload_max_filesize'),
+				'post_max_size' => ini_get('post_max_size'),
+				'response_time' => round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) . ' secondes',
+				'mysql_active_queries' => count($activeQueries),
+				'php_memory_usage' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
+				'open_files' => $openFiles ?? 0,
+				'mysql_version' => $mysqlVersion,
+				'apache_processes' => $apacheProcesses ?? 0,
+				'server_uptime' => $uptime,
+			];
+
 		}
-
-		// Rassembler l'état du serveur
-		$status = [
-			'mysql' => $dataBaseManager->isConnectionActive(),
-			'php_version' => PHP_VERSION,
-			'os' => $os,
-			'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
-			'server_ip' => gethostbyname(gethostname()),
-			'max_execution_time' => ini_get('max_execution_time') . ' secondes',
-			'upload_max_filesize' => ini_get('upload_max_filesize'),
-			'post_max_size' => ini_get('post_max_size'),
-			'response_time' => round(microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'], 2) . ' secondes',
-			'mysql_active_queries' => count($activeQueries),
-			'php_memory_usage' => round(memory_get_usage(true) / 1024 / 1024, 2) . ' MB',
-			'open_files' => $openFiles ?? 0,
-			'mysql_version' => $mysqlVersion,
-			'apache_processes' => $apacheProcesses ?? 0,
-			'server_uptime' => $uptime,
-		];
+		else
+		{
+			$status = [];
+		}
 
 		// Rendu de la vue
 		echo $this->render('admin/dashboard.twig', [

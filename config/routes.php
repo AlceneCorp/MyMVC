@@ -112,7 +112,7 @@ return
 				'params' => [],
 				'icon' => '<i class="fas fa-sign-out-alt me-3 fs-4"></i>',
 				'perm' => '',
-				'inMenu' => true,
+				'inMenu' => SessionsManager::has('USERS'),
 				'children' => []
 			]
 		]
