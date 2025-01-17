@@ -165,7 +165,8 @@ class DatabaseManager
         }
 
         // Ajouter WHERE si nécessaire
-        if (!empty($where)) {
+        if (!empty($where)) 
+        {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
@@ -199,7 +200,8 @@ class DatabaseManager
     {
         try
         {
-            $columns = implode(', ', array_map(function($column) {
+            $columns = implode(', ', array_map(function($column) 
+            {
                 return "`$column`"; // Utilisation des backticks pour chaque colonne
             }, array_keys($data)));
             $placeholders = ':' . implode(', :', array_keys($data));
@@ -368,11 +370,16 @@ class DatabaseManager
         // Détecter le SGBD utilisé pour ajuster la requête
         $driver = $this->pdo->getAttribute(PDO::ATTR_DRIVER_NAME);
     
-        if ($driver === 'mysql') {
+        if ($driver === 'mysql') 
+        {
             $sql = 'SHOW TABLES';
-        } elseif ($driver === 'pgsql') {
+        } 
+        elseif ($driver === 'pgsql') 
+        {
             $sql = "SELECT table_name FROM information_schema.tables WHERE table_schema = 'public';";
-        } else {
+        } 
+        else 
+        {
             throw new Exception("Ce SGBD n'est pas supporté pour récupérer les tables.");
         }
 
@@ -399,7 +406,8 @@ class DatabaseManager
         $sql = "DESCRIBE $table";
         $result = $this->pdo->query($sql);
 
-        foreach ($result as $column) {
+        foreach ($result as $column) 
+        {
             // Vérifier si la colonne est une clé primaire et si elle est auto-incrémentée
             if ($column['Key'] === 'PRI' && strpos($column['Extra'], 'auto_increment') !== false) {
                 return $column['Field'];
@@ -456,11 +464,14 @@ class DatabaseManager
      */
     public function isConnectionActive(): bool
     {
-        try {
+        try 
+        {
             // Utilise rawQuery pour exécuter une requête simple
             $this->rawQuery('SELECT 1');
             return true;
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) 
+        {
             // Si une exception est levée, la connexion est inactive
             return false;
         }
@@ -470,11 +481,16 @@ class DatabaseManager
     private function getPropertyType(string $dbType): string
     {
         // Pour simplifier, voici un mappage basique. Vous pouvez ajouter des types plus spécifiques selon vos besoins.
-        if (strpos($dbType, 'int') !== false) {
+        if (strpos($dbType, 'int') !== false) 
+        {
             return 'int';
-        } elseif (strpos($dbType, 'varchar') !== false || strpos($dbType, 'text') !== false) {
+        } 
+        elseif (strpos($dbType, 'varchar') !== false || strpos($dbType, 'text') !== false) 
+        {
             return 'string';
-        } elseif (strpos($dbType, 'datetime') !== false) {
+        } 
+        elseif (strpos($dbType, 'datetime') !== false) 
+        {
             return 'string'; // Vous pouvez utiliser DateTime ici, si nécessaire
         }
 
@@ -490,7 +506,8 @@ class DatabaseManager
 
         // Charger le template du modèle
         $templatePath = '../templates/model_template.php';
-        if (!file_exists($templatePath)) {
+        if (!file_exists($templatePath)) 
+        {
             throw new Exception("Le fichier de template '$templatePath' n'existe pas.");
         }
 
@@ -501,14 +518,16 @@ class DatabaseManager
 
         // Remplir les propriétés de la classe (déclaration des variables privées)
         $properties = '';
-        foreach ($columns as $column) {
+        foreach ($columns as $column) 
+        {
             $propertyName = $column['name'];
             $properties .= "    private \${$propertyName};\n";
         }
 
         // Générer les getters et setters pour chaque colonne
         $gettersAndSetters = '';
-        foreach ($columns as $column) {
+        foreach ($columns as $column) 
+        {
             $propertyName = ucfirst($column['name']);
             $type = $this->getPropertyType($column['type']);
         
@@ -530,13 +549,15 @@ class DatabaseManager
 
         // Vérifier si le dossier Models existe et est accessible
         $modelDirectory = '../app/Models';
-        if (!is_dir($modelDirectory)) {
+        if (!is_dir($modelDirectory)) 
+        {
             throw new Exception("Le dossier '$modelDirectory' n'existe pas.");
         }
 
         // Écrire le fichier généré dans le dossier Models
         $filePath = "$modelDirectory/{$className}.php";
-        if (false === file_put_contents($filePath, $classContent)) {
+        if (false === file_put_contents($filePath, $classContent)) 
+        {
             throw new Exception("Impossible de créer le fichier $filePath.");
         }
     }
