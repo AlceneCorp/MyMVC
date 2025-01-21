@@ -39,10 +39,12 @@ class CoreManager
         //Démarrage des sessions
         SessionsManager::startSession();
 
-        //Récupération des Config
+        //Récupération des Config du site
         $fileSetting = include __DIR__ . '/../../config/config.php';
         ConfigManager::init($fileSetting);
 
+        // Charger les configurations des modules
+        self::loadModuleConfigs();
 
         // Détecter le protocole (HTTP ou HTTPS)
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] === 'on') ? "https" : "http";
@@ -80,6 +82,32 @@ class CoreManager
             ini_set('display_startup_errors', 0); // Masquer les erreurs de démarrage
             ini_set('log_errors', 1); // Enregistrer les erreurs dans un fichier de log
             ini_set('error_log', __DIR__ . '/../../logs/php_errors_prod.log'); // Chemin pour les logs d'erreur
+        }
+    }
+
+    private static function loadModuleConfigs(): void
+    {
+        // Chemin vers le dossier des modules
+        $modulesDir = __DIR__ . '/../../app/Modules';
+        $modulesConfig = [];
+
+        // Parcours de chaque module
+        foreach (glob($modulesDir . '/*', GLOB_ONLYDIR) as $moduleDir) {
+            $moduleName = basename($moduleDir);
+            $moduleConfigFile = $moduleDir . '/config/config.php';
+
+            // Si le fichier de configuration du module existe, on l'inclut
+            if (file_exists($moduleConfigFile)) {
+                $moduleConfig = include $moduleConfigFile;
+
+                // Ajouter la configuration du module au tableau global des configurations
+                $modulesConfig = $moduleConfig;
+            }
+        }
+
+        // Ajouter les configurations des modules à la configuration globale
+        if (!empty($modulesConfig)) {
+            ConfigManager::set('modules', $modulesConfig);
         }
     }
 

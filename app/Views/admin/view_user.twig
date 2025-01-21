@@ -1,0 +1,88 @@
+{% extends 'base.twig' %}
+
+{% block title %}Mon Profil{% endblock %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class='row'>
+        {% include 'admin/include/adminMenu.twig' %}
+
+        <main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="text-center mb-4"><i class="fas fa-user me-2"></i> Mon Profil</h1>
+                <div class="d-inline-block rounded-circle overflow-hidden shadow" style="width: 80px; height: 80px;">
+                    <img src="{{ base_url }}{% if profile.PROFILE_PICTURE %}{{ asset(profile.PROFILE_PICTURE) }}{% else %}{{ asset('/images/avatars/noimage.jpg') }}{% endif %}" class="img-fluid" alt="Avatar de {{ user.USERNAME }}" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+            </div>
+
+            <!-- Informations personnelles -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-success text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-id-card"></i> Informations personnelles</h5>
+                    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#personalInfo" aria-expanded="true" aria-controls="personalInfo">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div id="personalInfo" class="collapse show">
+                    <div class="card-body">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-user"></i> Prénom</label>
+                                <p class="form-control-plaintext">{{ profile.FIRST_NAME }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-user"></i> Nom</label>
+                                <p class="form-control-plaintext">{{ profile.LAST_NAME }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-envelope"></i> Email</label>
+                                <p class="form-control-plaintext">{{ profile.EMAIL }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-phone"></i> Numéro de téléphone</label>
+                                <p class="form-control-plaintext">{{ profile.PHONE_NUMBER }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-birthday-cake"></i> Date de naissance</label>
+                                <p class="form-control-plaintext">{{ profile.BIRTHDAY }}</p>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label"><i class="fas fa-venus-mars"></i> Genre</label>
+                                <p class="form-control-plaintext">
+                                    {% if profile.GENDER == 'male' %}Homme{% elseif profile.GENDER == 'female' %}Femme{% elseif profile.GENDER == 'other' %}Autre{% else %}Préfère ne pas dire{% endif %}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informations complémentaires -->
+            <div class="card mb-4 shadow">
+                <div class="card-header bg-info text-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0"><i class="fas fa-info-circle"></i> Informations complémentaires</h5>
+                    <button class="btn btn-sm btn-light" type="button" data-bs-toggle="collapse" data-bs-target="#additionalInfo" aria-expanded="true" aria-controls="additionalInfo">
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                </div>
+
+                <div id="additionalInfo" class="collapse show">
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-map-marker-alt"></i> Adresse</label>
+                            <p class="form-control-plaintext">{{ profile.ADDRESS }}</p>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"><i class="fas fa-quote-left"></i> À propos de moi</label>
+                            <p class="form-control-plaintext">{{ profile.ABOUT_ME }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+    </div>
+</div>
+{% endblock %}

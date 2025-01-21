@@ -32,10 +32,11 @@ class Router
 
         $routesArray = require __DIR__ . '\\..\\..\\config\\routes.php';
 
+        //var_dump(ConfigManager::get('modules'));
 
         foreach ($routesArray as $route) 
         {
-            $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm']);
+            $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm'], $route['inMenu']);
 
             // Vérification des enfants
             if (!empty($route['children'])) 
@@ -44,9 +45,37 @@ class Router
             }
         }
 
-        $pathViews = __DIR__ . '/../Views/';
+        $pathViews = [];
 
+        if(ConfigManager::get('modules'))
+        {
+            //var_dump(ConfigManager::get('modules'));
 
+            foreach(ConfigManager::get('modules') as $key => $module)
+            {
+                //var_dump(ConfigManager::get('modules.' . $key . '.active.value'));
+                if(ConfigManager::get('modules.' . $key . '.active.value'))
+                {
+                    $moduleRoute = require __DIR__ . '\\..\\Modules\\' . $key . '\\config\\routes.php';
+                    $routesArray = array_merge($routesArray, $moduleRoute);
+                    $pathViews[] = __DIR__ . '\\..\\Modules\\' . $key . '\\Views';
+                    foreach($moduleRoute as $route)
+                    {
+                        $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm'], $route['inMenu']);
+
+                        // Vérification des enfants
+                        if (!empty($route['children'])) 
+                        {
+                            $this->addChildRoutes($route['children']);
+                        }
+                    }
+                }  
+            }
+        }
+
+        $pathViews[] = __DIR__ . '/../Views/';
+
+        //var_dump($this->routes);
         // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
         $loader = new FilesystemLoader($pathViews);
         $this->twig = new Environment($loader, [
@@ -74,6 +103,8 @@ class Router
             $key = implode('', $params);
             return ConfigManager::get($key);
         }));
+
+        
     }
 
     /**
@@ -199,10 +230,11 @@ class Router
             $perm = $route['perm'];
 
             // Vérifier si le contrôleur existe
-            if (class_exists($controllerName) && method_exists($controllerName, $methodName)) {
+            if (class_exists($controllerName) && method_exists($controllerName, $methodName)) 
+            {
                 $controller = new $controllerName($this->twig);
 
-                if(ConfigManager::get("SECURITY.maintenance_mode.value") && !CoreManager::checkPerm('', 'perform_maintenance'))
+                if(ConfigManager::get("SECURITY.maintenance_mode.value") && !CoreManager::checkPerm('perform_maintenance'))
                 {
                     $controller->render('maintenance/maintenance.twig');
                 }

@@ -215,5 +215,16 @@ return
 		'icon' => '',
 		'inMenu' => false,
 		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => '/MyMVC/admin/users/view-profil/{user_id}',
+		'controller' => \App\Controllers\AdminController::class,
+		'method' => 'viewUserProfil',
+		'params' => [],
+		'perm' => 'view_other_profiles',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
 	]
 ];

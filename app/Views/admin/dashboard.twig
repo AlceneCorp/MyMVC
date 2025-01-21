@@ -153,7 +153,7 @@
             <div class="row">
                 <!-- Premier graphique -->
                 <div class="col-12">
-                    <div class="card shadow-sm h-100"> <!-- Utilisation de la classe h-100 pour que la carte prenne toute la hauteur disponible -->
+                    <div class="card shadow-sm"> <!-- Utilisation de la classe h-100 pour que la carte prenne toute la hauteur disponible -->
                         <div class="card-header bg-dark text-white">
                             <h5><i class="fas fa-chart-bar me-2"></i> Visiteurs par mois sur {{ date | date('Y') }} </h5>
                         </div>
@@ -165,7 +165,7 @@
 
                 <!-- Deuxième graphique -->
                 <div class="col-12">
-                    <div class="card shadow-sm h-100"> <!-- Utilisation de la classe h-100 pour que la carte prenne toute la hauteur disponible -->
+                    <div class="card shadow-sm"> <!-- Utilisation de la classe h-100 pour que la carte prenne toute la hauteur disponible -->
                         <div class="card-header bg-dark text-white">
                             <h5><i class="fas fa-chart-bar me-2"></i> Pages visitées par mois sur {{ date | date('Y') }}</h5>
                         </div>
@@ -180,8 +180,6 @@
 </div>
 {% endblock %}
 
-
-
 {% block jquery %}
 <!-- Inclure Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -193,7 +191,8 @@ $(document).ready(function()
     $.ajax({
         url: '{{base_url}}/admin/ajax/dashboard',
         type: 'GET',
-        success: function(response) {
+        success: function(response) 
+        {
             var data = JSON.parse(response);
 
             // Premier graphique - Nombre de visiteurs par mois
@@ -219,7 +218,8 @@ $(document).ready(function()
             new Chart(ctx1, 
             {
                 type: 'bar',
-                data: {
+                data: 
+                {
                     labels: data.visitor_graph.months,
                     datasets: [{
                         label: 'Visiteurs',
@@ -229,10 +229,12 @@ $(document).ready(function()
                         borderWidth: 1
                     }]
                 },
-                options: {
+                options: 
+                {
                     responsive: true,
                     maintainAspectRatio: false,
-                    scales: {
+                    scales: 
+                    {
                         y: {
                             beginAtZero: true
                         }

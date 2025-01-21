@@ -22,7 +22,8 @@ class UserController extends Controller
 
         if(isset($_POST))
         {
-            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') 
+            {
                 $userId = $_POST['USERS_ID'] ?? $user_id;
 
                 $uploadDir = '\\images\\avatars\\' . $userId . '\\';
@@ -63,7 +64,7 @@ class UserController extends Controller
                     // Vérifications
                     if (in_array(strtolower($fileExtension), $allowedExtensions) && $file['size'] <= $maxFileSize) 
                     {
-                        $fileName = $file['name'] . '.' . $fileExtension;
+                        $fileName = $file['name'];
                         $uploadPath = $uploadDir . $fileName;
                         // Déplacer le fichier
                         if (move_uploaded_file($file['tmp_name'], __DIR__ . '\\..\\..\\public\\assets\\' . $uploadPath)) 
@@ -117,5 +118,4 @@ class UserController extends Controller
             'profile' => $usersProfileManager->findOneUsersProfile(['USERS_ID' => $user_id]),
         ]);
     }
-
 }

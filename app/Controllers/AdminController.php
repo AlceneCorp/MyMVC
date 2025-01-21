@@ -12,6 +12,7 @@ use App\Managers\SettingsCategoriesManager;
 use App\Managers\SettingsManager;
 use App\Managers\LogsManager;
 use App\Managers\UsersManager;
+use App\Managers\UsersProfileManager;
 use App\Managers\PermissionsManager;
 use App\Managers\UsersPermissionsManager;
 
@@ -337,5 +338,16 @@ class AdminController extends Controller
 		);
 
 		header('Location:' . URL . '/admin/users');
+	}
+
+	public function viewUserProfil($user_id)
+	{
+		$usersManager = new UsersManager();
+		$usersProfileManager = new UsersProfileManager();
+		
+		$this->render('admin/view_user.twig', [
+            'user' => $usersManager->findOneUsers(['ID' => $user_id]),
+            'profile' => $usersProfileManager->findOneUsersProfile(['USERS_ID' => $user_id]),
+        ]);
 	}
 }
