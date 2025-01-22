@@ -19,7 +19,7 @@ return array (
     ),
     'active' => 
     array (
-      'value' => true,
+      'value' => false,
       'type' => 'boolean',
       'description' => 'Indique si le module Test est actif ou non.',
       'readonly' => false,
