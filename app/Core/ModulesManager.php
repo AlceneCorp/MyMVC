@@ -25,7 +25,9 @@ class ModulesManager
             if (file_exists($configPath)) {
                 $config = require $configPath;
                 $modules[] = $config;
-            } else {
+            } 
+            else 
+            {
                 // Ajouter un module avec une configuration par défaut s'il n'a pas de config
                 $modules[] = [
                     'name' => [
