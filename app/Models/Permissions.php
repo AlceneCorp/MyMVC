@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Permissions
 {
+    //Variables Membres
     private $ID;
     private $NAME;
     private $FULLNAME;
@@ -11,11 +12,13 @@ class Permissions
     private $ORDERS;
 
 
+    //Constructeur
     public function __construct(array $param_Data)
     {
         $this->hydrate($param_Data);
     }
 
+    //Methode d'hydratation pour remplir les objets php
     public function hydrate(array $param_Data)
     {
         foreach ($param_Data as $key => $value) 
@@ -28,6 +31,7 @@ class Permissions
         }
     }
 
+    //Accesseurs
 
     public function getID()
     {

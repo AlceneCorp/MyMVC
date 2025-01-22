@@ -18,8 +18,6 @@ class Router
 {
     private $routes;
 
-    protected $twig;
-
     private $logsManager;
     private $visitorManager;
 
@@ -75,29 +73,24 @@ class Router
 
         $pathViews[] = __DIR__ . '/../Views/';
 
-        //var_dump($this->routes);
-        // Initialiser le chargeur Twig pour charger les templates à partir du répertoire des vues
-        $loader = new FilesystemLoader($pathViews);
-        $this->twig = new Environment($loader, [
-            'debug' => ConfigManager::get("SITE.twig_debug.value"),      
-            'cache' => false
-        ]);
+        CoreManager::initTwig($pathViews);
+        
 
-        $this->twig->addExtension(new \Twig\Extension\DebugExtension());
-        $this->twig->addGlobal('base_url', $this->getBaseUrl());
-        $this->twig->addGlobal('is_login', SessionsManager::get('USERS') ?? null);
+        CoreManager::getTwig()->addExtension(new \Twig\Extension\DebugExtension());
+        CoreManager::getTwig()->addGlobal('base_url', $this->getBaseUrl());
+        CoreManager::getTwig()->addGlobal('is_login', SessionsManager::get('USERS') ?? null);
 
         // Génération du menu à partir des routes
         $menuGenerate = $this->generateMenu($routesArray);
 
-        $this->twig->addGlobal('menu', $menuGenerate);
+        CoreManager::getTwig()->addGlobal('menu', $menuGenerate);
 
         // Ajouter la fonction asset
-        $this->twig->addFunction(new TwigFunction('asset', fn($path) => '/assets/' . ltrim($path, '/')));
+        CoreManager::getTwig()->addFunction(new TwigFunction('asset', fn($path) => '/assets/' . ltrim($path, '/')));
 
-        $this->twig->addFunction(new TwigFunction('checkPerm', fn($param1) => CoreManager::checkPerm($param1)));
+        CoreManager::getTwig()->addFunction(new TwigFunction('checkPerm', fn($param1) => CoreManager::checkPerm($param1)));
 
-        $this->twig->addFunction(new TwigFunction('config', function (...$params) 
+        CoreManager::getTwig()->addFunction(new TwigFunction('config', function (...$params) 
         {
             // Concaténer tous les paramètres en une seule chaîne
             $key = implode('', $params);
@@ -232,7 +225,7 @@ class Router
             // Vérifier si le contrôleur existe
             if (class_exists($controllerName) && method_exists($controllerName, $methodName)) 
             {
-                $controller = new $controllerName($this->twig);
+                $controller = new $controllerName(CoreManager::getTwig());
 
                 if(ConfigManager::get("SECURITY.maintenance_mode.value") && !CoreManager::checkPerm('perform_maintenance'))
                 {
@@ -269,7 +262,7 @@ class Router
             }
 
             // Contrôleur ou méthode introuvable
-            $controller = new Controller($this->twig);
+            $controller = new Controller(CoreManager::getTwig());
             $controller->render('error/error.twig', ['error_message' => ErrorManager::getErrorMessage(500), 'error_code' => 500]);
             http_response_code(500);
 
@@ -280,7 +273,7 @@ class Router
             CoreManager::addLogs('ERROR', 'APPLICATION', 'Route non trouvée pour ' . $requestUri);
 
             // Route non trouvée
-            $controller = new Controller($this->twig);
+            $controller = new Controller(CoreManager::getTwig());
             $controller->render('error/error.twig', ['error_message' => ErrorManager::getErrorMessage(404), 'error_code' => 404]);
             http_response_code(404);
         }

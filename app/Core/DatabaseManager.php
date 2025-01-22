@@ -16,6 +16,19 @@ class DatabaseManager
      */
     private PDO $pdo;
 
+    protected array $coreTables = 
+    [
+        'contacts',
+        'logs',
+        'permissions',
+        'settings',
+        'settings_categories',
+        'users',
+        'users_permissions',
+        'users_profile',
+        'visitor'
+    ];
+
     /**
      * Constructeur du DatabaseManager.
      *
@@ -429,8 +442,15 @@ class DatabaseManager
      */
     public function rawQuery(string $sql, array $parameters = [])
     {
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute($parameters);
+        try
+        {
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute($parameters);
+        }
+        catch (\PDOException $e)
+        {
+
+        }
         return $statement->fetchAll(PDO::FETCH_ASSOC);
     }
 
@@ -499,10 +519,11 @@ class DatabaseManager
     }
 
 
-    public function generateModelClass(string $tableName): void
+    public function generateModelClass(string $tableName, $namespace = 'App\\Models', $modelDirectory = "..\\app\\Models\\"): void
     {
         // Récupérer les colonnes de la table
         $columns = $this->getColumns($tableName);
+
 
         // Charger le template du modèle
         $templatePath = '../templates/model_template.php';
@@ -542,62 +563,60 @@ class DatabaseManager
 
         // Remplacer les variables dans le template par les données générées
         $classContent = str_replace(
-            ['{{ClassName}}', '{{Properties}}', '{{GettersAndSetters}}'],
-            [$className, $properties, $gettersAndSetters],
+            ['{{Namespace}}', '{{ClassName}}', '{{Properties}}', '{{GettersAndSetters}}'],
+            [$namespace, $className, $properties, $gettersAndSetters],
             $templateContent
         );
 
         // Vérifier si le dossier Models existe et est accessible
-        $modelDirectory = '../app/Models';
         if (!is_dir($modelDirectory)) 
         {
             throw new Exception("Le dossier '$modelDirectory' n'existe pas.");
         }
 
         // Écrire le fichier généré dans le dossier Models
-        $filePath = "$modelDirectory/{$className}.php";
+        $filePath = "{$modelDirectory}{$className}.php";
         if (false === file_put_contents($filePath, $classContent)) 
         {
             throw new Exception("Impossible de créer le fichier $filePath.");
         }
     }
 
-    public function generateManagersClass(): void
+    public function generateManagersClass(string $tableName, $useObject = 'App\\Models\\', $namespace = 'App\\Managers', $path = '..\\app\\Managers\\'): void
     {
         // Récupérer les tables
-        $tables = $this->getAllTables();
+        $table = $tableName;
 
-        foreach ($tables as $table) 
+        // Créer le nom de l'objet à partir de la table
+        $objectName = ucfirst($this->camelize($table));
+
+        // Générer le contenu du manager
+        $managerContent = $this->generateManagerContent($objectName, $table, $namespace, $useObject);
+
+        // Définir le chemin du fichier manager
+        $managerPath = "{$path}{$objectName}Manager.php";
+
+        // Créer le dossier si nécessaire
+        if (!is_dir($path)) 
         {
-            // Créer le nom de l'objet à partir de la table
-            $objectName = ucfirst($this->camelize($table));
-
-            // Générer le contenu du manager
-            $managerContent = $this->generateManagerContent($objectName, $table);
-
-            // Définir le chemin du fichier manager
-            $managerPath = "../app/Managers/{$objectName}Manager.php";
-
-            // Créer le dossier si nécessaire
-            if (!is_dir('../app/Managers')) 
-            {
-                mkdir('../app/Managers', 0777, true);
-            }
-
-            // Écrire le fichier
-            file_put_contents($managerPath, $managerContent);
+            mkdir($path, 0777, true);
         }
+
+        // Écrire le fichier
+        file_put_contents($managerPath, $managerContent);
+        
     }
 
-    private function generateManagerContent(string $objectName, string $tableName): string
+    private function generateManagerContent(string $objectName, string $tableName, string $namespace, string $useObject): string
     {
+
         // Charger le template du manager
         $template = file_get_contents('../templates/managers_template.php');
 
         // Remplacer les variables dans le template par les valeurs spécifiques à la table
         $managerContent = str_replace(
-            ['{{ObjectName}}', '{{TableName}}'],
-            [$objectName, $tableName],
+            ['{{ObjectName}}', '{{TableName}}', '{{Namespace}}', '{{Useobject}}'],
+            [$objectName, $tableName, $namespace, $useObject],
             $template
         );
 

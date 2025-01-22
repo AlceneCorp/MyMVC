@@ -4,6 +4,7 @@ namespace App\Models;
 
 class UsersProfile
 {
+    //Variables Membres
     private $ID;
     private $USERS_ID;
     private $FIRST_NAME;
@@ -17,11 +18,13 @@ class UsersProfile
     private $ABOUT_ME;
 
 
+    //Constructeur
     public function __construct(array $param_Data)
     {
         $this->hydrate($param_Data);
     }
 
+    //Methode d'hydratation pour remplir les objets php
     public function hydrate(array $param_Data)
     {
         foreach ($param_Data as $key => $value) 
@@ -34,6 +37,7 @@ class UsersProfile
         }
     }
 
+    //Accesseurs
 
     public function getID()
     {

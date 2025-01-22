@@ -5,7 +5,7 @@ return
 	[
 		'name' => 'Test',
 		'url' => '/MyMVC/test',
-		'controller' => \App\Controllers\TestController::class,
+		'controller' => \App\Modules\Test\Controllers\TestController::class,
 		'method' => 'home',
 		'params' => [],
 		'perm' => '',

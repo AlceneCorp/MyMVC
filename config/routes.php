@@ -72,7 +72,7 @@ return
 				'children' => []
 			],
 			[
-				'name' => 'Gestion des utilisateurs',
+				'name' => 'Utilisateurs',
 				'url' => '/MyMVC/admin/users',
 				'controller' => \App\Controllers\AdminController::class,
 				'method' => 'users',
@@ -80,6 +80,17 @@ return
 				'perm' => 'manage_user_groups',
 				'icon' => '<i class="fas fa-users me-3 fs-4"></i>',
 				'inMenu' => CoreManager::checkPerm('manage_user_groups'),
+				'children' => []
+			],
+			[
+				'name' => 'Modules',
+				'url' => '/MyMVC/admin/mods',
+				'controller' => \App\Controllers\AdminController::class,
+				'method' => 'mods',
+				'params' => [],
+				'perm' => 'manage_plugins',
+				'icon' => '<i class="fas fa-puzzle-piece me-3 fs-4"></i>',
+				'inMenu' => CoreManager::checkPerm('manage_plugins'),
 				'children' => []
 			],
 			[

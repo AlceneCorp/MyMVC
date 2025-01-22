@@ -2,6 +2,9 @@
 
 namespace App\Core;
 
+use Twig\Environment;
+use Twig\Loader\FilesystemLoader;
+use Twig\TwigFunction;
 
 use App\Core\SessionsManager;
 use App\Core\ConfigManager;
@@ -16,6 +19,22 @@ use App\Managers\UsersPermissionsManager;
 
 class CoreManager
 {
+    private static $twig;
+
+    public static function initTwig(array $pathViews)
+    {
+        $loader = new FilesystemLoader($pathViews);
+        self::$twig = new Environment($loader, [
+            'debug' => ConfigManager::get("SITE.twig_debug.value"),      
+            'cache' => false
+        ]);
+    }
+
+    public static function getTwig()
+    {
+        return self::$twig;
+    }
+
 	public static function addLogs($param_Level, $param_Category, $param_Message)
     {
 	    $logManager = new LogsManager();
@@ -61,12 +80,7 @@ class CoreManager
         //var_dump(ConfigManager::getAll());
         if(ConfigManager::get("SITE.debug.value"))
         {
-            // Environnement de développement
-            error_reporting(E_ALL); // Signale toutes les erreurs, avertissements et notices
-            ini_set('display_errors', 1); // Affiche les erreurs à l'écran
-            ini_set('display_startup_errors', 1); // Affiche les erreurs lors du démarrage de PHP
-            ini_set('log_errors', 1); // Active l'enregistrement des erreurs dans les logs
-            ini_set('error_log', __DIR__ . '/../../logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
+            
 
 
             $tablegen = new TablesGenerator();
@@ -83,6 +97,13 @@ class CoreManager
             ini_set('log_errors', 1); // Enregistrer les erreurs dans un fichier de log
             ini_set('error_log', __DIR__ . '/../../logs/php_errors_prod.log'); // Chemin pour les logs d'erreur
         }
+
+        // Environnement de développement
+            error_reporting(E_ALL); // Signale toutes les erreurs, avertissements et notices
+            ini_set('display_errors', 1); // Affiche les erreurs à l'écran
+            ini_set('display_startup_errors', 1); // Affiche les erreurs lors du démarrage de PHP
+            ini_set('log_errors', 1); // Active l'enregistrement des erreurs dans les logs
+            ini_set('error_log', __DIR__ . '/../../logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
     }
 
     private static function loadModuleConfigs(): void

@@ -8,7 +8,7 @@ class TablesGenerator extends DatabaseManager
 {
 	public function generateModels() : void
 	{
-		foreach(parent::getAllTables() as $table)
+		foreach($this->coreTables as $table)
 		{
 			parent::generateModelClass($table);
 		}
@@ -16,7 +16,10 @@ class TablesGenerator extends DatabaseManager
 
 	public function generateManagers() : void
 	{
-		parent::generateManagersClass();
+		foreach($this->coreTables as $table)
+		{
+			parent::generateManagersClass($table);
+		}
 	}
 
 	public function generateAll() : void

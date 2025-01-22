@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Settings
 {
+    //Variables Membres
     private $ID;
     private $NAME;
     private $VALUE;
@@ -15,11 +16,13 @@ class Settings
     private $UPDATED_AT;
 
 
+    //Constructeur
     public function __construct(array $param_Data)
     {
         $this->hydrate($param_Data);
     }
 
+    //Methode d'hydratation pour remplir les objets php
     public function hydrate(array $param_Data)
     {
         foreach ($param_Data as $key => $value) 
@@ -32,6 +35,7 @@ class Settings
         }
     }
 
+    //Accesseurs
 
     public function getID()
     {

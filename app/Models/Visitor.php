@@ -4,17 +4,20 @@ namespace App\Models;
 
 class Visitor
 {
+    //Variables Membres
     private $ID;
     private $VISIT_DATE;
     private $PAGE_VISITED;
     private $IP_ADDRESS;
 
 
+    //Constructeur
     public function __construct(array $param_Data)
     {
         $this->hydrate($param_Data);
     }
 
+    //Methode d'hydratation pour remplir les objets php
     public function hydrate(array $param_Data)
     {
         foreach ($param_Data as $key => $value) 
@@ -27,6 +30,7 @@ class Visitor
         }
     }
 
+    //Accesseurs
 
     public function getID()
     {

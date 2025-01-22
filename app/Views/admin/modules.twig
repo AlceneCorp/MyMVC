@@ -1,0 +1,60 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+
+<div class="container-fluid">
+    <div class="row">
+        
+        {% include 'admin/include/adminMenu.twig' %}
+
+        <!-- Main Content -->
+        <main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
+            <!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-puzzle-piece me-2"></i> Modules</h1>
+            </div>
+
+            <div class="table-responsive">
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th scope="col">Nom du Module</th>
+                            <th scope="col">Version</th>
+                            <th scope="col">Statut</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for moduleName, moduleData in modules[0] %}
+                        <tr>
+                            <td>{{ moduleData.name.value }}</td>
+                            <td>{{ moduleData.version.value }}</td>
+                            <td>
+                                <span class="badge {{ moduleData.active.value ? 'bg-success' : 'bg-danger' }}">
+                                    {{ moduleData.active.value ? 'Actif' : 'Inactif' }}
+                                </span>
+                            </td>
+                            <td>
+                                <form method="post" action="{{ path_to_toggle_module }}" class="d-inline">
+                                    <input type="hidden" name="module_name" value="{{ moduleName }}">
+                                    <input type="hidden" name="module_status" value="{{ moduleData.active.value ? '0' : '1' }}">
+                                    <button type="submit" class="btn btn-sm {{ moduleData.active.value ? 'btn-danger' : 'btn-success' }}">
+                                        {{ moduleData.active.value ? 'Désactiver' : 'Activer' }}
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="4" class="text-center">Aucun module trouvé.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+        </main>
+
+    </div>
+</div>
+{% endblock %}

@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Logs
 {
+    //Variables Membres
     private $ID;
     private $LEVEL;
     private $CATEGORY;
@@ -15,11 +16,13 @@ class Logs
     private $URI;
 
 
+    //Constructeur
     public function __construct(array $param_Data)
     {
         $this->hydrate($param_Data);
     }
 
+    //Methode d'hydratation pour remplir les objets php
     public function hydrate(array $param_Data)
     {
         foreach ($param_Data as $key => $value) 
@@ -32,6 +35,7 @@ class Logs
         }
     }
 
+    //Accesseurs
 
     public function getID()
     {

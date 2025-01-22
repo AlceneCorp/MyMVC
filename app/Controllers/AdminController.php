@@ -7,6 +7,7 @@ use App\Core\Controller;
 use App\Core\ConfigManager;
 use App\Core\SessionsManager;
 use App\Core\DatabaseManager;
+use App\Core\ModulesManager;
 
 use App\Managers\SettingsCategoriesManager;
 use App\Managers\SettingsManager;
@@ -349,5 +350,21 @@ class AdminController extends Controller
             'user' => $usersManager->findOneUsers(['ID' => $user_id]),
             'profile' => $usersProfileManager->findOneUsersProfile(['USERS_ID' => $user_id]),
         ]);
+	}
+
+	public function mods()
+	{
+
+		if($_POST)
+		{
+			if(isset($_POST['module_name']) && isset($_POST['module_status']))
+			{
+				ModulesManager::setModuleActive($_POST['module_name'], $_POST['module_status']);
+			}
+		}
+
+		$this->render('admin/modules.twig', [
+			'modules' => ModulesManager::detectModules()
+		]);
 	}
 }
