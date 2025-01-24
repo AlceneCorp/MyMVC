@@ -180,4 +180,34 @@ class CoreManager
             throw new \Exception(ErrorManager::getErrorMessage(50000));
 		}
 	}
+
+    public static function encrypt($param_Data)
+	{
+		$Data = $param_Data;
+		$Cypher = ConfigManager::get('SECURITY.encryption_cypher.value');
+        $Key = ConfigManager::get('SECURITY.encryption_key.value');
+
+		$iv_Length = openssl_cipher_iv_length($Cypher);
+		$Option = 0;
+		
+		$Encryption_iv = '1234567891011121';
+		
+		
+		return openssl_encrypt($Data, $Cypher, $Key, $Option, $Encryption_iv);
+	}
+
+    public static function Decrypt($param_Data)
+	{
+		$Data = $param_Data;
+		$Cypher = ConfigManager::get('SECURITY.encryption_cypher.value');
+        $Key = ConfigManager::get('SECURITY.encryption_key.value');
+
+		$iv_Length = openssl_cipher_iv_length($Cypher);
+		$Option = 0;
+		
+		$Decryption_iv = '1234567891011121';
+		
+		
+		return openssl_decrypt($Data, $Cypher, $Key, $Option, $Decryption_iv);
+	}
 }

@@ -10,27 +10,25 @@ class TestController extends Controller
 {
 	private array $tables = 
 	[
-		'Test'
-	];
-
-	public function install()
-	{
-		$databaseManager = new DatabaseManager();
-		$query = "
-			CREATE TABLE test (
+		'Test' => "CREATE TABLE test (
 				id INT AUTO_INCREMENT PRIMARY KEY,
 				name VARCHAR(100) NOT NULL,
 				email VARCHAR(100) NOT NULL UNIQUE,
 				created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-			)
-		";
+			)"
+	];
 
-		$databaseManager->rawQuery($query);
+	private $moduleName = "Test";
 
-		foreach($this->tables as $table)
+	public function install()
+	{
+		$databaseManager = new DatabaseManager();
+		
+		foreach($this->tables as $table => $req)
 		{
-			$databaseManager->generateModelClass($table, 'App\\Modules\\Test\\Models', '..\\app\\Modules\\Test\\Models\\');
-			$databaseManager->generateManagersClass($table, 'App\\Modules\\Test\\', 'App\\Modules\\Test\\Managers', '..\\app\\Modules\\Test\\Managers\\');
+			$databaseManager->rawQuery($req);
+			$databaseManager->generateModelClass($table, "App\\Modules\\{{$this->moduleName}}\\Models", "..\\app\\Modules\\{{$this->moduleName}}\\Models\\");
+			$databaseManager->generateManagersClass($table, "App\\Modules\\{{$this->moduleName}}\\", "App\\Modules\\{{$this->moduleName}}\\Managers", "..\\app\\Modules\\{{$this->moduleName}}\\Managers\\");
 		}
 	}
 

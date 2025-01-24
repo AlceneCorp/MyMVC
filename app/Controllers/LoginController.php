@@ -94,6 +94,7 @@ class LoginController extends Controller
                              $usersManager = new UsersManager();
                              $userProfileManager = new UsersProfileManager();
                              $usersPermissionsManager = new UsersPermissionsManager();
+                             $permissionManager = new PermissionsManager();
 
                              if(!$usersManager->findOneUsers(['USERNAME' => $username]))
                              {
@@ -106,9 +107,12 @@ class LoginController extends Controller
                                      'USERS_ID' => $user_id,
                                      'EMAIL' => $email
                                  ]);
+                                 
 
-                                 //Ajout de la permission 'Modification de son propre profil' à l'inscription
-                                 $usersPermissionsManager->addUsersPermissions(['USERS_ID' => $user_id, 'PERMISSIONS_ID' => 21]);
+                                 foreach($permissionManager->findAllPermissions(['AUTO_ATTRIBUTE' => 1]) as $permision)
+                                 {
+                                    $usersPermissionsManager->addUsersPermissions(['USERS_ID' => $user_id, 'PERMISSIONS_ID' => $permision->getID()]);
+                                 }
 
                                  CoreManager::addLogs('INFO', 'USERS', 'Le compte de ' . $username . ' vient d\'être créé.');
                                  $success = 'Votre compte a été créé avec succès. <a class="text-decoration-none text-primary fw-bold ms-1" href="'.URL.'/login">Connectez-vous.</a>';

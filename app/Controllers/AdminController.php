@@ -110,13 +110,13 @@ class AdminController extends Controller
 		]);
 	}
 
-
 	public function users($page = 1)
 	{
 		$usersPerPages = ConfigManager::get('SECURITY.usersPerPages.value');
 		$offset = ($page - 1) * $usersPerPages;
 
-		if ($page < 1) {
+		if ($page < 1) 
+		{
 			$page = 1; // Redirige vers la première page si la page est inférieure à 1
 		}
 

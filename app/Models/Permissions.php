@@ -10,6 +10,7 @@ class Permissions
     private $FULLNAME;
     private $DESCRIPTION;
     private $ORDERS;
+    private $AUTO_ATTRIBUTE;
 
 
     //Constructeur
@@ -81,6 +82,16 @@ class Permissions
     public function setORDERS($ORDERS)
     {
         $this->ORDERS = $ORDERS;
+    }
+
+    public function getAUTO_ATTRIBUTE()
+    {
+        return $this->AUTO_ATTRIBUTE;
+    }
+
+    public function setAUTO_ATTRIBUTE($AUTO_ATTRIBUTE)
+    {
+        $this->AUTO_ATTRIBUTE = $AUTO_ATTRIBUTE;
     }
 
 }

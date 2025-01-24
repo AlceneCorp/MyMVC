@@ -25,29 +25,31 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for moduleName, moduleData in modules[0] %}
-                        <tr>
-                            <td>{{ moduleData.name.value }}</td>
-                            <td>{{ moduleData.version.value }}</td>
-                            <td>
-                                <span class="badge {{ moduleData.active.value ? 'bg-success' : 'bg-danger' }}">
-                                    {{ moduleData.active.value ? 'Actif' : 'Inactif' }}
-                                </span>
-                            </td>
-                            <td>
-                                <form method="post" action="{{ path_to_toggle_module }}" class="d-inline">
-                                    <input type="hidden" name="module_name" value="{{ moduleName }}">
-                                    <input type="hidden" name="module_status" value="{{ moduleData.active.value ? '0' : '1' }}">
-                                    <button type="submit" class="btn btn-sm {{ moduleData.active.value ? 'btn-danger' : 'btn-success' }}">
-                                        {{ moduleData.active.value ? 'Désactiver' : 'Activer' }}
-                                    </button>
-                                </form>
-                            </td>
-                        </tr>
-                        {% else %}
-                        <tr>
-                            <td colspan="4" class="text-center">Aucun module trouvé.</td>
-                        </tr>
+                        {% for module in modules %}
+                            {% for moduleName, moduleData in module %}
+                            <tr>
+                                <td>{{ moduleData.name.value }}</td>
+                                <td>{{ moduleData.version.value }}</td>
+                                <td>
+                                    <span class="badge {{ moduleData.active.value ? 'bg-success' : 'bg-danger' }}">
+                                        {{ moduleData.active.value ? 'Actif' : 'Inactif' }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <form method="post" action="{{ path_to_toggle_module }}" class="d-inline">
+                                        <input type="hidden" name="module_name" value="{{ moduleName }}">
+                                        <input type="hidden" name="module_status" value="{{ moduleData.active.value ? '0' : '1' }}">
+                                        <button type="submit" class="btn btn-sm {{ moduleData.active.value ? 'btn-danger' : 'btn-success' }}">
+                                            {{ moduleData.active.value ? 'Désactiver' : 'Activer' }}
+                                        </button>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="4" class="text-center">Aucun module trouvé.</td>
+                            </tr>
+                            {% endfor %}
                         {% endfor %}
                     </tbody>
                 </table>

@@ -22,27 +22,10 @@ class ModulesManager
             $configPath = $moduleDir . '/config/config.php';
 
             // Charger la configuration si le fichier existe
-            if (file_exists($configPath)) {
+            if (file_exists($configPath)) 
+            {
                 $config = require $configPath;
                 $modules[] = $config;
-            } 
-            else 
-            {
-                // Ajouter un module avec une configuration par défaut s'il n'a pas de config
-                $modules[] = [
-                    'name' => [
-                        'value' => $moduleName,
-                        'type' => 'text',
-                        'description' => 'Module sans configuration.',
-                        'readonly' => true
-                    ],
-                    'active' => [
-                        'value' => false,
-                        'type' => 'boolean',
-                        'description' => 'Statut par défaut du module.',
-                        'readonly' => false
-                    ]
-                ];
             }
         }
 

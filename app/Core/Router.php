@@ -97,7 +97,8 @@ class Router
             return ConfigManager::get($key);
         }));
 
-        
+        CoreManager::getTwig()->addFunction(new TwigFunction('encrypt', fn($data) => CoreManager::encrypt($data)));
+        CoreManager::getTwig()->addFunction(new TwigFunction('decrypt', fn($data) => CoreManager::decrypt($data)));
     }
 
     /**
