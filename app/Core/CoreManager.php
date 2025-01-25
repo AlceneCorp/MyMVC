@@ -80,8 +80,12 @@ class CoreManager
         //var_dump(ConfigManager::getAll());
         if(ConfigManager::get("SITE.debug.value"))
         {
-            
-
+            // Environnement de développement
+            error_reporting(E_ALL); // Signale toutes les erreurs, avertissements et notices
+            ini_set('display_errors', 1); // Affiche les erreurs à l'écran
+            ini_set('display_startup_errors', 1); // Affiche les erreurs lors du démarrage de PHP
+            ini_set('log_errors', 1); // Active l'enregistrement des erreurs dans les logs
+            ini_set('error_log', __DIR__ . '/../../logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
 
             $tablegen = new TablesGenerator();
             $tablegen->generateAll();
@@ -97,13 +101,6 @@ class CoreManager
             ini_set('log_errors', 1); // Enregistrer les erreurs dans un fichier de log
             ini_set('error_log', __DIR__ . '/../../logs/php_errors_prod.log'); // Chemin pour les logs d'erreur
         }
-
-        // Environnement de développement
-            error_reporting(E_ALL); // Signale toutes les erreurs, avertissements et notices
-            ini_set('display_errors', 1); // Affiche les erreurs à l'écran
-            ini_set('display_startup_errors', 1); // Affiche les erreurs lors du démarrage de PHP
-            ini_set('log_errors', 1); // Active l'enregistrement des erreurs dans les logs
-            ini_set('error_log', __DIR__ . '/../../logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
     }
 
     private static function loadModuleConfigs(): void
@@ -113,7 +110,8 @@ class CoreManager
         $modulesConfig = [];
 
         // Parcours de chaque module
-        foreach (glob($modulesDir . '/*', GLOB_ONLYDIR) as $moduleDir) {
+        foreach (glob($modulesDir . '/*', GLOB_ONLYDIR) as $moduleDir) 
+        {
             $moduleName = basename($moduleDir);
             $moduleConfigFile = $moduleDir . '/config/config.php';
 
@@ -122,18 +120,21 @@ class CoreManager
                 $moduleConfig = include $moduleConfigFile;
 
                 // Ajouter la configuration du module au tableau global des configurations
-                $modulesConfig = $moduleConfig;
+                $modulesConfig = array_merge($modulesConfig, $moduleConfig);
             }
-        }
 
-        // Ajouter les configurations des modules à la configuration globale
-        if (!empty($modulesConfig)) {
-            ConfigManager::set('modules', $modulesConfig);
+
+            // Ajouter les configurations des modules à la configuration globale
+            if (!empty($modulesConfig)) 
+            {
+                ConfigManager::set('modules', $modulesConfig);
+            }
         }
     }
 
     public static function checkPerm($param_Perm)
 	{
+        $retour = false;
 		try
 		{
 			if(!empty($param_Perm))
@@ -153,32 +154,21 @@ class CoreManager
 
 						if($usersPerm)
 						{
-							return true;
-						}
-						else
-						{
-							return false;
+							$retour =  true;
 						}
 					}
-					else
-					{
-						throw new \Exception(ErrorManager::getErrorMessage(50000));
-					}
-				}
-				else
-				{
-					return false;
 				}
 			}
 			else
 			{
-				return true;
+				$retour =  true;
 			}
 		}
 		catch (\Exception $e)
 		{
             throw new \Exception(ErrorManager::getErrorMessage(50000));
 		}
+        return $retour;
 	}
 
     public static function encrypt($param_Data)
@@ -210,4 +200,22 @@ class CoreManager
 		
 		return openssl_decrypt($Data, $Cypher, $Key, $Option, $Decryption_iv);
 	}
+
+    public static function slug(string $text): string
+    {
+        // Convertit en minuscules
+        $text = mb_strtolower($text, 'UTF-8');
+
+        // Remplace les caractères accentués
+        $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+
+        // Supprime tout ce qui n'est pas alphanumérique ou un tiret
+        $text = preg_replace('/[^a-z0-9]+/', '-', $text);
+
+        // Supprime les tirets en trop (au début ou à la fin)
+        $text = trim($text, '-');
+
+        // Retourne le slug
+        return $text ?: 'n-a';
+    }
 }

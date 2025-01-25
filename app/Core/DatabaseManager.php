@@ -5,8 +5,9 @@ namespace App\Core;
 use PDO;
 use Exception;
 
+use App\Core\CoreManager;
 use App\Core\ConfigManager;
-
+use App\Core\ErrorManager;
 
 class DatabaseManager
 {
@@ -47,7 +48,8 @@ class DatabaseManager
             $password = ConfigManager::get('DATABASE.password.value');
             $charset = ConfigManager::get('DATABASE.charset.value');
 
-            $dsn = "mysql:host=$host;dbname=$db;charset=$charset"; // Exemple pour MySQL
+            // Exemple pour MySQL
+            $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
             $this->pdo = new PDO($dsn, $user, $password);
             $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -55,10 +57,12 @@ class DatabaseManager
         } 
         catch (PDOException $e) 
         {
+            CoreManager::addLogs('APPLICATION', 'WARNING', 'Erreur de connexion à la base de données: ' . $e->getMessage());
             throw new Exception('Erreur de connexion à la base de données: ' . $e->getMessage());
         }
         catch (Exception $e)
         {
+            CoreManager::addLogs('APPLICATION', 'WARNING', 'Erreur de connexion à la base de données: ' . $e->getMessage());
             throw new Exception('Erreur de connexion à la base de données: ' . $e->getMessage());
         }
     }
@@ -121,12 +125,14 @@ class DatabaseManager
         $where = [];
         $bindValues = [];
 
-        foreach ($key as $column => $value) {
+        foreach ($key as $column => $value) 
+        {
             $where[] = "$column = :$column";
             $bindValues[$column] = $value;
         }
 
-        if ($where) {
+        if ($where) 
+        {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
@@ -137,7 +143,8 @@ class DatabaseManager
         $result = $statement->fetch(PDO::FETCH_ASSOC);
 
         // Si aucun résultat, retourner null
-        if (!$result) {
+        if (!$result) 
+        {
             return null;
         }
 
@@ -195,7 +202,8 @@ class DatabaseManager
 
         // Hydratation manuelle des objets
         $objects = [];
-        foreach ($results as $data) {
+        foreach ($results as $data) 
+        {
             $objects[] = new $classObject($data);
         }
 
@@ -229,10 +237,12 @@ class DatabaseManager
         }
         catch (Exception $e)
         {
+            CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::insert() : ' . $e->getMessage());
             return false;
         }
         catch(PDOException $e)
         {
+            CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::insert() : ' . $e->getMessage());
             throw new Exception($e->getMessage());
         }
 
@@ -251,43 +261,54 @@ class DatabaseManager
      */
     public function update(string $table, array $data, $param_id): int
     {
-        // Récupérer la clé primaire avec auto-incrément
-        $primaryKey = $this->getPrimaryKey($table);
-
-        // Si aucune clé primaire auto-incrémentée n'est trouvée, on ne fait rien
-        if ($primaryKey === null) 
+        try
         {
-            return 0; // Aucun champ mis à jour
-        }
+            // Récupérer la clé primaire avec auto-incrément
+            $primaryKey = $this->getPrimaryKey($table);
 
-        // Vérifier que $param_id est défini
-        if (empty($param_id)) 
+            // Si aucune clé primaire auto-incrémentée n'est trouvée, on ne fait rien
+            if ($primaryKey === null) 
+            {
+                // Aucun champ mis à jour
+                return 0;
+            }
+
+            // Vérifier que $param_id est défini
+            if (empty($param_id)) 
+            {
+                CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . "Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
+                throw new Exception("Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
+            }
+
+            // Construire la clause SET
+            $setClauses = [];
+            foreach ($data as $key => $value) 
+            {
+                $setClauses[] = "`$key` = :$key";
+            }
+
+            // Construction de la requête SQL avec WHERE sur la clé primaire
+            $sql = sprintf(
+                'UPDATE `%s` SET %s WHERE `%s` = :primary_key',
+                $table,
+                implode(', ', $setClauses),
+                $primaryKey
+            );
+
+            CoreManager::addLogs('DEBUG', 'WARNING', 'DatabaseManager::update() : ' . $sql);
+
+            // Ajouter le paramètre pour la clé primaire
+            $data['primary_key'] = $param_id;
+
+
+            // Préparer et exécuter la requête
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute($data);
+        }
+        catch (PDOException $e)
         {
-            throw new Exception("Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
+            CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . $e->getMessage());
         }
-
-        // Construire la clause SET
-        $setClauses = [];
-        foreach ($data as $key => $value) 
-        {
-            $setClauses[] = "`$key` = :$key";
-        }
-
-        // Construction de la requête SQL avec WHERE sur la clé primaire
-        $sql = sprintf(
-            'UPDATE `%s` SET %s WHERE `%s` = :primary_key',
-            $table,
-            implode(', ', $setClauses),
-            $primaryKey
-        );
-
-        // Ajouter le paramètre pour la clé primaire
-        $data['primary_key'] = $param_id;
-
-
-        // Préparer et exécuter la requête
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute($data);
 
         // Retourner le nombre de lignes affectées
         return $statement->rowCount();
@@ -325,13 +346,15 @@ class DatabaseManager
         $bindValues = [];
 
         // Ajout des conditions WHERE en fonction de $key
-        foreach ($key as $column => $value) {
+        foreach ($key as $column => $value) 
+        {
             $where[] = "$column = :$column";
             $bindValues[$column] = $value;
         }
 
         // Si des conditions WHERE existent, les ajouter à la requête SQL
-        if ($where) {
+        if ($where) 
+        {
             $sql .= ' WHERE ' . implode(' AND ', $where);
         }
 
@@ -357,7 +380,8 @@ class DatabaseManager
      */
     public function truncate(string $table): bool
     {
-        try {
+        try 
+        {
             // Construction de la requête TRUNCATE
             $sql = "TRUNCATE TABLE `$table`";
         
@@ -366,7 +390,9 @@ class DatabaseManager
             $statement->execute();
 
             return true;
-        } catch (PDOException $e) {
+        } 
+        catch (PDOException $e) 
+        {
             // Gestion des erreurs
             echo "Erreur lors du truncate de la table '$table' : " . $e->getMessage();
             return false;
@@ -399,7 +425,8 @@ class DatabaseManager
         // Exécution de la requête
         $statement = $this->pdo->query($sql);
     
-        if ($statement === false) {
+        if ($statement === false) 
+        {
             throw new Exception("Erreur lors de la récupération des tables.");
         }
 

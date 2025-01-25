@@ -5,12 +5,12 @@ namespace App\Modules\Questorium\Models;
 class Questions
 {
     //Variables Membres
-    private $QUESTIONS_ID;
-    private $QUESTIONS_CATEGORIES_ID;
-    private $QUESTIONS_TEXT;
-    private $QUESTIONS_STYLE;
-    private $QUESTIONS_ANSWERS_CONDITION_ID;
-    private $QUESTIONS_ANSWERS_CONDITION_VALUES;
+    private $ID;
+    private $CATEGORIES_ID;
+    private $TEXT;
+    private $STYLE;
+    private $ANSWERS_CONDITION_ID;
+    private $ANSWERS_CONDITION_VALUES;
 
 
     //Constructeur
@@ -34,64 +34,64 @@ class Questions
 
     //Accesseurs
 
-    public function getQUESTIONS_ID()
+    public function getID()
     {
-        return $this->QUESTIONS_ID;
+        return $this->ID;
     }
 
-    public function setQUESTIONS_ID($QUESTIONS_ID)
+    public function setID($ID)
     {
-        $this->QUESTIONS_ID = $QUESTIONS_ID;
+        $this->ID = $ID;
     }
 
-    public function getQUESTIONS_CATEGORIES_ID()
+    public function getCATEGORIES_ID()
     {
-        return $this->QUESTIONS_CATEGORIES_ID;
+        return $this->CATEGORIES_ID;
     }
 
-    public function setQUESTIONS_CATEGORIES_ID($QUESTIONS_CATEGORIES_ID)
+    public function setCATEGORIES_ID($CATEGORIES_ID)
     {
-        $this->QUESTIONS_CATEGORIES_ID = $QUESTIONS_CATEGORIES_ID;
+        $this->CATEGORIES_ID = $CATEGORIES_ID;
     }
 
-    public function getQUESTIONS_TEXT()
+    public function getTEXT()
     {
-        return $this->QUESTIONS_TEXT;
+        return $this->TEXT;
     }
 
-    public function setQUESTIONS_TEXT($QUESTIONS_TEXT)
+    public function setTEXT($TEXT)
     {
-        $this->QUESTIONS_TEXT = $QUESTIONS_TEXT;
+        $this->TEXT = $TEXT;
     }
 
-    public function getQUESTIONS_STYLE()
+    public function getSTYLE()
     {
-        return $this->QUESTIONS_STYLE;
+        return $this->STYLE;
     }
 
-    public function setQUESTIONS_STYLE($QUESTIONS_STYLE)
+    public function setSTYLE($STYLE)
     {
-        $this->QUESTIONS_STYLE = $QUESTIONS_STYLE;
+        $this->STYLE = $STYLE;
     }
 
-    public function getQUESTIONS_ANSWERS_CONDITION_ID()
+    public function getANSWERS_CONDITION_ID()
     {
-        return $this->QUESTIONS_ANSWERS_CONDITION_ID;
+        return $this->ANSWERS_CONDITION_ID;
     }
 
-    public function setQUESTIONS_ANSWERS_CONDITION_ID($QUESTIONS_ANSWERS_CONDITION_ID)
+    public function setANSWERS_CONDITION_ID($ANSWERS_CONDITION_ID)
     {
-        $this->QUESTIONS_ANSWERS_CONDITION_ID = $QUESTIONS_ANSWERS_CONDITION_ID;
+        $this->ANSWERS_CONDITION_ID = $ANSWERS_CONDITION_ID;
     }
 
-    public function getQUESTIONS_ANSWERS_CONDITION_VALUES()
+    public function getANSWERS_CONDITION_VALUES()
     {
-        return $this->QUESTIONS_ANSWERS_CONDITION_VALUES;
+        return $this->ANSWERS_CONDITION_VALUES;
     }
 
-    public function setQUESTIONS_ANSWERS_CONDITION_VALUES($QUESTIONS_ANSWERS_CONDITION_VALUES)
+    public function setANSWERS_CONDITION_VALUES($ANSWERS_CONDITION_VALUES)
     {
-        $this->QUESTIONS_ANSWERS_CONDITION_VALUES = $QUESTIONS_ANSWERS_CONDITION_VALUES;
+        $this->ANSWERS_CONDITION_VALUES = $ANSWERS_CONDITION_VALUES;
     }
 
 }

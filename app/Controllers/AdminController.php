@@ -135,7 +135,8 @@ class AdminController extends Controller
 		$usersPermissionsManager = new UsersPermissionsManager();
 		$permissionsManager = new PermissionsManager();  // Utilisation de ton PermissionsManager existant
 
-		foreach ($users as $user) {
+		foreach ($users as $user) 
+		{
 			// Récupérer les permissions de l'utilisateur depuis UsersPermissions
 			$usersPermissions = $usersPermissionsManager->findAllUsersPermissions(['USERS_ID' => $user->getID()]);
 
@@ -158,7 +159,8 @@ class AdminController extends Controller
 			}
 
 			// Ajouter l'utilisateur et ses permissions dans le tableau final
-			$usersWithPermissions[] = [
+			$usersWithPermissions[] = 
+			[
 				'user' => $user,
 				'permissions' => $permissions
 			];
@@ -166,7 +168,8 @@ class AdminController extends Controller
 
 
 		// Rendre la vue avec les utilisateurs et leurs permissions
-		$this->render('admin/users.twig', [
+		$this->render('admin/users.twig', 
+		[
 			'usersWithPermissions' => $usersWithPermissions,  // Passer les utilisateurs avec leurs permissions à la vue
 			'currentPage' => $page,
 			'totalPages' => $totalPages

@@ -27,8 +27,8 @@ class TestController extends Controller
 		foreach($this->tables as $table => $req)
 		{
 			$databaseManager->rawQuery($req);
-			$databaseManager->generateModelClass($table, "App\\Modules\\{{$this->moduleName}}\\Models", "..\\app\\Modules\\{{$this->moduleName}}\\Models\\");
-			$databaseManager->generateManagersClass($table, "App\\Modules\\{{$this->moduleName}}\\", "App\\Modules\\{{$this->moduleName}}\\Managers", "..\\app\\Modules\\{{$this->moduleName}}\\Managers\\");
+			$databaseManager->generateModelClass($table, "App\\Modules\\{$this->moduleName}\\Models", "..\\app\\Modules\\{$this->moduleName}\\Models\\");
+			$databaseManager->generateManagersClass($table, "App\\Modules\\{$this->moduleName}\\", "App\\Modules\\{$this->moduleName}\\Managers", "..\\app\\Modules\\{$this->moduleName}\\Managers\\");
 		}
 	}
 

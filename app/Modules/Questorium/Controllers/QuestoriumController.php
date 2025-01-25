@@ -13,68 +13,75 @@ class QuestoriumController extends Controller
 	private array $tables = 
 	[
 	    'answers' => "CREATE TABLE `answers` (
-          `ANSWERS_ID` int(11) NOT NULL AUTO_INCREMENT,
-          `ANSWERS_QUESTIONS_ID` int(11) NOT NULL,
-          `ANSWERS_TEXT` text NOT NULL,
-          `ANSWERS_TYPE` int(11) NOT NULL,
-          `ANSWERS_MIN` int(11) NOT NULL DEFAULT '0',
-          `ANSWERS_MAX` int(11) NOT NULL DEFAULT '10',
-          `ANSWERS_VALUES` tinyint(1) NOT NULL DEFAULT '0',
-          `ANSWERS_QUESTIONS_CONDITION` int(11) NOT NULL,
-          PRIMARY KEY (`ANSWERS_ID`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=333 DEFAULT CHARSET=latin1;",
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `QUESTIONS_ID` int(11) NOT NULL,
+            `TEXT` text NOT NULL,
+            `TYPE` int(11) NOT NULL,
+            `MIN` int(11) NOT NULL DEFAULT '0',
+            `MAX` int(11) NOT NULL DEFAULT '10',
+            `VALUES` tinyint(1) NOT NULL DEFAULT '0',
+            `QUESTIONS_CONDITION` int(11) NOT NULL,
+            PRIMARY KEY (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;",
 
         'categories' => "CREATE TABLE `categories` (
-          `CATEGORIES_ID` int(11) NOT NULL AUTO_INCREMENT,
-          `CATEGORIES_QUIZ_ID` int(11) NOT NULL,
-          `CATEGORIES_TEXT` text NOT NULL,
-          `CATEGORIES_DESC` text NOT NULL,
-          `CATEGORIES_STYLE` text NOT NULL,
-          `CATEGORIES_COLOR` text NOT NULL,
-          PRIMARY KEY (`CATEGORIES_ID`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;",
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `QUIZ_ID` int(11) NOT NULL,
+            `TEXT` text NOT NULL,
+            `DESC` text NOT NULL,
+            `STYLE` text NOT NULL,
+            `COLOR` text NOT NULL,
+            PRIMARY KEY (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;",
 
         'questions' => "CREATE TABLE `questions` (
-          `QUESTIONS_ID` int(11) NOT NULL AUTO_INCREMENT,
-          `QUESTIONS_CATEGORIES_ID` int(11) NOT NULL,
-          `QUESTIONS_TEXT` text NOT NULL,
-          `QUESTIONS_STYLE` text NOT NULL,
-          `QUESTIONS_ANSWERS_CONDITION_ID` int(11) NOT NULL DEFAULT '0',
-          `QUESTIONS_ANSWERS_CONDITION_VALUES` int(11) DEFAULT '0',
-          PRIMARY KEY (`QUESTIONS_ID`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=latin1;",
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `CATEGORIES_ID` int(11) NOT NULL,
+            `TEXT` text NOT NULL,
+            `STYLE` text NOT NULL,
+            `ANSWERS_CONDITION_ID` int(11) NOT NULL DEFAULT '0',
+            `ANSWERS_CONDITION_VALUES` int(11) DEFAULT '0',
+            PRIMARY KEY (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;",
 
         'quiz' => "CREATE TABLE `quiz` (
-          `QUIZ_ID` int(11) NOT NULL AUTO_INCREMENT,
-          `QUIZ_TEXT` text NOT NULL,
-          `QUIZ_START` datetime NOT NULL,
-          `QUIZ_END` datetime NOT NULL,
-          `QUIZ_DESC` text NOT NULL,
-          `QUIZ_LOGO` text NOT NULL,
-          `QUIZ_STYLE` text NOT NULL,
-          PRIMARY KEY (`QUIZ_ID`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1;",
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `TEXT` text NOT NULL,
+            `START` datetime NOT NULL,
+            `END` datetime NOT NULL,
+            `DESC` text NOT NULL,
+            `LOGO` text NOT NULL,
+            `STYLE` text NOT NULL,
+            PRIMARY KEY (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;",
 
         'result' => "CREATE TABLE `result` (
-          `RESULT_ID` int(11) NOT NULL AUTO_INCREMENT,
-          `RESULT_ACCOUNTS_ID` int(11) NOT NULL,
-          `RESULT_QUIZ_ID` int(11) NOT NULL,
-          `RESULT_CATEGORIES_ID` int(11) NOT NULL,
-          `RESULT_QUESTIONS_ID` int(11) NOT NULL,
-          `RESULT_ANSWERS_ID` int(11) NOT NULL,
-          `RESULT_SUBANSWERS_ID` int(11) NOT NULL,
-          `RESULT_VALUES` text CHARACTER SET latin1 NOT NULL,
-          `RESULT_TIMESTAMP` int(11) NOT NULL,
-          PRIMARY KEY (`RESULT_ID`)
-        ) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;",
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `ACCOUNTS_ID` int(11) NOT NULL,
+            `QUIZ_ID` int(11) NOT NULL,
+            `CATEGORIES_ID` int(11) NOT NULL,
+            `QUESTIONS_ID` int(11) NOT NULL,
+            `ANSWERS_ID` int(11) NOT NULL,
+            `SUBANSWERS_ID` int(11) NOT NULL,
+            `VALUES` text CHARACTER SET latin1 NOT NULL,
+            `TIMESTAMP` int(11) NOT NULL,
+            PRIMARY KEY (`ID`)
+        ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;",
 
         'subanswers' => "CREATE TABLE `subanswers` (
-          `SUBANSWERS_ID` int(11) NOT NULL AUTO_INCREMENT,
-          `SUBANSWERS_ANSWERS_ID` int(11) NOT NULL,
-          `SUBANSWERS_TEXT` text NOT NULL,
-          `SUBANSWERS_VALUES` text NOT NULL,
-          PRIMARY KEY (`SUBANSWERS_ID`)
-        ) ENGINE=InnoDB AUTO_INCREMENT=434 DEFAULT CHARSET=utf8;"
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `ANSWERS_ID` int(11) NOT NULL,
+            `TEXT` text NOT NULL,
+            `VALUES` text NOT NULL,
+            PRIMARY KEY (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;",
+
+        'users_quiz' => "CREATE TABLE `users_quiz` (
+            `ID` int(11) NOT NULL AUTO_INCREMENT,
+            `USERS_ID` int(11) NOT NULL,
+            `QUIZ_ID` int(11) NOT NULL,
+            PRIMARY KEY (`ID`)
+        ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;"
 
 	];
 
@@ -151,7 +158,7 @@ class QuestoriumController extends Controller
 		{
 			$databaseManager->rawQuery($req);
 			$databaseManager->generateModelClass($table, "App\\Modules\\{$this->moduleName}\\Models", "..\\app\\Modules\\{$this->moduleName}\\Models\\");
-			$databaseManager->generateManagersClass($table, "App\\Modules\\{$this->moduleName}\\", "App\\Modules\\{$this->moduleName}\\Managers", "..\\app\\Modules\\{$this->moduleName}\\Managers\\");
+			$databaseManager->generateManagersClass($table, "App\\Modules\\{$this->moduleName}\\Models\\", "App\\Modules\\{$this->moduleName}\\Managers", "..\\app\\Modules\\{$this->moduleName}\\Managers\\");
 		}
 
         foreach($this->permissions as $permission)

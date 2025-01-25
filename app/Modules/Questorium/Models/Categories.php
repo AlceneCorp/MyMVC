@@ -5,12 +5,12 @@ namespace App\Modules\Questorium\Models;
 class Categories
 {
     //Variables Membres
-    private $CATEGORIES_ID;
-    private $CATEGORIES_QUIZ_ID;
-    private $CATEGORIES_TEXT;
-    private $CATEGORIES_DESC;
-    private $CATEGORIES_STYLE;
-    private $CATEGORIES_COLOR;
+    private $ID;
+    private $QUIZ_ID;
+    private $TEXT;
+    private $DESC;
+    private $STYLE;
+    private $COLOR;
 
 
     //Constructeur
@@ -34,64 +34,64 @@ class Categories
 
     //Accesseurs
 
-    public function getCATEGORIES_ID()
+    public function getID()
     {
-        return $this->CATEGORIES_ID;
+        return $this->ID;
     }
 
-    public function setCATEGORIES_ID($CATEGORIES_ID)
+    public function setID($ID)
     {
-        $this->CATEGORIES_ID = $CATEGORIES_ID;
+        $this->ID = $ID;
     }
 
-    public function getCATEGORIES_QUIZ_ID()
+    public function getQUIZ_ID()
     {
-        return $this->CATEGORIES_QUIZ_ID;
+        return $this->QUIZ_ID;
     }
 
-    public function setCATEGORIES_QUIZ_ID($CATEGORIES_QUIZ_ID)
+    public function setQUIZ_ID($QUIZ_ID)
     {
-        $this->CATEGORIES_QUIZ_ID = $CATEGORIES_QUIZ_ID;
+        $this->QUIZ_ID = $QUIZ_ID;
     }
 
-    public function getCATEGORIES_TEXT()
+    public function getTEXT()
     {
-        return $this->CATEGORIES_TEXT;
+        return $this->TEXT;
     }
 
-    public function setCATEGORIES_TEXT($CATEGORIES_TEXT)
+    public function setTEXT($TEXT)
     {
-        $this->CATEGORIES_TEXT = $CATEGORIES_TEXT;
+        $this->TEXT = $TEXT;
     }
 
-    public function getCATEGORIES_DESC()
+    public function getDESC()
     {
-        return $this->CATEGORIES_DESC;
+        return $this->DESC;
     }
 
-    public function setCATEGORIES_DESC($CATEGORIES_DESC)
+    public function setDESC($DESC)
     {
-        $this->CATEGORIES_DESC = $CATEGORIES_DESC;
+        $this->DESC = $DESC;
     }
 
-    public function getCATEGORIES_STYLE()
+    public function getSTYLE()
     {
-        return $this->CATEGORIES_STYLE;
+        return $this->STYLE;
     }
 
-    public function setCATEGORIES_STYLE($CATEGORIES_STYLE)
+    public function setSTYLE($STYLE)
     {
-        $this->CATEGORIES_STYLE = $CATEGORIES_STYLE;
+        $this->STYLE = $STYLE;
     }
 
-    public function getCATEGORIES_COLOR()
+    public function getCOLOR()
     {
-        return $this->CATEGORIES_COLOR;
+        return $this->COLOR;
     }
 
-    public function setCATEGORIES_COLOR($CATEGORIES_COLOR)
+    public function setCOLOR($COLOR)
     {
-        $this->CATEGORIES_COLOR = $CATEGORIES_COLOR;
+        $this->COLOR = $COLOR;
     }
 
 }

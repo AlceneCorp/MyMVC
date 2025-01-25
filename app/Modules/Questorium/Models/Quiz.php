@@ -5,13 +5,13 @@ namespace App\Modules\Questorium\Models;
 class Quiz
 {
     //Variables Membres
-    private $QUIZ_ID;
-    private $QUIZ_TEXT;
-    private $QUIZ_START;
-    private $QUIZ_END;
-    private $QUIZ_DESC;
-    private $QUIZ_LOGO;
-    private $QUIZ_STYLE;
+    private $ID;
+    private $TEXT;
+    private $START;
+    private $END;
+    private $DESC;
+    private $LOGO;
+    private $STYLE;
 
 
     //Constructeur
@@ -35,74 +35,74 @@ class Quiz
 
     //Accesseurs
 
-    public function getQUIZ_ID()
+    public function getID()
     {
-        return $this->QUIZ_ID;
+        return $this->ID;
     }
 
-    public function setQUIZ_ID($QUIZ_ID)
+    public function setID($ID)
     {
-        $this->QUIZ_ID = $QUIZ_ID;
+        $this->ID = $ID;
     }
 
-    public function getQUIZ_TEXT()
+    public function getTEXT()
     {
-        return $this->QUIZ_TEXT;
+        return $this->TEXT;
     }
 
-    public function setQUIZ_TEXT($QUIZ_TEXT)
+    public function setTEXT($TEXT)
     {
-        $this->QUIZ_TEXT = $QUIZ_TEXT;
+        $this->TEXT = $TEXT;
     }
 
-    public function getQUIZ_START()
+    public function getSTART()
     {
-        return $this->QUIZ_START;
+        return $this->START;
     }
 
-    public function setQUIZ_START($QUIZ_START)
+    public function setSTART($START)
     {
-        $this->QUIZ_START = $QUIZ_START;
+        $this->START = $START;
     }
 
-    public function getQUIZ_END()
+    public function getEND()
     {
-        return $this->QUIZ_END;
+        return $this->END;
     }
 
-    public function setQUIZ_END($QUIZ_END)
+    public function setEND($END)
     {
-        $this->QUIZ_END = $QUIZ_END;
+        $this->END = $END;
     }
 
-    public function getQUIZ_DESC()
+    public function getDESC()
     {
-        return $this->QUIZ_DESC;
+        return $this->DESC;
     }
 
-    public function setQUIZ_DESC($QUIZ_DESC)
+    public function setDESC($DESC)
     {
-        $this->QUIZ_DESC = $QUIZ_DESC;
+        $this->DESC = $DESC;
     }
 
-    public function getQUIZ_LOGO()
+    public function getLOGO()
     {
-        return $this->QUIZ_LOGO;
+        return $this->LOGO;
     }
 
-    public function setQUIZ_LOGO($QUIZ_LOGO)
+    public function setLOGO($LOGO)
     {
-        $this->QUIZ_LOGO = $QUIZ_LOGO;
+        $this->LOGO = $LOGO;
     }
 
-    public function getQUIZ_STYLE()
+    public function getSTYLE()
     {
-        return $this->QUIZ_STYLE;
+        return $this->STYLE;
     }
 
-    public function setQUIZ_STYLE($QUIZ_STYLE)
+    public function setSTYLE($STYLE)
     {
-        $this->QUIZ_STYLE = $QUIZ_STYLE;
+        $this->STYLE = $STYLE;
     }
 
 }

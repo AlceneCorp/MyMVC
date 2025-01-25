@@ -5,14 +5,14 @@ namespace App\Modules\Questorium\Models;
 class Answers
 {
     //Variables Membres
-    private $ANSWERS_ID;
-    private $ANSWERS_QUESTIONS_ID;
-    private $ANSWERS_TEXT;
-    private $ANSWERS_TYPE;
-    private $ANSWERS_MIN;
-    private $ANSWERS_MAX;
-    private $ANSWERS_VALUES;
-    private $ANSWERS_QUESTIONS_CONDITION;
+    private $ID;
+    private $QUESTIONS_ID;
+    private $TEXT;
+    private $TYPE;
+    private $MIN;
+    private $MAX;
+    private $VALUES;
+    private $QUESTIONS_CONDITION;
 
 
     //Constructeur
@@ -36,84 +36,84 @@ class Answers
 
     //Accesseurs
 
-    public function getANSWERS_ID()
+    public function getID()
     {
-        return $this->ANSWERS_ID;
+        return $this->ID;
     }
 
-    public function setANSWERS_ID($ANSWERS_ID)
+    public function setID($ID)
     {
-        $this->ANSWERS_ID = $ANSWERS_ID;
+        $this->ID = $ID;
     }
 
-    public function getANSWERS_QUESTIONS_ID()
+    public function getQUESTIONS_ID()
     {
-        return $this->ANSWERS_QUESTIONS_ID;
+        return $this->QUESTIONS_ID;
     }
 
-    public function setANSWERS_QUESTIONS_ID($ANSWERS_QUESTIONS_ID)
+    public function setQUESTIONS_ID($QUESTIONS_ID)
     {
-        $this->ANSWERS_QUESTIONS_ID = $ANSWERS_QUESTIONS_ID;
+        $this->QUESTIONS_ID = $QUESTIONS_ID;
     }
 
-    public function getANSWERS_TEXT()
+    public function getTEXT()
     {
-        return $this->ANSWERS_TEXT;
+        return $this->TEXT;
     }
 
-    public function setANSWERS_TEXT($ANSWERS_TEXT)
+    public function setTEXT($TEXT)
     {
-        $this->ANSWERS_TEXT = $ANSWERS_TEXT;
+        $this->TEXT = $TEXT;
     }
 
-    public function getANSWERS_TYPE()
+    public function getTYPE()
     {
-        return $this->ANSWERS_TYPE;
+        return $this->TYPE;
     }
 
-    public function setANSWERS_TYPE($ANSWERS_TYPE)
+    public function setTYPE($TYPE)
     {
-        $this->ANSWERS_TYPE = $ANSWERS_TYPE;
+        $this->TYPE = $TYPE;
     }
 
-    public function getANSWERS_MIN()
+    public function getMIN()
     {
-        return $this->ANSWERS_MIN;
+        return $this->MIN;
     }
 
-    public function setANSWERS_MIN($ANSWERS_MIN)
+    public function setMIN($MIN)
     {
-        $this->ANSWERS_MIN = $ANSWERS_MIN;
+        $this->MIN = $MIN;
     }
 
-    public function getANSWERS_MAX()
+    public function getMAX()
     {
-        return $this->ANSWERS_MAX;
+        return $this->MAX;
     }
 
-    public function setANSWERS_MAX($ANSWERS_MAX)
+    public function setMAX($MAX)
     {
-        $this->ANSWERS_MAX = $ANSWERS_MAX;
+        $this->MAX = $MAX;
     }
 
-    public function getANSWERS_VALUES()
+    public function getVALUES()
     {
-        return $this->ANSWERS_VALUES;
+        return $this->VALUES;
     }
 
-    public function setANSWERS_VALUES($ANSWERS_VALUES)
+    public function setVALUES($VALUES)
     {
-        $this->ANSWERS_VALUES = $ANSWERS_VALUES;
+        $this->VALUES = $VALUES;
     }
 
-    public function getANSWERS_QUESTIONS_CONDITION()
+    public function getQUESTIONS_CONDITION()
     {
-        return $this->ANSWERS_QUESTIONS_CONDITION;
+        return $this->QUESTIONS_CONDITION;
     }
 
-    public function setANSWERS_QUESTIONS_CONDITION($ANSWERS_QUESTIONS_CONDITION)
+    public function setQUESTIONS_CONDITION($QUESTIONS_CONDITION)
     {
-        $this->ANSWERS_QUESTIONS_CONDITION = $ANSWERS_QUESTIONS_CONDITION;
+        $this->QUESTIONS_CONDITION = $QUESTIONS_CONDITION;
     }
 
 }

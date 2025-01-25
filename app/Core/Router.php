@@ -30,8 +30,6 @@ class Router
 
         $routesArray = require __DIR__ . '\\..\\..\\config\\routes.php';
 
-        //var_dump(ConfigManager::get('modules'));
-
         foreach ($routesArray as $route) 
         {
             $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm'], $route['inMenu']);
@@ -45,34 +43,32 @@ class Router
 
         $pathViews = [];
 
-        if(ConfigManager::get('modules'))
+        foreach(ConfigManager::get('modules') as $key => $module)
         {
-            //var_dump(ConfigManager::get('modules'));
-
-            foreach(ConfigManager::get('modules') as $key => $module)
+            //var_dump(ConfigManager::get('modules.' . $key . '.active.value'));
+            if(ConfigManager::get('modules.' . $key . '.active.value'))
             {
-                //var_dump(ConfigManager::get('modules.' . $key . '.active.value'));
-                if(ConfigManager::get('modules.' . $key . '.active.value'))
+                $moduleRoute = require __DIR__ . '\\..\\Modules\\' . $key . '\\config\\routes.php';
+                $routesArray = array_merge($routesArray, $moduleRoute);
+                $pathViews[] = __DIR__ . '\\..\\Modules\\' . $key . '\\Views';
+                foreach($moduleRoute as $route)
                 {
-                    $moduleRoute = require __DIR__ . '\\..\\Modules\\' . $key . '\\config\\routes.php';
-                    $routesArray = array_merge($routesArray, $moduleRoute);
-                    $pathViews[] = __DIR__ . '\\..\\Modules\\' . $key . '\\Views';
-                    foreach($moduleRoute as $route)
-                    {
-                        $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm'], $route['inMenu']);
+                    $this->routes->add($route['name'], $route['url'], $route['controller'], $route['method'], $route['params'], $route['perm'], $route['inMenu']);
 
-                        // Vérification des enfants
-                        if (!empty($route['children'])) 
-                        {
-                            $this->addChildRoutes($route['children']);
-                        }
+                    // Vérification des enfants
+                    if (!empty($route['children'])) 
+                    {
+                        $this->addChildRoutes($route['children']);
                     }
-                }  
-            }
+                }
+            }  
         }
+
+        
 
         $pathViews[] = __DIR__ . '/../Views/';
 
+        //var_dump($routesArray);
         CoreManager::initTwig($pathViews);
         
 
@@ -99,6 +95,7 @@ class Router
 
         CoreManager::getTwig()->addFunction(new TwigFunction('encrypt', fn($data) => CoreManager::encrypt($data)));
         CoreManager::getTwig()->addFunction(new TwigFunction('decrypt', fn($data) => CoreManager::decrypt($data)));
+        CoreManager::getTwig()->addFunction(new TwigFunction('verif', fn($param_Data) => ((isset($_POST[$param_Data]) && $_POST[$param_Data] > 0) ? $_POST[$param_Data] : 0)));
     }
 
     /**
@@ -110,10 +107,9 @@ class Router
     private function generateMenu(array $routes): string
     {
         $menuGenerate = '';
-
         foreach ($routes as $route) 
         {
-            if (!empty($route['perm']) && CoreManager::checkPerm($route['perm'])) 
+            if (!empty($route['perm']) && !CoreManager::checkPerm($route['perm'])) 
             {
                 continue;
             }
@@ -133,7 +129,7 @@ class Router
             
                     foreach ($route['children'] as $child) 
                     {
-                        if (CoreManager::checkPerm($child['perm'])) 
+                        if (CoreManager::checkPerm($child['perm']) && $child['inMenu']) 
                         {
                             $menuGenerate .= '<li><a class="dropdown-item text-white p-4" href="' . $child['url'] . '">' . $child['icon'] . ' ' . $child['name'] . '</a></li>';
                         }

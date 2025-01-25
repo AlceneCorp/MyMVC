@@ -10,7 +10,7 @@
         <main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
             <!-- Header Section -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2"><i class="fas fa-tachometer-alt me-2"></i> Dashboard</h1>
+                <h1 class="h2"><i class="fas fa-tachometer-alt me-2"></i> Panel Administrateur</h1>
             </div>
             {% if config('SITE.show_informations_details.value') %}
 
@@ -152,7 +152,7 @@
             <!-- Section pour les graphiques -->
             <div class="row">
                 <!-- Premier graphique -->
-                <div class="col-12">
+                <div class="col-12 mb-4">
                     <div class="card shadow-sm"> <!-- Utilisation de la classe h-100 pour que la carte prenne toute la hauteur disponible -->
                         <div class="card-header bg-dark text-white">
                             <h5><i class="fas fa-chart-bar me-2"></i> Visiteurs par mois sur {{ date | date('Y') }} </h5>

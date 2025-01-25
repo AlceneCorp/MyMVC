@@ -155,6 +155,71 @@
                         </div>
                     </div>
                 </div>
+
+                <!-- Pagination -->
+                <div class="d-flex justify-content-between align-items-center mt-4">
+                    <div>
+                        <span>Page {{ currentPage }} sur {{ totalPages }}</span>
+                    </div>
+
+                    <nav aria-label="Pagination">
+                        <ul class="pagination">
+                            {% if currentPage > 1 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ baseUrl }}/admin/logs/{{ currentPage - 1 }}" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo; Précédent</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">&laquo; Précédent</span>
+                                </li>
+                            {% endif %}
+                            
+                            {% if currentPage > 2 %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ baseUrl }}/admin/logs/1">1</a>
+                                </li>
+                                {% if currentPage > 3 %}
+                                    <li class="page-item disabled">
+                                        <span class="page-link">...</span>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                            
+                            {% for page in (currentPage - 1)..(currentPage + 1) %}
+                                {% if page > 0 and page <= totalPages %}
+                                    <li class="page-item {% if page == currentPage %}active{% endif %}">
+                                        <a class="page-link" href="{{ baseUrl }}/admin/logs/{{ page }}">{{ page }}</a>
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if currentPage < totalPages - 1 %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">...</span>
+                                </li>
+                            {% endif %}
+                            
+                            {% if currentPage < totalPages %}
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ baseUrl }}/admin/logs/{{ totalPages }}" aria-label="Last">
+                                        <span aria-hidden="true">{{ totalPages }}</span>
+                                    </a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="{{ baseUrl }}/admin/logs/{{ currentPage + 1 }}" aria-label="Next">
+                                        <span aria-hidden="true">Suivant &raquo;</span>
+                                    </a>
+                                </li>
+                            {% else %}
+                                <li class="page-item disabled">
+                                    <span class="page-link">Suivant &raquo;</span>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </nav>
+                </div>
             </main>
         </div>
     </div>

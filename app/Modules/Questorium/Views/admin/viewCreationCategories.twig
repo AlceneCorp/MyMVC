@@ -1,0 +1,198 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+	<div class="row">
+		{% include 'admin/include/adminMenu.twig' %}
+
+		<!-- Main Content -->
+		<main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
+			<!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-poll me-2"></i> Création de catégories</h1>
+            </div>
+
+			<div class="rounded p-4 bg-white shadow-lg">
+				<div class="row g-4 text-secondary">
+					<h2>{{decrypt(quiz.TEXT)}}</h2>
+				</div>
+				<div class="row g-4 mt-4">
+					<div class="col-md-6">
+						<div class="p-4 border rounded bg-light shadow-sm">
+							<form metthod="post">
+								<legend class="fw-bold text-secondary mb-3">
+                                    <i class="fas fa-tasks pt-3 pb-2 mb-3 border-bottom"></i> Actions Catégorie
+                                </legend>
+								<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}">
+								<select class="form-select mb-3" name="CATEGORIES_ID" onChange="this.form.submit()">
+									<option value="0" {% if not verif('CATEGORIES_ID') %}selected{% endif %}>Sélectionnez une catégories</option>
+									{% for categorie in categories %}
+									<option value="{{ categorie.ID }}" {% if verif('CATEGORIES_ID') == categorie.ID %}selected{% endif %}>
+                                        {{ decrypt(categorie.TEXT) }}
+                                    </option>
+									{% endfor %}
+								</select>
+							</form>
+
+							<button class="btn btn-success w-100 mb-3" type="button" id="NEW_CATEGORIES">
+                                <i class="fas fa-plus me-2"></i>Nouvelle Catégorie
+                            </button>
+                            {% for categorie in categories %}
+                            <div class="d-flex align-items-center justify-content-between mb-2">
+                                <span id="CATEGORIES_{{ categorie.ID }}" class="fw-bold text-secondary me-3">
+                                    {{ decrypt(categorie.TEXT) }}
+                                </span>
+                                <div class="d-flex gap-2">
+                                    <button name="CATEGORIESEDIT_{{ categorie.ID }}" class="btn btn-warning btn-sm btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button name="CATEGORIESDELETE_{{ categorie.ID }}" class="btn btn-danger btn-sm btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            {% endfor %}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="p-4 border rounded bg-light shadow-sm">
+							<legend class="fw-bold text-secondary mb-3">
+								{% if verif("CATEGORIES_ID") > 0 %}
+                                    <i class="fas fa-file-edit pt-3 pb-2 mb-3 border-bottom"></i> Éditer Catégorie
+                                {% else %}
+                                    <i class="fas fa-file-alt pt-3 pb-2 mb-3 border-bottom"></i> Création Catégorie
+                                {% endif %}
+							</legend>
+							<form>
+								<div class="mb-3">
+									<input type="text" class="form-control" name="CATEGORIES_QUIZ_ID"  value="{{ verif('QUIZ_ID') }}" />
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}"  />
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" name="CATEGORIES_TEXT" placeholder="Nom de la catégorie" value="{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.DESC) : '' }}" />
+								</div>
+								<div class="mb-3">
+									<textarea class="form-control mb-3" name="CATEGORIES_DESC" placeholder="Description de la catégorie" rows="5">{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.DESC) : '' }}</textarea>
+								</div>
+
+								<div class="d-flex justify-content-between">
+                                    <button class="btn btn-success px-4" type="submit">
+                                        <i class="fas fa-save me-3"></i>Sauvegarder
+                                    </button>
+                                    {% if verif('CATEGORIES_ID') %}
+                                    <button type="button" class="btn btn-primary px-4" id="btnQuestions">
+                                        Aller aux questions <i class="fas fa-chevron-right ms-2"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+							</form>
+
+
+							<!-- Formulaire caché pour les données -->
+							<form id="formQuestions" method="post" action="{{base_url}}/admin/questions/" ?>">
+								<input type="text" class="form-control mb-3" name="QUIZ_ID"  value="{{ verif('QUIZ_ID') }}"  />
+								<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}"  />
+								<!-- Ajoutez d'autres champs ici si nécessaire -->
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+	$(function()
+	{
+		$("#NEW_CATEGORIES").click(function()
+		{
+			//$("select[name='CATEGORIES_ID']").val(0).trigger('change');
+		});
+		
+		$('#btnQuestions').click(function() 
+		{
+			// Remplir le formulaire caché avec les données du formulaire principal
+			$('#formQuestions').submit();
+		});
+		
+		$(".btn-edit, .btn-save, .btn-delete").click(function() 
+		{
+			var_cat = $(this).attr('name').split("_")[0];
+			var_id = $(this).attr('name').split("_")[1];
+			
+			console.log($(this).attr("name"));
+			console.log($(this).attr('name').split("_")[1]);
+			
+			switch(var_cat)
+			{
+				//Catégories                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
+				case "CATEGORIESEDIT":
+					$("select[name='CATEGORIES_ID']").val(var_id).trigger('change');
+					
+					break;
+				
+				case "CATEGORIESDELETE":
+					if (confirm('Voullez-vous vraiment supprimer la catégorie : ( ' + $("#CATEGORIESTEXT_"+var_id).html() + " ) ?")) 
+					{
+					  $.ajax
+						(
+							{
+								dataType: "JSON",
+								method:"POST",
+								url:"{{base_url}}/questorium/ajax/categoriesdel/" + var_id,
+								data:{"CATEGORIES_DEL" : var_id},
+								success: function(data) 
+								{
+									
+								},
+								complete: function() 
+								{
+									window.location.reload()
+								},
+								error: function() 
+								{
+									
+								}
+							}
+						);
+					}
+					break;
+			}
+		});
+		
+		//Catégories
+		$("#formCategoriesCrea").submit(function(event) 
+		{
+			event.preventDefault();
+			$.ajax
+			(
+				{
+					dataType: "JSON",
+					method:"POST",
+					url:"{{base_url}}/questorium/ajax/categories",
+					data:$("#formCategoriesCrea").serialize(),
+					success: function(data) 
+					{
+						
+					},
+					complete: function() 
+					{
+						window.location.reload()
+					},
+					error: function() 
+					{
+						
+					}
+				}
+			);
+		});
+	
+	});
+</script>
+{% endblock %}

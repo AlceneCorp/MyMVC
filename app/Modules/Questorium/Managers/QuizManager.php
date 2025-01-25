@@ -3,7 +3,7 @@
 namespace App\Modules\Questorium\Managers; // Déclaration du namespace, indiquant que cette classe se trouve dans le dossier App/Managers
 
 use App\Core\DatabaseManager; // Importation de la classe DatabaseManager qui contient les méthodes génériques pour manipuler la base de données
-use App\Modules\Questorium\Quiz; // Importation de la classe Quiz, représentant un modèle d'entité de la base de données
+use App\Modules\Questorium\Models\Quiz; // Importation de la classe Quiz, représentant un modèle d'entité de la base de données
 
 /**
  * Class QuizManager

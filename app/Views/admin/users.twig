@@ -109,9 +109,16 @@
                                     </td>
                                     <td>
                                         {% if entry.permissions is not empty %}
-                                            {% for permission in entry.permissions %}
-                                                <span style="margin:2px; background-color:{{ config('SITE.color_rank_', permission.getORDERS(), '.value') }};" class="badge">{{ permission.getFULLNAME() }}</span>
-                                            {% endfor %}
+                                            <!-- Bouton pour afficher/masquer les permissions -->
+                                            <button class="btn btn-sm mb-1" type="button" data-bs-toggle="collapse" data-bs-target="#permissions-{{ entry.user.getID() }}" aria-expanded="false" style="background-color:{{ config('SITE.site_color_1.value') }};" aria-controls="permissions-{{ entry.user.getID() }}">
+                                                <i class="fas fa-eye"></i> Afficher/Masquer Permissions
+                                            </button>
+                                            <!-- Liste des permissions avec collapse de Bootstrap -->
+                                            <div id="permissions-{{ entry.user.getID() }}" class="collapse">
+                                                {% for permission in entry.permissions %}
+                                                    <span style="margin:2px; background-color:{{ config('SITE.color_rank_', permission.getORDERS(), '.value') ? config('SITE.color_rank_', permission.getORDERS(), '.value') : config('SITE.site_color_1.value') }};;" class="badge">{{ permission.getFULLNAME() }}</span>
+                                                {% endfor %}
+                                            </div>
                                         {% else %}
                                             <span class="badge bg-secondary">Aucune permission</span>
                                         {% endif %}

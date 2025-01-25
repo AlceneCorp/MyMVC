@@ -2,13 +2,12 @@
 
 namespace App\Modules\Questorium\Models;
 
-class Subanswers
+class UsersQuiz
 {
     //Variables Membres
     private $ID;
-    private $ANSWERS_ID;
-    private $TEXT;
-    private $VALUES;
+    private $USERS_ID;
+    private $QUIZ_ID;
 
 
     //Constructeur
@@ -42,34 +41,24 @@ class Subanswers
         $this->ID = $ID;
     }
 
-    public function getANSWERS_ID()
+    public function getUSERS_ID()
     {
-        return $this->ANSWERS_ID;
+        return $this->USERS_ID;
     }
 
-    public function setANSWERS_ID($ANSWERS_ID)
+    public function setUSERS_ID($USERS_ID)
     {
-        $this->ANSWERS_ID = $ANSWERS_ID;
+        $this->USERS_ID = $USERS_ID;
     }
 
-    public function getTEXT()
+    public function getQUIZ_ID()
     {
-        return $this->TEXT;
+        return $this->QUIZ_ID;
     }
 
-    public function setTEXT($TEXT)
+    public function setQUIZ_ID($QUIZ_ID)
     {
-        $this->TEXT = $TEXT;
-    }
-
-    public function getVALUES()
-    {
-        return $this->VALUES;
-    }
-
-    public function setVALUES($VALUES)
-    {
-        $this->VALUES = $VALUES;
+        $this->QUIZ_ID = $QUIZ_ID;
     }
 
 }

@@ -5,15 +5,15 @@ namespace App\Modules\Questorium\Models;
 class Result
 {
     //Variables Membres
-    private $RESULT_ID;
-    private $RESULT_ACCOUNTS_ID;
-    private $RESULT_QUIZ_ID;
-    private $RESULT_CATEGORIES_ID;
-    private $RESULT_QUESTIONS_ID;
-    private $RESULT_ANSWERS_ID;
-    private $RESULT_SUBANSWERS_ID;
-    private $RESULT_VALUES;
-    private $RESULT_TIMESTAMP;
+    private $ID;
+    private $ACCOUNTS_ID;
+    private $QUIZ_ID;
+    private $CATEGORIES_ID;
+    private $QUESTIONS_ID;
+    private $ANSWERS_ID;
+    private $SUBANSWERS_ID;
+    private $VALUES;
+    private $TIMESTAMP;
 
 
     //Constructeur
@@ -37,94 +37,94 @@ class Result
 
     //Accesseurs
 
-    public function getRESULT_ID()
+    public function getID()
     {
-        return $this->RESULT_ID;
+        return $this->ID;
     }
 
-    public function setRESULT_ID($RESULT_ID)
+    public function setID($ID)
     {
-        $this->RESULT_ID = $RESULT_ID;
+        $this->ID = $ID;
     }
 
-    public function getRESULT_ACCOUNTS_ID()
+    public function getACCOUNTS_ID()
     {
-        return $this->RESULT_ACCOUNTS_ID;
+        return $this->ACCOUNTS_ID;
     }
 
-    public function setRESULT_ACCOUNTS_ID($RESULT_ACCOUNTS_ID)
+    public function setACCOUNTS_ID($ACCOUNTS_ID)
     {
-        $this->RESULT_ACCOUNTS_ID = $RESULT_ACCOUNTS_ID;
+        $this->ACCOUNTS_ID = $ACCOUNTS_ID;
     }
 
-    public function getRESULT_QUIZ_ID()
+    public function getQUIZ_ID()
     {
-        return $this->RESULT_QUIZ_ID;
+        return $this->QUIZ_ID;
     }
 
-    public function setRESULT_QUIZ_ID($RESULT_QUIZ_ID)
+    public function setQUIZ_ID($QUIZ_ID)
     {
-        $this->RESULT_QUIZ_ID = $RESULT_QUIZ_ID;
+        $this->QUIZ_ID = $QUIZ_ID;
     }
 
-    public function getRESULT_CATEGORIES_ID()
+    public function getCATEGORIES_ID()
     {
-        return $this->RESULT_CATEGORIES_ID;
+        return $this->CATEGORIES_ID;
     }
 
-    public function setRESULT_CATEGORIES_ID($RESULT_CATEGORIES_ID)
+    public function setCATEGORIES_ID($CATEGORIES_ID)
     {
-        $this->RESULT_CATEGORIES_ID = $RESULT_CATEGORIES_ID;
+        $this->CATEGORIES_ID = $CATEGORIES_ID;
     }
 
-    public function getRESULT_QUESTIONS_ID()
+    public function getQUESTIONS_ID()
     {
-        return $this->RESULT_QUESTIONS_ID;
+        return $this->QUESTIONS_ID;
     }
 
-    public function setRESULT_QUESTIONS_ID($RESULT_QUESTIONS_ID)
+    public function setQUESTIONS_ID($QUESTIONS_ID)
     {
-        $this->RESULT_QUESTIONS_ID = $RESULT_QUESTIONS_ID;
+        $this->QUESTIONS_ID = $QUESTIONS_ID;
     }
 
-    public function getRESULT_ANSWERS_ID()
+    public function getANSWERS_ID()
     {
-        return $this->RESULT_ANSWERS_ID;
+        return $this->ANSWERS_ID;
     }
 
-    public function setRESULT_ANSWERS_ID($RESULT_ANSWERS_ID)
+    public function setANSWERS_ID($ANSWERS_ID)
     {
-        $this->RESULT_ANSWERS_ID = $RESULT_ANSWERS_ID;
+        $this->ANSWERS_ID = $ANSWERS_ID;
     }
 
-    public function getRESULT_SUBANSWERS_ID()
+    public function getSUBANSWERS_ID()
     {
-        return $this->RESULT_SUBANSWERS_ID;
+        return $this->SUBANSWERS_ID;
     }
 
-    public function setRESULT_SUBANSWERS_ID($RESULT_SUBANSWERS_ID)
+    public function setSUBANSWERS_ID($SUBANSWERS_ID)
     {
-        $this->RESULT_SUBANSWERS_ID = $RESULT_SUBANSWERS_ID;
+        $this->SUBANSWERS_ID = $SUBANSWERS_ID;
     }
 
-    public function getRESULT_VALUES()
+    public function getVALUES()
     {
-        return $this->RESULT_VALUES;
+        return $this->VALUES;
     }
 
-    public function setRESULT_VALUES($RESULT_VALUES)
+    public function setVALUES($VALUES)
     {
-        $this->RESULT_VALUES = $RESULT_VALUES;
+        $this->VALUES = $VALUES;
     }
 
-    public function getRESULT_TIMESTAMP()
+    public function getTIMESTAMP()
     {
-        return $this->RESULT_TIMESTAMP;
+        return $this->TIMESTAMP;
     }
 
-    public function setRESULT_TIMESTAMP($RESULT_TIMESTAMP)
+    public function setTIMESTAMP($TIMESTAMP)
     {
-        $this->RESULT_TIMESTAMP = $RESULT_TIMESTAMP;
+        $this->TIMESTAMP = $TIMESTAMP;
     }
 
 }
