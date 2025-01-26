@@ -39,24 +39,22 @@ class AdminController extends Controller
 
 		$categorie_edit = null;
 
-		var_dump($_POST);
 
 		if(!isset($_POST['QUIZ_ID']))
 		{
 			header('Location: ' . URL . "/admin/quiz");
 		}
 
-
 		if(isset($_POST['CATEGORIES_ID']))
 		{
 			$categorie_edit = $categoriesManager->findOneCategories(['ID' => $_POST['CATEGORIES_ID']]);
 		}
-		
+
 
 		$this->render('admin/viewCreationCategories.twig',
 		[
 			'quiz' => $quizManager->findOneQuiz(['ID' => $_POST['QUIZ_ID']]),
-			'categories' => $categoriesManager->findOneCategories(['QUIZ_ID' => $_POST['QUIZ_ID']]),
+			'categories' => $categoriesManager->findAllCategories(['QUIZ_ID' => $_POST['QUIZ_ID']]),
 			'categorie_edit' => $categorie_edit
 		]);
 	}

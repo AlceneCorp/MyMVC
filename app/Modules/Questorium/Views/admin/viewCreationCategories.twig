@@ -13,18 +13,23 @@
             </div>
 
 			<div class="rounded p-4 bg-white shadow-lg">
+			<div class="row">
+				<div class="col-2">
+					<a href="{{base_url}}/admin/quiz/" class="btn btn-primary"><i class="fas fa-chevron-left ms-2"></i> Retour aux Questionnaires</a>
+				</div>
+			</div>
 				<div class="row g-4 text-secondary">
 					<h2>{{decrypt(quiz.TEXT)}}</h2>
 				</div>
 				<div class="row g-4 mt-4">
 					<div class="col-md-6">
 						<div class="p-4 border rounded bg-light shadow-sm">
-							<form metthod="post">
+							<form method="post">
 								<legend class="fw-bold text-secondary mb-3">
                                     <i class="fas fa-tasks pt-3 pb-2 mb-3 border-bottom"></i> Actions Catégorie
                                 </legend>
-								<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}">
-								<select class="form-select mb-3" name="CATEGORIES_ID" onChange="this.form.submit()">
+								<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
+								<select class="form-select mb-3" name="CATEGORIES_ID" onChange="this.form.submit()" hidden>
 									<option value="0" {% if not verif('CATEGORIES_ID') %}selected{% endif %}>Sélectionnez une catégories</option>
 									{% for categorie in categories %}
 									<option value="{{ categorie.ID }}" {% if verif('CATEGORIES_ID') == categorie.ID %}selected{% endif %}>
@@ -64,21 +69,24 @@
                                     <i class="fas fa-file-alt pt-3 pb-2 mb-3 border-bottom"></i> Création Catégorie
                                 {% endif %}
 							</legend>
-							<form>
+							<form id="formCategoriesCrea" method="post">
 								<div class="mb-3">
-									<input type="text" class="form-control" name="CATEGORIES_QUIZ_ID"  value="{{ verif('QUIZ_ID') }}" />
+									<input type="text" class="form-control" name="CATEGORIES_QUIZ_ID"  value="{{ verif('QUIZ_ID') }}" hidden />
 								</div>
 								<div class="mb-3">
-									<input type="text" class="form-control" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}"  />
+									<input type="text" class="form-control" name="QUIZ_ID"  value="{{ verif('QUIZ_ID') }}" hidden />
 								</div>
 								<div class="mb-3">
-									<input type="text" class="form-control" name="CATEGORIES_TEXT" placeholder="Nom de la catégorie" value="{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.DESC) : '' }}" />
+									<input type="text" class="form-control" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}" hidden  />
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" name="CATEGORIES_TEXT" placeholder="Nom de la catégorie" value="{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.TEXT) : '' }}" />
 								</div>
 								<div class="mb-3">
 									<textarea class="form-control mb-3" name="CATEGORIES_DESC" placeholder="Description de la catégorie" rows="5">{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.DESC) : '' }}</textarea>
 								</div>
 
-								<div class="d-flex justify-content-between">
+								<div class="d-flex justify-content-between mb-3">
                                     <button class="btn btn-success px-4" type="submit">
                                         <i class="fas fa-save me-3"></i>Sauvegarder
                                     </button>
@@ -92,9 +100,9 @@
 
 
 							<!-- Formulaire caché pour les données -->
-							<form id="formQuestions" method="post" action="{{base_url}}/admin/questions/" ?>">
-								<input type="text" class="form-control mb-3" name="QUIZ_ID"  value="{{ verif('QUIZ_ID') }}"  />
-								<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}"  />
+							<form id="formQuestions" method="post" action="{{base_url}}/admin/questions/">
+								<input type="text" class="form-control mb-3" name="QUIZ_ID"  value="{{ verif('QUIZ_ID') }}"  hidden />
+								<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}"  hidden />
 								<!-- Ajoutez d'autres champs ici si nécessaire -->
 							</form>
 						</div>
@@ -112,7 +120,7 @@
 	{
 		$("#NEW_CATEGORIES").click(function()
 		{
-			//$("select[name='CATEGORIES_ID']").val(0).trigger('change');
+			$("select[name='CATEGORIES_ID']").val(0).trigger('change');
 		});
 		
 		$('#btnQuestions').click(function() 
@@ -123,6 +131,8 @@
 		
 		$(".btn-edit, .btn-save, .btn-delete").click(function() 
 		{
+
+			console.log('test')
 			var_cat = $(this).attr('name').split("_")[0];
 			var_id = $(this).attr('name').split("_")[1];
 			
@@ -169,6 +179,7 @@
 		//Catégories
 		$("#formCategoriesCrea").submit(function(event) 
 		{
+			console.log("{{base_url}}/questorium/ajax/categories")
 			event.preventDefault();
 			$.ajax
 			(
@@ -179,10 +190,12 @@
 					data:$("#formCategoriesCrea").serialize(),
 					success: function(data) 
 					{
-						
+						console.log(data)
+						alert();
 					},
 					complete: function() 
 					{
+						alert();
 						window.location.reload()
 					},
 					error: function() 

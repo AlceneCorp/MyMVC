@@ -33,25 +33,44 @@ class AjaxController extends Controller
 					'LOGO' => CoreManager::encrypt($_POST['QUIZ_LOGO']) ?? null
 				];
 
-				if(isset($_POST['QUIZ_ID']))
+				if(isset($_POST['QUIZ_ID']) && $_POST['QUIZ_ID'] > 0)
 				{
 					$id = $_POST['QUIZ_ID'];
-					$return = $quizManager->updateQuiz($data, $id);
+					$quizManager->updateQuiz($data, $id);
 				}
 				else
 				{
-					$return = $quizManager->addQuiz($data);
+					$quizManager->addQuiz($data);
 				}
 			}
 		}
-
-		echo $return;
 	}
 
 	public function ajaxCategories()
 	{
 		$categoriesManager = new CategoriesManager();
 
+		if (isset($_POST))
+		{
+			if(isset($_POST['CATEGORIES_TEXT']) && isset($_POST['CATEGORIES_QUIZ_ID']) && $_POST['CATEGORIES_TEXT'] != '')
+			{
+				$data = 
+				[
+					'TEXT' => CoreManager::encrypt($_POST['CATEGORIES_TEXT']),
+					'DESC' => CoreManager::encrypt($_POST['CATEGORIES_DESC']) ?? null,
+					'QUIZ_ID' => $_POST['CATEGORIES_QUIZ_ID']
+				];
 
+				if(isset($_POST['CATEGORIES_ID']) && $_POST['CATEGORIES_ID'] > 0)
+				{
+					$id = $_POST['CATEGORIES_ID'];
+					$categoriesManager->updateCategories($data, $id);
+				}
+				else
+				{
+					$categoriesManager->addCategories($data);
+				}
+			}
+		}
 	}
 }
