@@ -95,7 +95,7 @@ class Router
 
         CoreManager::getTwig()->addFunction(new TwigFunction('encrypt', fn($data) => CoreManager::encrypt($data)));
         CoreManager::getTwig()->addFunction(new TwigFunction('decrypt', fn($data) => CoreManager::decrypt($data)));
-        CoreManager::getTwig()->addFunction(new TwigFunction('verif', fn($param_Data) => ((isset($_POST[$param_Data]) && $_POST[$param_Data] > 0) ? $_POST[$param_Data] : 0)));
+        CoreManager::getTwig()->addFunction(new TwigFunction('verif', fn($param_Data) => CoreManager::verif($param_Data)));
     }
 
     /**
@@ -114,12 +114,13 @@ class Router
                 continue;
             }
 
-            $menuGenerate .= '<li class="nav-item">';
+            
         
             if (!empty($route['children'])) 
             {
                 if($route['inMenu'])
                 {
+                    $menuGenerate .= '<li class="nav-item">';
                     $menuGenerate .= '<div class="dropend">';
                     // Menu déroulant
                     $menuGenerate .= '<a class="nav-link text-white me-4" href="#" id="' . $route['name'] . '" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
@@ -137,21 +138,23 @@ class Router
 
                     $menuGenerate .= '</ul>';
                     $menuGenerate .= '</div>';
-
+                    $menuGenerate .= '</li>';
                 }
             } 
             else 
             {
                 if($route['inMenu'] && CoreManager::checkPerm($route['perm']))
                 {
+                    $menuGenerate .= '<li class="nav-item">';
                     $menuGenerate .= '<div class="dropend">';
                     // Lien simple
                     $menuGenerate .= '<a class="nav-link text-white me-4" href="' . $route['url'] . '">' . $route['icon'] . ' ' . $route['name'] . '</a>';
                     $menuGenerate .= '</div>';
+                    $menuGenerate .= '</li>';
                 }
             }
 
-            $menuGenerate .= '</li>';
+            
         }
 
         return $menuGenerate;

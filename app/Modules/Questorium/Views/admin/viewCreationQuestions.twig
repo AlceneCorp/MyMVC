@@ -1,1 +1,265 @@
 {% extends 'base.twig' %}
+
+{% block content %}
+<div class="container-fluid mt-5">
+	<div class="row">
+		{% include 'admin/include/adminMenu.twig' %}
+
+		<!-- Main Content -->
+		<main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
+			<!-- Header Section -->
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-poll me-2"></i> Création de questions</h1>
+            </div>
+
+			<div class="rounded p-4 bg-white shadow-lg">
+				<div class="row">
+					<div class="col-2">
+						<form method="POST" action="{{base_url}}/admin/categories/">
+							<input type="text" class="form-control" name="QUIZ_ID" value="{{ verif('QUIZ_ID') }}" hidden />
+							<input type="text" class="form-control" name="CATEGORIES_ID" value="{{ verif('CATEGORIES_ID') }}" hidden />
+							<button class="btn btn-primary"><i class="fas fa-chevron-left ms-2"></i> Retour aux Catégories</button>
+						</form>
+					</div>
+				</div>
+
+				<div class="row g-4 text-secondary">
+					<h2>{{decrypt(quiz.TEXT)}}<i class="fas fa-chevron-right ms-2"></i> {{decrypt(categories.TEXT)}}</h2>
+				</div>
+
+				<div class="row g-4 mt-4">
+					<div class="col-md-6">
+						<div class="p-4 border rounded bg-light shadow-sm">
+							<form method="post">
+								<legend class="fw-bold text-secondary mb-3">
+                                    <i class="fas fa-tasks pt-3 pb-2 mb-3 border-bottom"></i> Actions Questions
+                                </legend>
+								<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
+								<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{verif('CATEGORIES_ID')}}" hidden>
+								<input type="text" class="form-control mb-3" name="QUESTIONS_ID" value="{{verif('QUESTIONS_ID')}}" hidden>
+								<select class="form-control mb-3" name="QUESTIONS_ID" onChange="this.form.submit();" hidden>
+									<option value="0" {% if not verif('QUESTIONS_ID') %}selected{% endif %}>Sélectionnez une questions</option>
+									{% for question in questions %}
+									<option value="{{question.ID}}" {% if verif('QUESTIONS_ID') == question.ID %}selected{% endif %}>
+										 {{ decrypt(question.TEXT) }}
+									{% endfor %}
+								</select>
+							</form>
+
+							<button class="btn btn-success w-100 mb-3" type="button" id="NEW_QUESTIONS">
+                                <i class="fas fa-plus me-2"></i>Nouvelle Question
+                            </button>
+
+							{% for question in questions %}
+							<div class="d-flex align-items-center text-start justify-content-between mb-3">
+								<span id="CATEGORIES_{{ question.ID }}" class="fw-bold text-secondary me-3">
+                                    {{ decrypt(question.TEXT) }}
+                                </span>
+								<div class="d-flex gap-2">
+                                    <button name="QUESTIONSEDIT_{{ question.ID }}" class="btn btn-warning btn-sm btn-edit">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button name="QUESTIONSDELETE_{{ question.ID }}" class="btn btn-danger btn-sm btn-delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="p-4 border rounded bg-light shadow-sm">
+							<form id="formQuestionsCrea" method="post">
+								<legend class="fw-bold text-secondary mb-3">
+                                    {% if verif("QUESTIONS_ID") > 0 %}
+                                    <i class="fas fa-file-edit pt-3 pb-2 mb-3 border-bottom"></i> Éditer Questions
+									{% else %}
+									<i class="fas fa-file-alt pt-3 pb-2 mb-3 border-bottom"></i> Création Questions
+									{% endif %}
+                                </legend>
+								
+								<div class="mb-3">
+									<input type="text" class="form-control" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" name="CATEGORIES_ID" value="{{verif('CATEGORIES_ID')}}" hidden>
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" name="QUESTIONS_ID" value="{{verif('QUESTIONS_ID')}}" hidden>
+								</div>
+								<div class="mb-3">
+									<input type="text" class="form-control" placeholder="Intitulé de la question" name="QUESTIONS_TEXT" value="{{verif('QUESTIONS_ID') ? decrypt(question_edit.TEXT) : ''}}">
+								</div>
+								<div class="mb-3">
+									<div class="form-check form-switch text-secondary">
+										<input class="form-check-input" name="ANSWERS_QUESTIONS_CONDITION_SWITCH" type="checkbox" {{ verif('ANSWERS_QUESTIONS_CONDITION') > 0 or (verif('QUESTIONS_ID') > 0 and question_edit.getQUESTIONS_ANSWERS_CONDITION_ID() > 0) ? 'checked="checked"' }} id="ANSWERS_QUESTIONS_CONDITION_SWITCH">
+										<label class="form-check-label" for="ANSWERS_QUESTIONS_CONDITION_SWITCH" >Conditionner la question</label>					
+									</div>
+									<div class="switch-conditional mb-3" {% if verif('ANSWERS_QUESTIONS_CONDITION_SWITCH') > 0 %}style="display:none;"{% endif %}>
+										<form id="formCondition">
+											<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
+											<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{verif('CATEGORIES_ID')}}" hidden>
+											<input type="text" class="form-control mb-3" name="QUESTIONS_ID" value="{{verif('QUESTIONS_ID')}}" hidden>
+											<select class="form-select mb-3"  name="ANSWERS_QUESTIONS_CONDITION" onChange="this.form.submit();" hidden>
+											<option value="0" selected>Sélectionnez une question</option>
+											{% for question in allQuestions %}
+											{{question | raw}}
+											{% endfor %}
+											</select>
+										</form>
+										<div class="form-check text-start text-secondary mb-3">
+											{% for answer in allAnswers %}
+											{{answer | raw}}
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+								<div class="d-flex justify-content-between mb-3">
+                                    <button id="sendformQuestionsCrea" class="btn btn-success px-4" type="submit">
+                                        <i class="fas fa-save me-3"></i>Sauvegarder
+                                    </button>
+                                    {% if verif('CATEGORIES_ID') %}
+                                    <button type="button" class="btn btn-primary px-4" id="btnAnswers">
+                                        Aller aux questions <i class="fas fa-chevron-right ms-2"></i>
+                                    </button>
+                                    {% endif %}
+                                </div>
+							</form>
+							<form method="post">
+								<div class="d-flex justify-content-between mb-3">
+									<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
+									<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{verif('CATEGORIES_ID')}}" hidden>
+									<input type="text" class="form-control mb-3" name="QUESTIONS_ID" value="{{verif('QUESTIONS_ID')}}" hidden>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
+			</div>
+		</main>
+	</div>
+</div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+
+	$(function()
+	{
+		{% if verif('ANSWERS_QUESTIONS_CONDITION_SWITCH') == "on" %}
+			$("input[name='ANSWERS_QUESTIONS_CONDITION_SWITCH']").trigger("change");
+		{% endif %}
+		
+		{% if condition %}
+			$("select[name='ANSWERS_QUESTIONS_CONDITION']").trigger("change");
+		{% endif %}
+		
+		
+		
+		$("#NEW_QUESTIONS").click(function()
+		{
+			$("select[name='QUESTIONS_ID']").val(0).trigger('change');
+		});
+		
+		$(".btn-edit, .btn-save, .btn-delete").click(function() 
+		{
+			var_cat = $(this).attr('name').split("_")[0];
+			var_id = $(this).attr('name').split("_")[1];
+			
+			console.log($(this).attr("name"));
+			
+			switch(var_cat)
+			{
+				//Questions
+				case "QUESTIONSEDIT":			
+						$("select[name='QUESTIONS_ID']").val(var_id).trigger('change');
+					break;
+					
+				case "QUESTIONSDELETE":
+					if (confirm('Voullez-vous vraiment supprimer la question : ( ' + $("#QUESTIONSTEXT_"+var_id).html() + " ) ?")) 
+					{
+					  $.ajax
+						(
+							{
+								dataType: "JSON",
+								method:"POST",
+								url:"{{base_url}}/questorium/ajax/questionsdel/" + var_id,
+								data:{"QUESTIONS_DEL" : var_id},
+								success: function(data) 
+								{
+									
+								},
+								complete: function() 
+								{
+									window.location.reload()
+								},
+								error: function() 
+								{
+									
+								}
+							}
+						);
+					}
+				break;
+				
+			}
+		});
+		
+		$("#sendformQuestionsCrea").click(function()
+		{
+			$("#formQuestionsCrea").submit();
+		});
+		
+		
+		//Questions
+		$("#formQuestionsCrea").submit(function(event) 
+		{
+			console.log("Envoie de la requete....")
+			event.preventDefault();
+			$.ajax
+			(
+				{
+					dataType: "JSON",
+					method:"POST",
+					url:"{{base_url}}/questorium/ajax/questions",
+					data:$("#formQuestionsCrea").serialize(),
+					success: function(data) 
+					{
+
+					},
+					complete: function() 
+					{
+						window.location.reload()
+					},
+					error: function() 
+					{
+						
+					}
+				}
+			);
+		});
+	});
+	
+	
+	
+	$("input[name='ANSWERS_QUESTIONS_CONDITION_SWITCH']").change(function()
+	{
+		console.log($(this).val());
+		if ($(this).prop("checked") && $(this).val() == "on")
+		{
+			$(".switch-conditional").show();
+			if($("input[name='ANSWERS_QUESTIONS_CONDITION_SWITCH']").prop("checked"))
+			{
+				
+			}
+		}
+		else
+		{
+			$(".switch-conditional").hide();
+			$("select[name='ANSWERS_QUESTIONS_CONDITION']").val(0).trigger("change");
+			
+		}
+	});
+</script>
+{% endblock %}

@@ -39,7 +39,7 @@ return
 			],
 			[
 				'name' => 'Creation Questions',
-				'url' => '/MyMVC/questions/{questions_id}',
+				'url' => '/MyMVC/admin/questions/',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createQuestions',
 				'params' => [],
@@ -50,7 +50,7 @@ return
 			],
 			[
 				'name' => 'Creation Réponse',
-				'url' => '/MyMVC/answers/{answers_id}',
+				'url' => '/MyMVC/admin/answers/',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createAnswers',
 				'params' => [],
@@ -129,6 +129,17 @@ return
 	],
 	[
 		'name' => '',
+		'url' => '/MyMVC/questorium/ajax/questions',
+		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
+		'method' => 'ajaxQuestions',
+		'params' => [],
+		'perm' => 'create_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
 		'url' => '/MyMVC/questorium/ajax/quizdel/{quiz_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuizDel',
@@ -142,7 +153,18 @@ return
 		'name' => '',
 		'url' => '/MyMVC/questorium/ajax/categoriesdel/{categories_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
-		'method' => 'ajaxQuizDel',
+		'method' => 'ajaxCategoriesDel',
+		'params' => [],
+		'perm' => 'create_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => '/MyMVC/questorium/ajax/questionsdel/{questions_id}',
+		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
+		'method' => 'ajaxQuestionsDel',
 		'params' => [],
 		'perm' => 'create_questionnaire',
 		'icon' => '',

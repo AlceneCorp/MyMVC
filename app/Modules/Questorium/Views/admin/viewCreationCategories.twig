@@ -13,11 +13,11 @@
             </div>
 
 			<div class="rounded p-4 bg-white shadow-lg">
-			<div class="row">
-				<div class="col-2">
-					<a href="{{base_url}}/admin/quiz/" class="btn btn-primary"><i class="fas fa-chevron-left ms-2"></i> Retour aux Questionnaires</a>
+				<div class="row">
+					<div class="col-2">
+						<a href="{{base_url}}/admin/quiz/" class="btn btn-primary"><i class="fas fa-chevron-left ms-2"></i> Retour aux Questionnaires</a>
+					</div>
 				</div>
-			</div>
 				<div class="row g-4 text-secondary">
 					<h2>{{decrypt(quiz.TEXT)}}</h2>
 				</div>
@@ -43,8 +43,8 @@
                                 <i class="fas fa-plus me-2"></i>Nouvelle Catégorie
                             </button>
                             {% for categorie in categories %}
-                            <div class="d-flex align-items-center justify-content-between mb-2">
-                                <span id="CATEGORIES_{{ categorie.ID }}" class="fw-bold text-secondary me-3">
+                            <div class="d-flex align-items-left text-start justify-content-between mb-2">
+                                <span id="CATEGORIES_{{ categorie.ID }}" class="fw-bold me-3" style="color:{{ decrypt(categorie.COLOR)}}">
                                     {{ decrypt(categorie.TEXT) }}
                                 </span>
                                 <div class="d-flex gap-2">
@@ -64,9 +64,9 @@
 						<div class="p-4 border rounded bg-light shadow-sm">
 							<legend class="fw-bold text-secondary mb-3">
 								{% if verif("CATEGORIES_ID") > 0 %}
-                                    <i class="fas fa-file-edit pt-3 pb-2 mb-3 border-bottom"></i> Éditer Catégorie
+                                    <i class="fas fa-file-edit pt-3 pb-2 mb-3 border-bottom"></i> Éditer Catégories
                                 {% else %}
-                                    <i class="fas fa-file-alt pt-3 pb-2 mb-3 border-bottom"></i> Création Catégorie
+                                    <i class="fas fa-file-alt pt-3 pb-2 mb-3 border-bottom"></i> Création Catégories
                                 {% endif %}
 							</legend>
 							<form id="formCategoriesCrea" method="post">
@@ -85,7 +85,10 @@
 								<div class="mb-3">
 									<textarea class="form-control mb-3" name="CATEGORIES_DESC" placeholder="Description de la catégorie" rows="5">{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.DESC) : '' }}</textarea>
 								</div>
-
+								<div class="mb-3">
+									<label for="CATEGORIESCOLOR" class="form-label text-secondary">Sélectionnez une couleur</label>
+									<input type="color" class="form-control" id="CATEGORIESCOLOR" name="CATEGORIES_COLOR" value="{{ verif('CATEGORIES_ID') ? decrypt(categorie_edit.COLOR) : '#28a745' }}" />
+								</div>
 								<div class="d-flex justify-content-between mb-3">
                                     <button class="btn btn-success px-4" type="submit">
                                         <i class="fas fa-save me-3"></i>Sauvegarder
@@ -190,12 +193,10 @@
 					data:$("#formCategoriesCrea").serialize(),
 					success: function(data) 
 					{
-						console.log(data)
-						alert();
+
 					},
 					complete: function() 
 					{
-						alert();
 						window.location.reload()
 					},
 					error: function() 

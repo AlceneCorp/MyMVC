@@ -218,4 +218,9 @@ class CoreManager
         // Retourne le slug
         return $text ?: 'n-a';
     }
+
+    public static function verif($param_Data)
+    {
+        return ((isset($_POST[$param_Data]) && is_numeric($_POST[$param_Data]) && $_POST[$param_Data] > 0) ? (int)$_POST[$param_Data] : 0);
+    }
 }
