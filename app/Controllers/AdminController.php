@@ -54,7 +54,7 @@ class AdminController extends Controller
 				$apacheProcesses = substr_count($apacheProcesses, 'httpd.exe');
 
 				// Temps écoulé depuis le dernier redémarrage (Windows)
-				$uptime = shell_exec('powershell -Command "get-date (gcim Win32_OperatingSystem).LastBootUpTime"');
+				$uptime = shell_exec('powershell -ExecutionPolicy Bypass -NoProfile -Command "[Console]::OutputEncoding = [System.Text.Encoding]::UTF8; (Get-CimInstance Win32_OperatingSystem).LastBootUpTime | Get-Date -Format \'dddd d MMMM yyyy HH:mm:ss\'"');
 				$uptime = $uptime ? trim($uptime) : 'Indisponible';
 
 			} 

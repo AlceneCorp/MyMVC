@@ -52,7 +52,7 @@
 
 							{% for question in questions %}
 							<div class="d-flex align-items-center text-start justify-content-between mb-3">
-								<span id="CATEGORIES_{{ question.ID }}" class="fw-bold text-secondary me-3">
+								<span id="QUESTIONS_{{ question.ID }}" class="fw-bold text-secondary me-3">
                                     {{ decrypt(question.TEXT) }}
                                 </span>
 								<div class="d-flex gap-2">
@@ -101,7 +101,7 @@
 											<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
 											<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{verif('CATEGORIES_ID')}}" hidden>
 											<input type="text" class="form-control mb-3" name="QUESTIONS_ID" value="{{verif('QUESTIONS_ID')}}" hidden>
-											<select class="form-select mb-3"  name="ANSWERS_QUESTIONS_CONDITION" onChange="this.form.submit();" hidden>
+											<select class="form-select mb-3"  name="ANSWERS_QUESTIONS_CONDITION" onChange="this.form.submit();">
 											<option value="0" selected>Sélectionnez une question</option>
 											{% for question in allQuestions %}
 											{{question | raw}}
@@ -115,19 +115,19 @@
 										</div>
 									</div>
 								</div>
-								<div class="d-flex justify-content-between mb-3">
+								<div class="d-flex justify-content-between mb-3 mt-5">
                                     <button id="sendformQuestionsCrea" class="btn btn-success px-4" type="submit">
                                         <i class="fas fa-save me-3"></i>Sauvegarder
                                     </button>
-                                    {% if verif('CATEGORIES_ID') %}
+                                    {% if verif('QUESTIONS_ID') %}
                                     <button type="button" class="btn btn-primary px-4" id="btnAnswers">
                                         Aller aux questions <i class="fas fa-chevron-right ms-2"></i>
                                     </button>
                                     {% endif %}
                                 </div>
 							</form>
-							<form method="post">
-								<div class="d-flex justify-content-between mb-3">
+							<form method="post" id="toAnswers" action="{{base_url}}/admin/answers/">
+								<div class="d-flex justify-content-between mb-1">
 									<input type="text" class="form-control mb-3" name="QUIZ_ID" value="{{verif('QUIZ_ID')}}" hidden>
 									<input type="text" class="form-control mb-3" name="CATEGORIES_ID" value="{{verif('CATEGORIES_ID')}}" hidden>
 									<input type="text" class="form-control mb-3" name="QUESTIONS_ID" value="{{verif('QUESTIONS_ID')}}" hidden>
@@ -154,6 +154,11 @@
 		{% if condition %}
 			$("select[name='ANSWERS_QUESTIONS_CONDITION']").trigger("change");
 		{% endif %}
+
+		$("#btnAnswers").click(function()
+		{
+			$("#toAnswers").submit();
+		});
 		
 		
 		
@@ -249,16 +254,10 @@
 		if ($(this).prop("checked") && $(this).val() == "on")
 		{
 			$(".switch-conditional").show();
-			if($("input[name='ANSWERS_QUESTIONS_CONDITION_SWITCH']").prop("checked"))
-			{
-				
-			}
 		}
 		else
 		{
 			$(".switch-conditional").hide();
-			$("select[name='ANSWERS_QUESTIONS_CONDITION']").val(0).trigger("change");
-			
 		}
 	});
 </script>

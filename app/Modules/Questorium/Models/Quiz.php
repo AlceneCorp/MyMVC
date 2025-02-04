@@ -11,7 +11,7 @@ class Quiz
     private $END;
     private $DESC;
     private $LOGO;
-    private $STYLE;
+    private $SLUG;
 
 
     //Constructeur
@@ -95,14 +95,14 @@ class Quiz
         $this->LOGO = $LOGO;
     }
 
-    public function getSTYLE()
+    public function getSLUG()
     {
-        return $this->STYLE;
+        return $this->SLUG;
     }
 
-    public function setSTYLE($STYLE)
+    public function setSLUG($SLUG)
     {
-        $this->STYLE = $STYLE;
+        $this->SLUG = $SLUG;
     }
 
 }

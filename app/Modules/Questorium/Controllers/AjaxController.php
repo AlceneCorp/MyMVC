@@ -4,6 +4,7 @@ namespace App\Modules\Questorium\Controllers;
 
 use App\Core\Controller;
 use App\Core\CoreManager;
+use App\Core\FileManager;
 
 use App\Modules\Questorium\Managers\QuizManager;
 use App\Modules\Questorium\Managers\CategoriesManager;
@@ -26,24 +27,30 @@ class AjaxController extends Controller
 		{
 			if(isset($_POST['QUIZ_TEXT']) && isset($_POST['QUIZ_START']) && isset($_POST['QUIZ_END']))
 			{
-				
-				$data = 
-				[
-					'TEXT' => CoreManager::encrypt($_POST['QUIZ_TEXT']),
-					'DESC' => CoreManager::encrypt($_POST['QUIZ_DESC']) ?? null,
-					'START' => $_POST['QUIZ_START'],
-					'END' => $_POST['QUIZ_END'],
-					'LOGO' => CoreManager::encrypt($_POST['QUIZ_LOGO']) ?? null
-				];
+				if($_POST['QUIZ_TEXT'] !== "")
+				{
+					$uploadDir = "\\images\\questorium\\logo\\".CoreManager::slug($_POST['QUIZ_TEXT'])."\\";
+					echo $pictureUrl = FileManager::uploadFile($uploadDir, 'QUIZ_LOGO');
 
-				if(isset($_POST['QUIZ_ID']) && $_POST['QUIZ_ID'] > 0)
-				{
-					$id = $_POST['QUIZ_ID'];
-					$quizManager->updateQuiz($data, $id);
-				}
-				else
-				{
-					$quizManager->addQuiz($data);
+					$data = 
+					[
+						'TEXT' => CoreManager::encrypt($_POST['QUIZ_TEXT']),
+						'DESC' => CoreManager::encrypt($_POST['QUIZ_DESC']) ?? null,
+						'START' => $_POST['QUIZ_START'],
+						'END' => $_POST['QUIZ_END'],
+						'LOGO' => CoreManager::encrypt($pictureUrl),
+						'SLUG' => CoreManager::encrypt(CoreManager::slug($_POST['QUIZ_TEXT']))
+					];
+
+					if(isset($_POST['QUIZ_ID']) && $_POST['QUIZ_ID'] > 0)
+					{
+						$id = $_POST['QUIZ_ID'];
+						$quizManager->updateQuiz($data, $id);
+					}
+					else
+					{
+						$quizManager->addQuiz($data);
+					}
 				}
 			}
 		}

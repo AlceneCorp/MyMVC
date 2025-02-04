@@ -1,0 +1,401 @@
+{% extends 'base.twig' %}
+
+{% block style %}
+<style>
+    .progress-container 
+	{
+		position: relative;
+	}
+
+    .step {
+        flex: 1;
+        text-align: center;
+        position: relative;
+    }
+
+    .step a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 45px;
+        height: 45px;
+        border-radius: 50%;
+        background-color: #e9ecef;
+        text-decoration: none;
+        color: black;
+        font-weight: bold;
+        transition: all 0.3s ease-in-out;
+    }
+
+    .step.active a {
+        background-color: #0d6efd;
+        color: white;
+        transform: scale(1.1);
+        box-shadow: 0 0 8px rgba(13, 110, 253, 0.5);
+    }
+
+    .question-container {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    .nav-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 30px;
+    }
+
+    @media (min-width: 1200px)
+	{
+		.hidden-categories
+		{
+			display: flex;
+			font-size:50%;
+			font-weight: bold;
+			justify-content: space-between;
+		}
+			
+		/* Calcul de la largeur des step-container */
+		.step-container 
+		{
+			max-width: calc({{ 100 / categories | length }}% - 4px);
+			position: relative;
+			width: calc({{ 100 / categories | length }}% - 4px); /* Même largeur qu'une étape de progress bar */
+			float: left; /* Aligner les étapes horizontalement */
+			background-color: #f0f0f0; /* Couleur de fond du texte */
+			border: 1px solid #ced4da; /* Bordure */
+			border-radius: 5px; /* Coins arrondis */
+			padding: 2px; /* Espacement interne */
+			margin: 0 2px; /* Marge de 2px à droite et à gauche */
+		}
+			
+		.text-container 
+		{
+			display: grid;
+			place-items: center;
+			width: 100%; /* Prend toute la largeur de la barre de progression */
+			text-align: center; /* Centrer le texte */
+			padding: 0px; /* Espacement interne */
+			opacity:0.9;
+			height:130px;
+				
+		}
+	}
+		
+	@media (min-width: 1200px) and (max-width: 1499.98px)
+	{
+		.hidden-categories
+		{
+			display: flex;
+			font-size:12px;
+			font-weight: bold;
+			justify-content: space-between;
+		}
+			
+		/* Calcul de la largeur des step-container */
+		.step-container 
+		{
+			max-width: calc({{ 100 / categories | length }}% - 4px);
+			position: relative;
+			width: calc({{ 100 / categories | length }}% - 4px); /* Même largeur qu'une étape de progress bar */
+			float: left; /* Aligner les étapes horizontalement */
+			background-color: #f0f0f0; /* Couleur de fond du texte */
+			border: 1px solid #ced4da; /* Bordure */
+			border-radius: 5px; /* Coins arrondis */
+			padding: 2px; /* Espacement interne */
+			margin: 0 2px; /* Marge de 2px à droite et à gauche */
+		}
+			
+		.text-container 
+		{
+			display: grid;
+			place-items: center;
+			width: 100%; /* Prend toute la largeur de la barre de progression */
+			text-align: center; /* Centrer le texte */
+			padding: 0px; /* Espacement interne */
+			opacity:0.9;
+			height:130px;
+				
+		}
+	}
+		
+	@media (min-width: 992px) and (max-width: 1199.98px)
+	{
+		.hidden-categories
+		{
+			display: flex;
+			font-size:50%;
+			font-weight: bold;
+			justify-content: space-between;
+		}
+			
+		/* Calcul de la largeur des step-container */
+		.step-container 
+		{
+			max-width: calc({{ 100 / categories | length }}% - 4px);
+			position: relative;
+			width: calc({{ 100 / categories | length }}% - 4px); /* Même largeur qu'une étape de progress bar */
+			float: left; /* Aligner les étapes horizontalement */
+			background-color: #f0f0f0; /* Couleur de fond du texte */
+			border: 1px solid #ced4da; /* Bordure */
+			border-radius: 5px; /* Coins arrondis */
+			padding: 2px; /* Espacement interne */
+			margin: 0 2px; /* Marge de 2px à droite et à gauche */
+		}
+			
+		.text-container 
+		{
+			display: grid;
+			place-items: center;
+			width: 100%; /* Prend toute la largeur de la barre de progression */
+			text-align: center; /* Centrer le texte */
+			padding: 0px; /* Espacement interne */
+			opacity:0.9;
+			height:130px;
+				
+		}
+	}
+		
+	@media (min-width: 1500px)
+	{
+		.hidden-categories
+		{
+			display: flex;
+			font-size:13px;
+			font-weight: bold;
+			justify-content: space-between;
+		}
+			
+		/* Calcul de la largeur des step-container */
+		.step-container 
+		{
+			max-width: calc({{ 100 / categories | length }}% - 4px);
+			position: relative;
+			width: calc({{ 100 / categories | length }}% - 4px); /* Même largeur qu'une étape de progress bar */
+			float: left; /* Aligner les étapes horizontalement */
+			background-color: #f0f0f0; /* Couleur de fond du texte */
+			border: 1px solid #ced4da; /* Bordure */
+			border-radius: 5px; /* Coins arrondis */
+			padding: 2px; /* Espacement interne */
+			margin: 0 2px; /* Marge de 2px à droite et à gauche */
+		}
+			
+		.text-container 
+		{
+			display: grid;
+			place-items: center;
+			width: 100%; /* Prend toute la largeur de la barre de progression */
+			text-align: center; /* Centrer le texte */
+			padding: 0px; /* Espacement interne */
+			opacity:0.9;
+			height:130px;
+		}
+	}
+
+	/* Calcul de la position des cercles */
+	.circle 
+	{
+		position: absolute;
+		top: -10px;
+		transform: translateY(-50%) translateX(-20px);
+			
+		left: calc(<?php echo 100 / ($total_categories); ?>% - <?php echo 100 / ($total_categories); ?>%); /* Placer le cercle au centre de chaque étape */
+		left: calc({{ 100 / categories | length }}% - {{ 100 / categories | length }}%);
+		width: 50px; /* Diamètre du cercle */
+		height: 50px; /* Diamètre du cercle */
+		border-radius: 50%; /* Pour créer un cercle */
+		background-color: transparent; /* Couleur du cercle */
+		border: 2px solid; /* Bordure du cercle */
+	}
+
+	.circle::after 
+	{
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 40px; /* Diamètre du cercle intérieur */
+		height: 40px; /* Diamètre du cercle intérieur */
+		background-color: inherit; /* Utiliser la même couleur que l'étape de la progress bar */
+		border-radius: 50%; /* Pour créer un cercle */
+	}
+
+	/* Style pour le cercle à la fin de la barre de progression */
+	.circle-end 
+	{
+		position: relative;
+		top: -10px;
+		transform: translateY(-50%);
+		left: calc(100% - 24px);
+		width: 50px; /* Diamètre du cercle */
+		height: 50px; /* Diamètre du cercle */
+		border-radius: 50%; /* Pour créer un cercle */
+		background-color: transparent; /* Couleur du cercle */
+		border: 2px solid; /* Bordure du cercle */
+	}
+
+	.circle-end::after 
+	{
+		content: '';
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: 40px; /* Diamètre du cercle intérieur */
+		height: 40px; /* Diamètre du cercle intérieur */
+		background-color: inherit; /* Utiliser la même couleur que la dernière barre de progression */
+		border-radius: 50%; /* Pour créer un cercle */
+	}
+</style>
+{% endblock %}
+
+
+{% block content %}
+<div class="container-fluid mt-5">
+    <div class="row">
+        {% include 'admin/include/adminMenu.twig' %}
+        <main class="col-md-12 ms-sm-auto col-lg-10 px-md-4">
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+                <h1 class="h2"><i class="fas fa-question-circle me-2"></i> {{ decrypt(quiz.TEXT) }}</h1>
+                <div class="d-inline-block rounded-circle overflow-hidden shadow" style="width: 100px; height: 100px; background-color: white;">
+                    <img src="{{ base_url }}{% if quiz.LOGO %}{{ asset(decrypt(quiz.LOGO)) }}{% else %}{{ asset('/images/avatars/noimage.jpg') }}{% endif %}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="Logo du questionnaire" />
+                </div>
+            </div>
+
+			{% if skipQuestion is not defined or not skipQuestion %}
+				<div class="row hidden-categories">
+					<div class="col-12 mt-4">
+						<div class="row">
+							<div class="col-12">
+								<div class="progress-container">
+									<div class="progress">
+										{% set progressWidth = 100 / categories|length %}
+
+										{% for index, categorie in categories %}
+											{% set bgColor = (index < categories_index) ? decrypt(categorie.COLOR) : "#8997a5" %}
+
+											<div class="progress-bar" role="progressbar" 
+												style="background-color: {{ bgColor }}; width: {{ progressWidth }}%;" 
+												aria-valuenow="{{ progressWidth }}" 
+												aria-valuemin="0" 
+												aria-valuemax="100">
+											</div>
+										{% endfor %}
+									</div>
+								</div>
+								{% for index, categorie in categories %}
+									{% set bgColor = (index < categories_index) ? decrypt(categorie.COLOR) : "#8997a5" %}
+									<div class="step-container">
+										<div class="text-container text-secondary small">
+											<a class="nav-item" href="{{base_url}}/questionnaire/{{decrypt(quiz.SLUG)}}/{{index + 1}}/1">{{decrypt(categorie.TEXT)}}</a>
+										</div>
+										<div class="circle" style="background-color:{{bgColor}}">
+										</div>
+									</div>
+								{% endfor %}
+							</div>
+						</div>
+					</div>
+				</div>
+			{% endif %}
+    
+
+            <!-- Question actuelle -->
+            <div class="question-container mt-4">
+                <div class="col-12 border rounded" style="margin-top:20px; padding:25px; background-color:#f0f0f0;">
+
+                    <div class="row text-secondary">
+						<h3 class="col-8 offset-2" style="margin-bottom:70px;">{{ decrypt(current_question.TEXT) }}</h3>
+					</div>
+
+                    <form method="post" id="SUBMIT_ANWSERS">
+                        <div class="row">
+							<div class="col-8 offset-2">
+                                {% for answer in answers %}
+                                    {% if answer.TYPE == 1 %}
+									<label class="text-start text-secondary  col-10" for="ANSWERS_{{ answer.ID }}">
+										{{ decrypt(answer.TEXT) }} ({{answer.MIN}} - {{answer.MAX}}) : 
+									</label>
+									<div class="text-start col-4 offset-md-1">
+										<input idcat="{{user.ID}}_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}" type="number" class="number-field form-control p-2" min="{{ answer.MIN }}" max="{{ answer.MAX }}" id="ANSWERS_{{ answer.ID }}">
+										
+									</div>
+                                    {% elseif answer.TYPE == 2 %}
+                                    <div class="text-start form-check mt-3">
+                                        <label class="form-check-label text-secondary" for="ANSWERS_{{answer.ID}}">
+                                            <input type="radio" class="form-check-input" name="ANSWERS_{{current_question.ID}}" id="ANSWERS_{{answer.ID}}" autocomplete="off" required idcat="{{user.ID}}_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}" />
+                                            {{decrypt(answer.text)}}
+                                        </label>
+                                    </div>
+                                    {% elseif answer.TYPE == 3 %}
+                                    <div class="text-start form-check mt-3">
+                                        <label class="form-check-label font-weight-bold text-secondary" for="ANSWERS_{{answer.ID}}">
+											{{decrypt(answer.text)}} : 
+										</label>
+                                        {% if answers_with_subanswers[answer.id] is not empty %}
+                                            {% for subanswer in answers_with_subanswers[answer.id] %}
+
+                                            <div class="p-2 bd-highlight col-8 offset-1">
+                                                <label class="form-check-label text-secondary">
+                                                    <input type="radio" class="form-check-input" name="SUBANSWERS_{{answer.ID}}" id="SUBANSWERS_{{subanswer.ID}}" autocomplete="off" required idcat="{{user.ID}}_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}_{{subanswer.ID}}" />
+                                                    {{ decrypt(subanswer.text) }}
+                                                </label>
+                                            </div>
+
+                                            {% endfor %}
+                                        {% endif %}
+                                    </div>
+                                    {% elseif answer.TYPE == 4 %}
+                                        <div class="p-2 bd-highlight">
+                                            <textarea maxlength="4096" rows="20" class="form-control textarea-field" name="ANSWERS_{{answer.ID}}" id="ANSWERS_{{answer.ID}}" idcat="{{user.ID}}_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}">
+                                            
+                                            </textarea>
+                                            <label style="display:none;" class="btn btn-block btn-outline-primary" 
+													for="ANSWERS_{{answer.ID}}">
+												{{decrypt(answer.text)}}
+											</label>
+                                        </div>
+                                    {% elseif answer.TYPE == 5 %}
+                                        <div class="text-start form-check mt-3">
+                                            <label class="form-check-label text-secondary" for="MULANSWERS_{{answer.ID}}">
+                                                <input type="checkbox" class="form-check-input" name="MULANSWERS_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}" id="MULANSWERS_{{answer.ID}}">
+                                            
+												{{decrypt(answer.text)}}
+											</label>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </form>    
+
+
+                    <!-- Boutons de navigation -->
+                    <div class="nav-buttons d-flex justify-content-between">
+                        <!-- Bouton Précédent, s'il est visible -->
+                        {% if previous_question_index %}
+                            <a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ categories_index }}/{{ previous_question_index }}" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left"></i> Précédent
+                            </a>
+                        {% else %}
+                            <span class="d-flex flex-grow-1"></span> <!-- L'espace vide si pas de bouton -->
+                        {% endif %}
+
+                        <!-- Bouton Suivant ou Valider, toujours visible à droite -->
+                        {% if next_question_index %}
+                            <a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ categories_index }}/{{ next_question_index }}" class="btn btn-primary ml-auto">
+                                Suivant <i class="fas fa-arrow-right"></i>
+                            </a>
+                        {% else %}
+                            <a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/finish" class="btn btn-primary ml-auto">
+                                Valider le questionnaire <i class="fas fa-arrow-right"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+{% endblock %}

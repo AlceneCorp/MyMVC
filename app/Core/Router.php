@@ -22,11 +22,13 @@ class Router
     private $visitorManager;
 
 
-   public function __construct()
+    public function __construct()
     {
         $this->routes = new Routes();
         $this->logsManager = new LogsManager();
         $this->visitorManager = new VisitorManager();
+
+        $pathViews = [];
 
         $routesArray = require __DIR__ . '\\..\\..\\config\\routes.php';
 
@@ -41,7 +43,6 @@ class Router
             }
         }
 
-        $pathViews = [];
 
         foreach(ConfigManager::get('modules') as $key => $module)
         {
@@ -49,7 +50,9 @@ class Router
             if(ConfigManager::get('modules.' . $key . '.active.value'))
             {
                 $moduleRoute = require __DIR__ . '\\..\\Modules\\' . $key . '\\config\\routes.php';
+
                 $routesArray = array_merge($routesArray, $moduleRoute);
+
                 $pathViews[] = __DIR__ . '\\..\\Modules\\' . $key . '\\Views';
                 foreach($moduleRoute as $route)
                 {
@@ -96,6 +99,7 @@ class Router
         CoreManager::getTwig()->addFunction(new TwigFunction('encrypt', fn($data) => CoreManager::encrypt($data)));
         CoreManager::getTwig()->addFunction(new TwigFunction('decrypt', fn($data) => CoreManager::decrypt($data)));
         CoreManager::getTwig()->addFunction(new TwigFunction('verif', fn($param_Data) => CoreManager::verif($param_Data)));
+        CoreManager::getTwig()->addFunction(new TwigFunction('slug', fn($param_data) => CoreManager::slug($param_data)));
     }
 
     /**
@@ -106,59 +110,82 @@ class Router
      */
     private function generateMenu(array $routes): string
     {
+        // Fonction récursive pour générer les sous-menus
+        $generateSubMenu = function(array $children) use (&$generateSubMenu) 
+        {
+            $submenu = '';
+
+            foreach ($children as $child) {
+                // Vérification des permissions et si l'élément est dans le menu
+                if (isset($child['perm']) && !CoreManager::checkPerm($child['perm']) || empty($child['inMenu'])) {
+                    continue;
+                }
+
+                // Si l'élément a des sous-menus (enfants)
+                if (!empty($child['children'])) 
+                {
+                    $submenu .= '<li class="nav-item dropend">';  // "dropdown" pour positionner les sous-menus
+                    $submenu .= '<a class="nav-link text-white me-4" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
+                    $submenu .= $child['icon'] . ' ' . $child['name'];
+                    $submenu .= '</a>';
+                    $submenu .= '<ul class="dropdown-menu bg-dark text-white">';
+
+                    // Appel récursif pour générer les sous-menus de l'enfant
+                    $submenu .= $generateSubMenu($child['children']);
+
+                    $submenu .= '</ul>';
+                    $submenu .= '</li>';
+                } else {
+                    // Si l'élément n'a pas de sous-menu, on le génère normalement
+                    $submenu .= '<li class="nav-item">';
+                    $submenu .= '<a class="nav-link text-white me-4 ms-1" href="' . $child['url'] . '">' . $child['icon'] . ' ' . $child['name'] . '</a>';
+                    $submenu .= '</li>';
+                }
+            }
+
+            return $submenu;
+        };
+
         $menuGenerate = '';
+
         foreach ($routes as $route) 
         {
-            if (!empty($route['perm']) && !CoreManager::checkPerm($route['perm'])) 
-            {
+            // Si l'élément n'est pas dans le menu ou si les permissions sont invalides, on passe
+            if (empty($route['inMenu']) || (isset($route['perm']) && !CoreManager::checkPerm($route['perm']))) {
                 continue;
             }
 
-            
-        
+            // Vérification si l'élément a des sous-menus (children)
             if (!empty($route['children'])) 
             {
-                if($route['inMenu'])
-                {
-                    $menuGenerate .= '<li class="nav-item">';
-                    $menuGenerate .= '<div class="dropend">';
-                    // Menu déroulant
-                    $menuGenerate .= '<a class="nav-link text-white me-4" href="#" id="' . $route['name'] . '" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
-                    $menuGenerate .= $route['icon'] . ' ' . $route['name'];
-                    $menuGenerate .= '</a>';
-                    $menuGenerate .= '<ul class="dropdown-menu bg-dark text-white" aria-labelledby="' . $route['name'] . '">';
-            
-                    foreach ($route['children'] as $child) 
-                    {
-                        if (CoreManager::checkPerm($child['perm']) && $child['inMenu']) 
-                        {
-                            $menuGenerate .= '<li><a class="dropdown-item text-white p-4" href="' . $child['url'] . '">' . $child['icon'] . ' ' . $child['name'] . '</a></li>';
-                        }
-                    }
+                $menuGenerate .= '<li class="nav-item dropdown">'; // Classe dropdown pour le parent
+                $menuGenerate .= '<a class="nav-link text-white me-4 ms-1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">';
+                $menuGenerate .= $route['icon'] . ' ' . $route['name'];
+                $menuGenerate .= '</a>';
+                $menuGenerate .= '<ul class="dropdown-menu bg-dark text-white">';
 
-                    $menuGenerate .= '</ul>';
-                    $menuGenerate .= '</div>';
-                    $menuGenerate .= '</li>';
-                }
+                // Appel récursif pour générer les sous-menus de l'élément
+                $menuGenerate .= $generateSubMenu($route['children']);
+
+                $menuGenerate .= '</ul>';
+                $menuGenerate .= '</li>';
             } 
             else 
             {
-                if($route['inMenu'] && CoreManager::checkPerm($route['perm']))
-                {
-                    $menuGenerate .= '<li class="nav-item">';
-                    $menuGenerate .= '<div class="dropend">';
-                    // Lien simple
-                    $menuGenerate .= '<a class="nav-link text-white me-4" href="' . $route['url'] . '">' . $route['icon'] . ' ' . $route['name'] . '</a>';
-                    $menuGenerate .= '</div>';
-                    $menuGenerate .= '</li>';
-                }
+                // Si l'élément n'a pas de sous-menu, on le génère normalement
+                $menuGenerate .= '<li class="nav-item">';
+                $menuGenerate .= '<a class="nav-link text-white me-4" href="' . $route['url'] . '">' . $route['icon'] . ' ' . $route['name'] . '</a>';
+                $menuGenerate .= '</li>';
             }
-
-            
         }
 
         return $menuGenerate;
     }
+
+
+
+
+
 
     /**
      * Fonction récursive pour ajouter les routes enfants.

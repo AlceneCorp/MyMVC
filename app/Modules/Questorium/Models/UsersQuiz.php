@@ -8,6 +8,7 @@ class UsersQuiz
     private $ID;
     private $USERS_ID;
     private $QUIZ_ID;
+    private $QUIZ_VALIDATE;
 
 
     //Constructeur
@@ -59,6 +60,16 @@ class UsersQuiz
     public function setQUIZ_ID($QUIZ_ID)
     {
         $this->QUIZ_ID = $QUIZ_ID;
+    }
+
+    public function getQUIZ_VALIDATE()
+    {
+        return $this->QUIZ_VALIDATE;
+    }
+
+    public function setQUIZ_VALIDATE($QUIZ_VALIDATE)
+    {
+        $this->QUIZ_VALIDATE = $QUIZ_VALIDATE;
     }
 
 }

@@ -24,7 +24,7 @@ class Controller
 		}
 		catch (\Exception $e)
 		{
-			throw new \Exception(ErrorManager::getErrorMessage(500));
+			throw new \Exception(ErrorManager::getErrorMessage(500) . " : " . $e->getMessage());
 		}
     }
 

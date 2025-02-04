@@ -51,7 +51,7 @@ class QuestoriumController extends Controller
             `END` datetime NOT NULL,
             `DESC` text NOT NULL,
             `LOGO` text NOT NULL,
-            `STYLE` text NOT NULL,
+            `SLUG` text NOT NULL,
             PRIMARY KEY (`ID`)
         ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=latin1;",
 
@@ -151,21 +151,39 @@ class QuestoriumController extends Controller
 	public function install()
 	{
         $permissionsManager = new PermissionsManager();
-
         $databaseManager = new DatabaseManager();
-		
-		foreach($this->tables as $table => $req)
+
+        foreach($this->tables as $table => $req)
 		{
-			$databaseManager->rawQuery($req);
-			$databaseManager->generateModelClass($table, "App\\Modules\\{$this->moduleName}\\Models", "..\\app\\Modules\\{$this->moduleName}\\Models\\");
-			$databaseManager->generateManagersClass($table, "App\\Modules\\{$this->moduleName}\\Models\\", "App\\Modules\\{$this->moduleName}\\Managers", "..\\app\\Modules\\{$this->moduleName}\\Managers\\");
-		}
+            $databaseManager->rawQuery($req);
+        }
+
+        $this->generateModels();
 
         foreach($this->permissions as $permission)
         {
             $perm_id = $permissionsManager->addPermissions($permission);
         }
 	}
+
+    public function generateSQL()
+    {
+        $databaseManager = new DatabaseManager();
+
+        foreach($this->tables as $table => $req)
+		{
+			$databaseManager->generateModelClass($table, "App\\Modules\\{$this->moduleName}\\Models", "..\\app\\Modules\\{$this->moduleName}\\Models\\");
+			$databaseManager->generateManagersClass($table, "App\\Modules\\{$this->moduleName}\\Models\\", "App\\Modules\\{$this->moduleName}\\Managers", "..\\app\\Modules\\{$this->moduleName}\\Managers\\");
+		}
+    }
+
+    public function regenerateSQL()
+    {
+        $this->generateSQL();
+
+        header("location: " . URL . "/admin/mods");
+        exit;
+    }
 
 	public function uninstall()
 	{

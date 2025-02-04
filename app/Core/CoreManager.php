@@ -188,6 +188,7 @@ class CoreManager
 
     public static function Decrypt($param_Data)
 	{
+
 		$Data = $param_Data;
 		$Cypher = ConfigManager::get('SECURITY.encryption_cypher.value');
         $Key = ConfigManager::get('SECURITY.encryption_key.value');
@@ -206,16 +207,30 @@ class CoreManager
         // Convertit en minuscules
         $text = mb_strtolower($text, 'UTF-8');
 
-        // Remplace les caractères accentués
-        $text = iconv('UTF-8', 'ASCII//TRANSLIT', $text);
+        
 
-        // Supprime tout ce qui n'est pas alphanumérique ou un tiret
+        // Remplace les caractères accentués (fallback si Intl n'est pas dispo)
+        $text = strtr($text, [
+            'à' => 'a', 'á' => 'a', 'â' => 'a', 'ã' => 'a', 'ä' => 'a', 'å' => 'a',
+            'è' => 'e', 'é' => 'e', 'ê' => 'e', 'ë' => 'e',
+            'ì' => 'i', 'í' => 'i', 'î' => 'i', 'ï' => 'i',
+            'ò' => 'o', 'ó' => 'o', 'ô' => 'o', 'õ' => 'o', 'ö' => 'o',
+            'ù' => 'u', 'ú' => 'u', 'û' => 'u', 'ü' => 'u',
+            'ý' => 'y', 'ÿ' => 'y',
+            'ç' => 'c', 'ñ' => 'n',
+            'œ' => 'oe', 'æ' => 'ae', 'ß' => 'ss', 'ð' => 'd', 'ø' => 'o', 'þ' => 'th',
+            'ª' => 'a', 'º' => 'o', '&' => 'et'
+        ]);
+
+        // Remplace tout ce qui n'est pas alphanumérique ou un tiret par un tiret
         $text = preg_replace('/[^a-z0-9]+/', '-', $text);
+
+        // Remplace les tirets consécutifs
+        $text = preg_replace('/-+/', '-', $text);
 
         // Supprime les tirets en trop (au début ou à la fin)
         $text = trim($text, '-');
 
-        // Retourne le slug
         return $text ?: 'n-a';
     }
 

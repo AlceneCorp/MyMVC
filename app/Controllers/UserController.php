@@ -6,6 +6,7 @@ use App\Core\CoreManager;
 use App\Core\Controller;
 use App\Core\SessionsManager;
 use App\Core\ConfigManager;
+use App\Core\FileManager;
 
 use App\Managers\UsersManager;
 use App\Managers\UsersProfileManager;
@@ -28,14 +29,6 @@ class UserController extends Controller
 
                 $uploadDir = '\\images\\avatars\\' . $userId . '\\';
 
-                if (!is_dir(__DIR__ . '\\..\\..\\public\\assets' . $uploadDir)) 
-                {
-                    if (!mkdir(__DIR__ . '\\..\\..\\public\\assets' . $uploadDir, 0777, true) && !is_dir(__DIR__ . '\\..\\..\\public\\assets' . $uploadDir)) 
-                    {
-                        // Gestion d'erreur si le répertoire ne peut pas être créé
-                        throw new \Exception('Impossible de créer le répertoire : ' . $uploadDir);
-                    }
-                }
 
                 if (CoreManager::checkPerm('edit_other_profiles')) 
                 {
@@ -52,28 +45,9 @@ class UserController extends Controller
                 $aboutMe = $_POST['ABOUT_ME'] ?? null;
 
                 // Gestion de l'upload de l'image
-                $profilePictureUrl = null;
-                if (!empty($_FILES['PROFILE_PICTURE']['name'])) 
-                {
-                    $file = $_FILES['PROFILE_PICTURE'];
 
-                    $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
-                    $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
-                    $maxFileSize = ConfigManager::get('SITE.max_file_upload_size.value') * 1024 * 1024;
-
-                    // Vérifications
-                    if (in_array(strtolower($fileExtension), $allowedExtensions) && $file['size'] <= $maxFileSize) 
-                    {
-                        $fileName = $file['name'];
-                        $uploadPath = $uploadDir . $fileName;
-                        // Déplacer le fichier
-                        if (move_uploaded_file($file['tmp_name'], __DIR__ . '\\..\\..\\public\\assets\\' . $uploadPath)) 
-                        {
-                            $profilePictureUrl = $uploadPath;
-                            
-                        }
-                    } 
-                }
+                $profilePictureUrl = FileManager::uploadFile($uploadDir, 'PROFILE_PICTURE');
+                
 
                 $datas = [
                         'FIRST_NAME' => $firstName,

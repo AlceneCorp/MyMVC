@@ -12,7 +12,7 @@ return array (
     ),
     'version' => 
     array (
-      'value' => '1.0.1',
+      'value' => '1.0.2',
       'type' => 'text',
       'description' => 'Version actuelle du module de gestion de questionnaires.',
       'readonly' => true,

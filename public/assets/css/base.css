@@ -19,6 +19,12 @@ a:hover
     text-decoration: none;
 }
 
+/* Empêcher la fermeture immédiate en quittant le lien parent */
+.dropdown-menu {
+    display: none;
+    transition: all 1.3s ease-in-out;
+}
+
 
 .hero h1 
 {
@@ -78,7 +84,7 @@ a:hover
 {
     padding: 0.75rem 1rem; /* Espacement autour du texte */
     border-radius: 8px; /* Coins arrondis pour les liens */
-    font-size: 1.1rem; /* Augmenter la taille du texte pour plus de lisibilité */
+    font-size: 0.9rem; /* Augmenter la taille du texte pour plus de lisibilité */
     transition: all 0.3s ease-in-out; /* Animation au survol */
     text-decoration: none;
 }

@@ -1,0 +1,60 @@
+{% extends "base.twig" %}
+
+{% block title %}Erreur{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-6 mt-5 offset-3">
+        <div class="text-center p-5 shadow-lg rounded bg-white" 
+             style="box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);  animation: fadeIn 1s;">
+            <!-- Icône de l'erreur -->
+            <h1 class="display-1 text-danger mb-4 animate__animated animate__shakeX">
+                <i class="fa fa-exclamation-triangle"></i>
+            </h1>
+            <!-- Message principal -->
+            <h2 class="display-5 fw-bold text-dark mb-3">Oups, une erreur est survenue !</h2>
+            <p class="lead text-muted mb-4">
+                Nous avons rencontré un problème en traitant votre requête.
+            </p>
+
+            {% if error_code %}
+            <p class="text-danger fw-bold fs-5 mb-3">
+                Code d'erreur : <strong>{{ error_code }}</strong>
+            </p>
+            {% endif %}
+
+            <!-- Message d'information -->
+            <p class="text-muted mb-4">
+                {{ error_message | default("Nous travaillons activement pour résoudre ce problème. Merci de votre patience.") }}
+            </p>
+
+            <!-- Boutons d'action -->
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <a href="/MyMVC/" class="btn btn-primary btn-lg px-4 py-2 hvr-float-shadow">
+                    <i class="fa fa-home"></i> Retour à l'accueil
+                </a>
+                <a href="javascript:history.back()" class="btn btn-secondary btn-lg px-4 py-2 hvr-float-shadow">
+                    <i class="fa fa-arrow-left"></i> Revenir en arrière
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+    // Animation de l'icône principale
+    gsap.from(".fa-exclamation-triangle", { opacity: 0, rotation: 360, scale: 0, duration: 1.5 });
+
+    // Animation d'entrée du conteneur
+    gsap.from(".text-center", { y: 50, opacity: 0, duration: 1 });
+
+    // Animation pour secouer le conteneur en cas de clic (exemple)
+    document.querySelectorAll("a").forEach(button => {
+        button.addEventListener("click", () => {
+            gsap.to(".text-center", { x: 10, repeat: 5, yoyo: true, duration: 0.1 });
+        });
+    });
+</script>
+{% endblock %}

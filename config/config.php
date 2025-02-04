@@ -13,7 +13,7 @@ return
         ],
         'username' =>
         [
-            'value' => 'MyMVC',
+            'value' => 'mymvc',
             'type' => 'text',
             'description' => 'Nom d\'utilisateur pour se connecter à la base de données.',
             'readonly' => true

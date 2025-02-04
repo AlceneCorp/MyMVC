@@ -96,13 +96,35 @@ return
 	],
 	[
 		'name' => 'Questionnaire',
-		'url' => '/MyMVC/questionnaire',
+		'url' => '/MyMVC/questionnaire/',
+		'controller' => \App\Modules\Questorium\Controllers\UsersController::class,
+		'method' => 'startQuestionnaire',
+		'params' => [],
+		'perm' => 'respond_to_questionnaire',
+		'icon' => '<i class="fas fa-question-circle"></i>',
+		'inMenu' => CoreManager::checkPerm('respond_to_questionnaire'),
+		'children' => []
+	],
+	[
+		'name' => 'Questionnaire',
+		'url' => '/MyMVC/questionnaire/{quiz_slug}/{categories_index}/{questions_index}',
 		'controller' => \App\Modules\Questorium\Controllers\UsersController::class,
 		'method' => 'showQuestionnaire',
 		'params' => [],
 		'perm' => 'respond_to_questionnaire',
 		'icon' => '<i class="fas fa-question-circle"></i>',
-		'inMenu' => CoreManager::checkPerm('respond_to_questionnaire'),
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => 'Questionnaire',
+		'url' => '/MyMVC/questionnaire/{quiz_slug}/finish',
+		'controller' => \App\Modules\Questorium\Controllers\UsersController::class,
+		'method' => 'finishQuestionnaire',
+		'params' => [],
+		'perm' => 'respond_to_questionnaire',
+		'icon' => '<i class="fas fa-question-circle"></i>',
+		'inMenu' => false,
 		'children' => []
 	],
 	[
@@ -140,6 +162,17 @@ return
 	],
 	[
 		'name' => '',
+		'url' => '/MyMVC/questorium/ajax/answers',
+		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
+		'method' => 'ajaxAnswers',
+		'params' => [],
+		'perm' => 'create_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
 		'url' => '/MyMVC/questorium/ajax/quizdel/{quiz_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuizDel',
@@ -165,6 +198,28 @@ return
 		'url' => '/MyMVC/questorium/ajax/questionsdel/{questions_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuestionsDel',
+		'params' => [],
+		'perm' => 'create_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => '/MyMVC/questorium/ajax/answersdel/{answers_id}',
+		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
+		'method' => 'ajaxAnswersDel',
+		'params' => [],
+		'perm' => 'create_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => '/MyMVC/admin/questorium/regenerate',
+		'controller' => \App\Modules\Questorium\Controllers\QuestoriumController::class,
+		'method' => 'regenerateSQL',
 		'params' => [],
 		'perm' => 'create_questionnaire',
 		'icon' => '',
