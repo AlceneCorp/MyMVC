@@ -288,7 +288,11 @@
 									{% set bgColor = (index < categories_index) ? decrypt(categorie.COLOR) : "#8997a5" %}
 									<div class="step-container">
 										<div class="text-container text-secondary small">
-											<a class="nav-item" href="{{base_url}}/questionnaire/{{decrypt(quiz.SLUG)}}/{{index + 1}}/1">{{decrypt(categorie.TEXT)}}</a>
+											{% if checkPerm('manage_questionnaire_settings') %}
+											<a class="nav-item text-secondary" href="{{base_url}}/questionnaire/{{decrypt(quiz.SLUG)}}/{{index + 1}}/1">{{decrypt(categorie.TEXT)}}</a>
+											{% else %}
+											<span class="nav-item text-secondary">{{decrypt(categorie.TEXT)}}</span>
+											{% endif %}
 										</div>
 										<div class="circle" style="background-color:{{bgColor}}">
 										</div>

@@ -104,9 +104,6 @@ class UsersController extends Controller
         $next_question_index = null;
         $previous_question_index = null;
 
-
-
-
     
         // Si c'est la première question, on règle correctement la navigation
         if ($questions_index === 0) 
