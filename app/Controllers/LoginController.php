@@ -11,6 +11,7 @@ use App\Managers\UsersManager;
 use App\Managers\LogsManager;
 use App\Managers\UsersPermissionsManager;
 use App\Managers\UsersProfileManager;
+use App\Managers\PermissionsManager;
 
 class LoginController extends Controller
 {

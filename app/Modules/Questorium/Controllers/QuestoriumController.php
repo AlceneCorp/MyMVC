@@ -57,13 +57,13 @@ class QuestoriumController extends Controller
 
         'result' => "CREATE TABLE `result` (
             `ID` int(11) NOT NULL AUTO_INCREMENT,
-            `ACCOUNTS_ID` int(11) NOT NULL,
+            `USERS_ID` int(11) NOT NULL,
             `QUIZ_ID` int(11) NOT NULL,
             `CATEGORIES_ID` int(11) NOT NULL,
             `QUESTIONS_ID` int(11) NOT NULL,
             `ANSWERS_ID` int(11) NOT NULL,
             `SUBANSWERS_ID` int(11) NOT NULL,
-            `VALUES` text CHARACTER SET latin1 NOT NULL,
+            `VALUE` text CHARACTER SET latin1 NOT NULL,
             `TIMESTAMP` int(11) NOT NULL,
             PRIMARY KEY (`ID`)
         ) ENGINE=MyISAM AUTO_INCREMENT=0 DEFAULT CHARSET=utf8;",

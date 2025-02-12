@@ -123,7 +123,7 @@
 	{
 		.hidden-categories
 		{
-			display: flex;
+			display: none;
 			font-size:50%;
 			font-weight: bold;
 			justify-content: space-between;
@@ -132,6 +132,7 @@
 		/* Calcul de la largeur des step-container */
 		.step-container 
 		{
+			display: none;
 			max-width: calc({{ 100 / categories | length }}% - 4px);
 			position: relative;
 			width: calc({{ 100 / categories | length }}% - 4px); /* Même largeur qu'une étape de progress bar */
@@ -145,7 +146,45 @@
 			
 		.text-container 
 		{
-			display: grid;
+			display: none;
+			place-items: center;
+			width: 100%; /* Prend toute la largeur de la barre de progression */
+			text-align: center; /* Centrer le texte */
+			padding: 0px; /* Espacement interne */
+			opacity:0.9;
+			height:130px;
+				
+		}
+	}
+
+	@media (max-width: 992px)
+	{
+		.hidden-categories
+		{
+			display: none;
+			font-size:50%;
+			font-weight: bold;
+			justify-content: space-between;
+		}
+			
+		/* Calcul de la largeur des step-container */
+		.step-container 
+		{
+			display: none;
+			max-width: calc({{ 100 / categories | length }}% - 4px);
+			position: relative;
+			width: calc({{ 100 / categories | length }}% - 4px); /* Même largeur qu'une étape de progress bar */
+			float: left; /* Aligner les étapes horizontalement */
+			background-color: #f0f0f0; /* Couleur de fond du texte */
+			border: 1px solid #ced4da; /* Bordure */
+			border-radius: 5px; /* Coins arrondis */
+			padding: 2px; /* Espacement interne */
+			margin: 0 2px; /* Marge de 2px à droite et à gauche */
+		}
+			
+		.text-container 
+		{
+			display: none;
 			place-items: center;
 			width: 100%; /* Prend toute la largeur de la barre de progression */
 			text-align: center; /* Centrer le texte */
@@ -247,6 +286,12 @@
 		background-color: inherit; /* Utiliser la même couleur que la dernière barre de progression */
 		border-radius: 50%; /* Pour créer un cercle */
 	}
+
+	.disabled-link 
+	{
+		pointer-events: none; /* Désactive les événements de pointeur */
+		opacity: 0.6; /* Réduit l'opacité pour indiquer qu'il est désactivé */
+	}
 </style>
 {% endblock %}
 
@@ -303,15 +348,17 @@
 					</div>
 				</div>
 			{% endif %}
+
+			
     
 
             <!-- Question actuelle -->
             <div class="question-container mt-4">
                 <div class="col-12 border rounded" style="margin-top:20px; padding:25px; background-color:#f0f0f0;">
-
                     <div class="row text-secondary">
 						<h3 class="col-8 offset-2" style="margin-bottom:70px;">{{ decrypt(current_question.TEXT) }}</h3>
 					</div>
+
 
                     <form method="post" id="SUBMIT_ANWSERS">
                         <div class="row">
@@ -375,31 +422,234 @@
                     </form>    
 
 
-                    <!-- Boutons de navigation -->
-                    <div class="nav-buttons d-flex justify-content-between">
-                        <!-- Bouton Précédent, s'il est visible -->
-                        {% if previous_question_index %}
-                            <a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ categories_index }}/{{ previous_question_index }}" class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left"></i> Précédent
-                            </a>
-                        {% else %}
-                            <span class="d-flex flex-grow-1"></span> <!-- L'espace vide si pas de bouton -->
-                        {% endif %}
+					<!-- Boutons de navigation -->
+					<div class="nav-buttons d-flex justify-content-between mt-5">
+						<!-- Bouton Précédent, s'il est visible -->
+						{% if previous_questions_index %}
+							<a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ previous_categorie_index }}/{{ previous_questions_index }}" class="btn btn-outline-secondary">
+								<i class="fas fa-arrow-left"></i> Précédent
+							</a>
+						{% else %}
+							<a href="{{ base_url }}/questionnaire/" class="btn btn-outline-secondary">
+								<i class="fas fa-arrow-left"></i> Revenir à la description du questionnaire
+							</a>
+						{% endif %}
 
-                        <!-- Bouton Suivant ou Valider, toujours visible à droite -->
-                        {% if next_question_index %}
-                            <a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ categories_index }}/{{ next_question_index }}" class="btn btn-primary ml-auto">
-                                Suivant <i class="fas fa-arrow-right"></i>
-                            </a>
-                        {% else %}
-                            <a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/finish" class="btn btn-primary ml-auto">
-                                Valider le questionnaire <i class="fas fa-arrow-right"></i>
-                            </a>
-                        {% endif %}
-                    </div>
+						<!-- Bouton Suivant ou Valider, toujours visible à droite -->
+						{% if next_questions_index %}
+							<a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ next_categorie_index }}/{{ next_questions_index }}" id="NEXT_QUESTION" class="btn btn-primary ml-auto disabled-link">
+								Répondre pour passer à la question suivante <i class="fas fa-arrow-right"></i>
+							</a>
+						{% else %}
+							<a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/finish" class="btn btn-primary ml-auto">
+								Valider le questionnaire <i class="fas fa-arrow-right"></i>
+							</a>
+						{% endif %}
+					</div>
+
                 </div>
             </div>
         </main>
     </div>
 </div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+	$(function()
+	{
+		autoLoad();
+		function autoLoad()
+		{
+			$.ajax
+			(
+				{
+					method: "POST",
+					url: "{{base_url}}/questorium/ajax/autoload",
+					dataType: "JSON",
+					data: {"QUIZ_ID" : {{quiz.ID}}, "QUIZ_REQ" : true, "ACCOUNTS_ID" : $("input[name='ACCOUNTS_ID']").val() },
+					success: function(data)
+					{
+						if (data && data.RESULT) 
+						{
+							$.each(data.RESULT, function(index, value)
+							{
+						
+								$("input[type='radio'][idcat='"+index+"']").prop("checked", true);
+								$("input[type='number'][idcat='"+index+"']").val(value).change();
+								if($("textarea[idcat='" + index + "']").length > 0)
+								{
+									$("textarea[idcat='" + index + "']").val(value).change();
+								}
+								else
+								{
+									$("textarea").val("").change();
+								}
+								if(value == "true")
+								{
+									$("input[type='checkbox'][idcat='"+index+"']").prop("checked", true).click().change();
+								}
+								else
+								{
+									$("input[type='checkbox'][idcat='"+index+"']").prop("checked", false).click().change();
+								}
+								$("input[idcat='"+index+"']").click();
+							});
+						}
+						else
+						{
+							$("textarea").val("").change();
+							checkFormCompletion() ;
+						}
+					}
+				}
+			);
+		}
+
+		$(".number-field").change(function()
+		{
+			if(parseInt($(this).val()) > parseInt($(this).attr("max")))
+			{
+				$(this).val($(this).attr("max"));
+			}
+		
+			if(parseInt($(this).val()) < parseInt($(this).attr("min")))
+			{
+				$(this).val($(this).attr("min"));
+			}
+			$("label[for='ANSWERS_"+$(this).attr('idcat').split("_")[4]+"']").html($(this).val())
+			Reg($(this));
+			checkFormCompletion();
+		});
+	
+		$("input[type=radio], input[type=checkbox]").click(function()
+		{
+			Reg($(this));
+			checkFormCompletion();
+		
+		});
+	
+		$(".textarea-field").change(function()
+		{
+			$("label[for='ANSWERS_"+$(this).attr('idcat').split("_")[4]+"']").html($(this).val());
+			Reg($(this));
+			checkFormCompletion();
+		});
+
+		function checkFormCompletion() 
+		{
+			var formComplete = true;
+
+			// Parcours de tous les groupes de boutons radio
+			$('input[type="radio"]').each(function() 
+			{
+				// Vérifie si au moins un bouton radio du groupe est coché
+				if (!$('input[name="' + $(this).attr('name') + '"]:checked').length) 
+				{
+					formComplete = false;
+					return false; // Sort de la boucle si aucun bouton radio n'est coché dans le groupe
+				}
+			});
+		
+		
+
+			if (!$('input[type="checkbox"]:checked').length > 0 && $('input[type="checkbox"]').length > 0 )
+			{
+				formComplete = false;
+			}
+		
+			if($("input[type=number]").length > 0)
+			{
+				if(!$("input[type=number]").val() != '')
+				{
+					formComplete = false;
+				}
+			}
+		
+			// Active ou désactive le bouton de question suivante en fonction de la complétion du formulaire
+			if (formComplete) 
+			{
+				$("#NEXT_QUESTION").prop("disabled", false);
+				$("#NEXT_QUESTION").removeClass("disabled-link");
+				$("#NEXT_QUESTION").html('Question suivante  <i class="fas fa-arrow-right"></i>');
+			} 
+			else 
+			{
+				$("#NEXT_QUESTION").prop("disabled", true);
+				$("#NEXT_QUESTION").addClass("disabled-link");
+				$("#NEXT_QUESTION").html('Répondre pour passer à la question suivante  <i class="fas fa-arrow-right"></i>');
+			}
+		
+			return formComplete;
+		}
+
+		$("#NEXT_QUESTION").click(function()
+		{
+			$(this).prop("disabled", true);
+			$(this).addClass("disabled-link");
+		});
+
+		function Reg(data)
+		{			
+			switch(data.attr('id').split("_")[0])
+			{
+				case "MULANSWERS":
+					$.ajax
+					(
+						{
+							method: "POST",
+							url: "{{base_url}}/questorium/ajax/resultinsert",
+							dataType: "JSON",
+							data: {"MULANSWER" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "RESULT_VALUES" : $("input[id='MULANSWERS_"+data.attr('idcat').split("_")[4]+"']").is(":checked")},
+							success: function(data)
+							{
+								//$(".progress-bar").css("width", (data * $("#COEF").val()) + "%").text(Math.round(data * $("#COEF").val()) + "%");
+							}
+						}
+					);
+				
+					break;
+				case "ANSWERS":
+					console.log({"ANSWER" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "RESULT_VALUES" : $("input[id='ANSWERS_"+data.attr('idcat').split("_")[4]+"']").closest('label').text().trim()});
+					$.ajax
+					(
+						{
+							method: "POST",
+							url: "{{base_url}}/questorium/ajax/resultinsert",
+							dataType: "JSON",
+							data: {"ANSWER" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "RESULT_VALUES" : $("input[id='ANSWERS_"+data.attr('idcat').split("_")[4]+"']").closest('label').text().trim()},
+							success: function(data)
+							{
+								console.log(data);
+
+								// $(".progress-bar").css("width", (data * $("#COEF").val()) + "%");
+							
+								//$(".progress-bar").css("width", (data * $("#COEF").val()) + "%").text(Math.round(data * $("#COEF").val()) + "%");
+							}
+						}
+					);
+				
+					break;
+				case "SUBANSWERS":
+					$.ajax
+					(
+						{
+							method: "POST",
+							url: "{{base_url}}/questorium/ajax/resultinsert",
+							dataType: "JSON",
+							data: {"SUBANSWERS" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "SUBANSWERS_ID" : data.attr('idcat').split("_")[5], "RESULT_VALUES" : $("label[for='SUBANSWERS_"+data.attr('idcat').split("_")[5]+"']").html()},
+							success: function(data)
+							{
+								// $(".progress-bar").css("width", (data * $("#COEF").val()) + "%");
+								//$(".progress-bar").css("width", (data * $("#COEF").val()) + "%").text(Math.round(data * $("#COEF").val()) + "%");
+							}
+						}
+					);
+					break;
+			}
+		}
+
+
+	});
+</script>
 {% endblock %}

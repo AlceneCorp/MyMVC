@@ -6,13 +6,13 @@ class Result
 {
     //Variables Membres
     private $ID;
-    private $ACCOUNTS_ID;
+    private $USERS_ID;
     private $QUIZ_ID;
     private $CATEGORIES_ID;
     private $QUESTIONS_ID;
     private $ANSWERS_ID;
     private $SUBANSWERS_ID;
-    private $VALUES;
+    private $VALUE;
     private $TIMESTAMP;
 
 
@@ -47,14 +47,14 @@ class Result
         $this->ID = $ID;
     }
 
-    public function getACCOUNTS_ID()
+    public function getUSERS_ID()
     {
-        return $this->ACCOUNTS_ID;
+        return $this->USERS_ID;
     }
 
-    public function setACCOUNTS_ID($ACCOUNTS_ID)
+    public function setUSERS_ID($USERS_ID)
     {
-        $this->ACCOUNTS_ID = $ACCOUNTS_ID;
+        $this->USERS_ID = $USERS_ID;
     }
 
     public function getQUIZ_ID()
@@ -107,14 +107,14 @@ class Result
         $this->SUBANSWERS_ID = $SUBANSWERS_ID;
     }
 
-    public function getVALUES()
+    public function getVALUE()
     {
-        return $this->VALUES;
+        return $this->VALUE;
     }
 
-    public function setVALUES($VALUES)
+    public function setVALUE($VALUE)
     {
-        $this->VALUES = $VALUES;
+        $this->VALUE = $VALUE;
     }
 
     public function getTIMESTAMP()

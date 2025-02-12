@@ -173,6 +173,28 @@ return
 	],
 	[
 		'name' => '',
+		'url' => '/MyMVC/questorium/ajax/autoload',
+		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
+		'method' => 'ajaxAutoLoad',
+		'params' => [],
+		'perm' => 'respond_to_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => '/MyMVC/questorium/ajax/resultinsert',
+		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
+		'method' => 'ajaxResultInsert',
+		'params' => [],
+		'perm' => 'respond_to_questionnaire',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
 		'url' => '/MyMVC/questorium/ajax/quizdel/{quiz_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuizDel',

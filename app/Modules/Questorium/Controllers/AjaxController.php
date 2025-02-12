@@ -5,12 +5,14 @@ namespace App\Modules\Questorium\Controllers;
 use App\Core\Controller;
 use App\Core\CoreManager;
 use App\Core\FileManager;
+use App\Core\SessionsManager;
 
 use App\Modules\Questorium\Managers\QuizManager;
 use App\Modules\Questorium\Managers\CategoriesManager;
 use App\Modules\Questorium\Managers\QuestionsManager;
 use App\Modules\Questorium\Managers\AnswersManager;
 use App\Modules\Questorium\Managers\SubanswersManager;
+use App\Modules\Questorium\Managers\ResultManager;
 
 class AjaxController extends Controller
 {
@@ -113,6 +115,124 @@ class AjaxController extends Controller
 					$questionsManager->addQuestions($data);
 				}
 			}
+		}
+	}
+
+	public function ajaxAutoLoad()
+	{
+		$users_id = SessionsManager::get('USERS')->getID();
+		$var = null;
+
+		$resultManager = new ResultManager();
+
+		foreach($resultManager->findAllResult(['USERS_ID' => $users_id]) as $res)
+		{
+			$index = $users_id . "_" . $_POST["QUIZ_ID"] . "_" . $res->getCATEGORIES_ID() . "_" . $res->getQUESTIONS_ID() . "_" . $res->getANSWERS_ID() . "_" . $res->getSUBANSWERS_ID();
+
+			if($res->getSUBANSWERS_ID() == 0)
+			{
+				$index = substr($index, 0, -2);
+			}
+
+			$var["RESULT"][$index] = CoreManager::decrypt($res->getVALUE());
+		}
+		echo json_encode($var);
+	}
+
+	public function ajaxResultInsert()
+	{
+		$resultManager = new ResultManager();
+		//MultiAnswer | Checkbox
+		if(isset($_POST["MULANSWER"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]))
+		{
+
+			$data = 
+			[
+				'USERS_ID' => $_POST["ACCOUNTS_ID"],
+				'QUIZ_ID' => $_POST["QUIZ_ID"],
+				'CATEGORIES_ID' => $_POST["CATEGORIES_ID"],
+				'QUESTIONS_ID' => $_POST["QUESTIONS_ID"]								
+			];
+
+			$result = $resultManager->findOneResult($data);
+
+			
+
+			$data = array_merge($data, ['VALUE' => CoreManager::encrypt($_POST["RESULT_VALUES"]), 'TIMESTAMP' => time(), 'ANSWERS_ID' => $_POST["ANSWERS_ID"]]);
+
+			if($result)
+			{
+				//update
+				$resultManager->updateResult($data, $result->getID());
+			}
+			else
+			{
+				//add
+				$resultManager->addResult($data);
+			}
+
+			//echo json
+			echo json_encode($result);
+		}
+
+		if(isset($_POST["ANSWER"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]))
+		{
+			$data = 
+			[
+				'USERS_ID' => $_POST["ACCOUNTS_ID"],
+				'QUIZ_ID' => $_POST["QUIZ_ID"],
+				'CATEGORIES_ID' => $_POST["CATEGORIES_ID"],
+				'QUESTIONS_ID' => $_POST["QUESTIONS_ID"]								
+			];
+
+			$result = $resultManager->findOneResult($data);
+
+			
+
+			$data = array_merge($data, ['VALUE' => CoreManager::encrypt($_POST["RESULT_VALUES"]), 'TIMESTAMP' => time(), 'ANSWERS_ID' => $_POST["ANSWERS_ID"]]);
+
+			if($result)
+			{
+				//update
+				$resultManager->updateResult($data, $result->getID());
+			}
+			else
+			{
+				//add
+				$resultManager->addResult($data);
+			}
+
+			//echo json
+			echo json_encode($result);
+		}
+
+		if(isset($_POST["SUBANSWERS"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]) && isset($_POST["SUBANSWERS_ID"]))
+		{
+			$data = 
+			[
+				'USERS_ID' => $_POST["ACCOUNTS_ID"],
+				'QUIZ_ID' => $_POST["QUIZ_ID"],
+				'CATEGORIES_ID' => $_POST["CATEGORIES_ID"],
+				'QUESTIONS_ID' => $_POST["QUESTIONS_ID"],
+				'ANSWERS_ID' => $_POST["ANSWERS_ID"]
+			];
+
+			$result = $resultManager->findOneResult($data);
+
+			$data = array_merge($data, ['VALUE' => CoreManager::encrypt($_POST["RESULT_VALUES"]), 'TIMESTAMP' => time(), 'SUBANSWERS_ID' => $_POST["SUBANSWERS_ID"]]);
+
+			if($result)
+			{
+				//update
+				$resultManager->updateResult($data, $result->getID());
+			}
+			else
+			{
+				//add
+				$resultManager->addResult($data);
+			}
+
+			//echo json
 		}
 	}
 }
