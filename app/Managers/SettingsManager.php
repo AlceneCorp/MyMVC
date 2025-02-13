@@ -24,6 +24,23 @@ class SettingsManager extends DatabaseManager
         return parent::findOne('settings', Settings::class, $param_Data, $param_Parameters);
     }
 
+
+    /**
+     * Récupère une seule instance de Settings avec une recherche signée dans la base de données.
+     * 
+     * Cette méthode est utilisée pour effectuer une recherche dans la table settings avec une logique spécifique liée aux "signatures" (signées).
+     * Elle retourne une seule instance de Settings ou null si aucune correspondance n'est trouvée.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer la recherche.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return Settings|null Retourne une instance de Settings ou null si aucune correspondance.
+     */
+    public function findOneSignSettings(array $param_Data = [], array $param_Parameters = []) : ?Settings
+    {
+        // Appel à la méthode findOne de DatabaseManager avec les paramètres nécessaires pour rechercher une seule entrée dans la table
+        return parent::findOneSign('settings', Settings::class, $param_Data, $param_Parameters);
+    }
+
     /**
      * Récupère toutes les instances de Settings à partir de la base de données.
      * 

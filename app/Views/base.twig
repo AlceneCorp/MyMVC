@@ -112,7 +112,7 @@
     <!-- Footer Section -->
     <footer class="py-2">
         <div class="container-fluid text-center">
-            {% if config('SOCIALNETWORK.sn_facebook.value') and config('SOCIALNETWORK.sn_instagram.value') and config('SOCIALNETWORK.sn_linkedin.value') and config('SOCIALNETWORK.sn_x.value') %}
+            {% if config('SOCIALNETWORK.sn_facebook.value') or config('SOCIALNETWORK.sn_instagram.value') or config('SOCIALNETWORK.sn_linkedin.value') or config('SOCIALNETWORK.sn_x.value') %}
             <div class="social-buttons mb-3">
                 {% if config('SOCIALNETWORK.sn_facebook.value') %}
                     <a href="{{ config('SOCIALNETWORK.sn_facebook.value') }}"><i class="fab fa-facebook"></i></a>

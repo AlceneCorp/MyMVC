@@ -24,6 +24,23 @@ class ContactsManager extends DatabaseManager
         return parent::findOne('contacts', Contacts::class, $param_Data, $param_Parameters);
     }
 
+
+    /**
+     * Récupère une seule instance de Contacts avec une recherche signée dans la base de données.
+     * 
+     * Cette méthode est utilisée pour effectuer une recherche dans la table contacts avec une logique spécifique liée aux "signatures" (signées).
+     * Elle retourne une seule instance de Contacts ou null si aucune correspondance n'est trouvée.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer la recherche.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return Contacts|null Retourne une instance de Contacts ou null si aucune correspondance.
+     */
+    public function findOneSignContacts(array $param_Data = [], array $param_Parameters = []) : ?Contacts
+    {
+        // Appel à la méthode findOne de DatabaseManager avec les paramètres nécessaires pour rechercher une seule entrée dans la table
+        return parent::findOneSign('contacts', Contacts::class, $param_Data, $param_Parameters);
+    }
+
     /**
      * Récupère toutes les instances de Contacts à partir de la base de données.
      * 

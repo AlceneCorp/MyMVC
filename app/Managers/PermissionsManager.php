@@ -24,6 +24,23 @@ class PermissionsManager extends DatabaseManager
         return parent::findOne('permissions', Permissions::class, $param_Data, $param_Parameters);
     }
 
+
+    /**
+     * Récupère une seule instance de Permissions avec une recherche signée dans la base de données.
+     * 
+     * Cette méthode est utilisée pour effectuer une recherche dans la table permissions avec une logique spécifique liée aux "signatures" (signées).
+     * Elle retourne une seule instance de Permissions ou null si aucune correspondance n'est trouvée.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer la recherche.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return Permissions|null Retourne une instance de Permissions ou null si aucune correspondance.
+     */
+    public function findOneSignPermissions(array $param_Data = [], array $param_Parameters = []) : ?Permissions
+    {
+        // Appel à la méthode findOne de DatabaseManager avec les paramètres nécessaires pour rechercher une seule entrée dans la table
+        return parent::findOneSign('permissions', Permissions::class, $param_Data, $param_Parameters);
+    }
+
     /**
      * Récupère toutes les instances de Permissions à partir de la base de données.
      * 

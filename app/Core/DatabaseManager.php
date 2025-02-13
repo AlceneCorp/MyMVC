@@ -152,6 +152,55 @@ class DatabaseManager
         return new $classObject($result);
     }
 
+    public function findOneSign(string $table, string $classObject, array $conditions = [], array $parameters = []): ?object
+    {
+        $sql = "SELECT * FROM $table";
+        $where = [];
+        $bindValues = [];
+
+        foreach ($conditions as $condition) 
+        {
+            $column = $condition[0];
+            $operator = $condition[1];
+            $value = $condition[2];
+
+            // Sanitisation de la colonne avant d'ajouter la condition
+            $column = $this->sanitizeColumnList($column);
+
+            // Ajoute la condition à la clause WHERE
+            $where[] = "$column $operator :$column";
+            $bindValues[":$column"] = $value;
+        }
+
+        // Ajouter WHERE si nécessaire
+        if (!empty($where)) 
+        {
+            $sql .= ' WHERE ' . implode(' AND ', $where);
+        }
+
+        // Ajouter les autres paramètres comme ORDER BY, LIMIT, etc.
+        $sql .= $this->buildQueryParameters($parameters);
+
+        try 
+        {
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute($bindValues);
+            $result = $statement->fetch(PDO::FETCH_ASSOC);
+
+            if (!$result) 
+            {
+                return null;
+            }
+
+            // Hydratation de l'objet
+            return new $classObject($result);
+        } 
+        catch (PDOException $e) 
+        {
+            throw new Exception('Erreur lors de l\'exécution de la requête : ' . $e->getMessage());
+        }
+    }
+
     /**
      * Trouve toutes les entrées dans une table.
      *
@@ -673,5 +722,32 @@ class DatabaseManager
         $formattedName = str_replace(' ', '', ucwords($formattedName));
 
         return $formattedName;
+    }
+
+    /**
+     * Sanitize le paramètre GROUP BY pour éviter l'injection SQL
+     */
+    private function sanitizeColumnList(string $columnList): string
+    {
+        // Assure-toi que le groupe de colonnes est valide, par exemple en validant uniquement des noms de colonnes.
+        // Cette fonction peut être améliorée selon les besoins (par exemple pour valider les noms de colonnes).
+        return preg_replace('/[^a-zA-Z0-9_,\s]/', '', $columnList); // On autorise seulement des lettres, chiffres et séparateurs.
+    }
+
+    /**
+     * Sanitize la clause ORDER BY pour éviter l'injection SQL
+     */
+    private function sanitizeOrderBy(string $orderBy): string
+    {
+        // Cette méthode peut être étendue pour valider les colonnes et les ordres comme 'ASC' ou 'DESC'
+        $orderBy = preg_replace('/[^a-zA-Z0-9_,\s]/', '', $orderBy); // On autorise uniquement des colonnes et des séparateurs.
+
+        // Vérifier la présence d'une direction valide (ASC ou DESC)
+        if (preg_match('/\s(ASC|DESC)$/i', $orderBy) === 0) 
+        {
+            $orderBy .= ' ASC'; // Défaut à ASC si aucune direction n'est spécifiée.
+        }
+
+        return $orderBy;
     }
 }

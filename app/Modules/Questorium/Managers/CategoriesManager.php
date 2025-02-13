@@ -24,6 +24,23 @@ class CategoriesManager extends DatabaseManager
         return parent::findOne('categories', Categories::class, $param_Data, $param_Parameters);
     }
 
+
+    /**
+     * Récupère une seule instance de Categories avec une recherche signée dans la base de données.
+     * 
+     * Cette méthode est utilisée pour effectuer une recherche dans la table categories avec une logique spécifique liée aux "signatures" (signées).
+     * Elle retourne une seule instance de Categories ou null si aucune correspondance n'est trouvée.
+     * 
+     * @param array $param_Data Données à utiliser pour filtrer la recherche.
+     * @param array $param_Parameters Paramètres supplémentaires pour la requête.
+     * @return Categories|null Retourne une instance de Categories ou null si aucune correspondance.
+     */
+    public function findOneSignCategories(array $param_Data = [], array $param_Parameters = []) : ?Categories
+    {
+        // Appel à la méthode findOne de DatabaseManager avec les paramètres nécessaires pour rechercher une seule entrée dans la table
+        return parent::findOneSign('categories', Categories::class, $param_Data, $param_Parameters);
+    }
+
     /**
      * Récupère toutes les instances de Categories à partir de la base de données.
      * 

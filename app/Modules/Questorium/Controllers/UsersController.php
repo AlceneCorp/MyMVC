@@ -142,6 +142,11 @@ class UsersController extends Controller
             }
         }
 
+        
+
+
+        //var_dump($this->_questionsManager->findOneSignQuestions([['ID', '>', $current_question->getID()]]));
+        //var_dump($this->_questionsManager->findOneSignQuestions([['ID', '<', $current_question->getID()]], ['ORDER BY' => 'ID DESC']));
 
 
         return $this->render('user/viewQuestionnaire.twig', [
@@ -162,8 +167,6 @@ class UsersController extends Controller
             'skipQuestion' => false
         ]);
     }
-
-
 
 
 
