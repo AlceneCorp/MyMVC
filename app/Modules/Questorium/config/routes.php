@@ -61,7 +61,7 @@ return
 			],
 			[
 				'name' => 'Creation Utilisateurs',
-				'url' => '/MyMVC/categories/{categories_id}',
+				'url' => '/MyMVC/questorium/createusers',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createUsers',
 				'params' => [],

@@ -9,7 +9,8 @@ class SessionsManager
      */
     public static function startSession(): void
     {
-        if (session_status() === PHP_SESSION_NONE) {
+        if (session_status() === PHP_SESSION_NONE) 
+        {
             session_start();
         }
     }

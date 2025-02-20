@@ -29,7 +29,7 @@ class FileManager
 
         $file = $_FILES[$inputName];
         $fileExtension = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+        $allowedExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp'];
         $maxFileSize = ConfigManager::get('SITE.max_file_upload_size.value') * 1024 * 1024;
 
 

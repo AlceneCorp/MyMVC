@@ -356,7 +356,7 @@
             <div class="question-container mt-4">
                 <div class="col-12 border rounded" style="margin-top:20px; padding:25px; background-color:#f0f0f0;">
                     <div class="row text-secondary">
-						<h3 class="col-8 offset-2" style="margin-bottom:70px;">{{ decrypt(current_question.TEXT) }}</h3>
+						<h3 class="col-8 offset-2" style="margin-bottom:70px;">{{current_question.ID}} - {{ decrypt(current_question.TEXT) }}</h3>
 					</div>
 
 
@@ -409,7 +409,7 @@
                                     {% elseif answer.TYPE == 5 %}
                                         <div class="text-start form-check mt-3">
                                             <label class="form-check-label text-secondary" for="MULANSWERS_{{answer.ID}}">
-                                                <input type="checkbox" class="form-check-input" name="MULANSWERS_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}" id="MULANSWERS_{{answer.ID}}">
+                                                <input type="checkbox" class="form-check-input" name="MULANSWERS_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}" id="MULANSWERS_{{answer.ID}}" idcat="{{user.ID}}_{{quiz.ID}}_{{current_category.ID}}_{{current_question.ID}}_{{answer.ID}}">
                                             
 												{{decrypt(answer.text)}}
 											</label>
@@ -466,7 +466,7 @@
 					method: "POST",
 					url: "{{base_url}}/questorium/ajax/autoload",
 					dataType: "JSON",
-					data: {"QUIZ_ID" : {{quiz.ID}}, "QUIZ_REQ" : true, "ACCOUNTS_ID" : $("input[name='ACCOUNTS_ID']").val() },
+					data: {"QUIZ_ID" : {{quiz.ID}}, "QUIZ_REQ" : true, "ACCOUNTS_ID" : $("input[name='ACCOUNTS_ID']").val(), "QUESTIONS_ID" :  {{current_question.ID}}},
 					success: function(data)
 					{
 						if (data && data.RESULT) 
@@ -476,6 +476,7 @@
 						
 								$("input[type='radio'][idcat='"+index+"']").prop("checked", true);
 								$("input[type='number'][idcat='"+index+"']").val(value).change();
+								console.log(value)
 								if($("textarea[idcat='" + index + "']").length > 0)
 								{
 									$("textarea[idcat='" + index + "']").val(value).change();
@@ -591,10 +592,10 @@
 
 		function Reg(data)
 		{			
-			
 			switch(data.attr('id').split("_")[0])
 			{
 				case "MULANSWERS":
+					console.log(data.attr('idcat'))
 					$.ajax
 					(
 						{
@@ -623,6 +624,11 @@
 					else 
 					{
 						value = $("textarea[id='ANSWERS_" + data.attr('idcat').split("_")[4] + "']").val();
+
+						if(value == "")
+						{
+							break;
+						}
 					}
 					
 					
@@ -632,7 +638,7 @@
 							method: "POST",
 							url: "{{base_url}}/questorium/ajax/resultinsert",
 							dataType: "TEXT",
-							data: {"ANSWER" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "RESULT_VALUES" : value, "QUESTIONS_INDEX" : {{questions_index}}, "CATEGORIES_INDEX" : {{next_categorie_index}}, "QUIZ_SLUG" : "{{ quiz_slug }}"},
+							data: {"ANSWER" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "RESULT_VALUES" : value, "QUESTIONS_INDEX" : {{next_questions_index}}, "CATEGORIES_INDEX" : {{next_categorie_index}}, "QUIZ_SLUG" : "{{ quiz_slug }}"},
 							success: function(data)
 							{
 								$("#NEXT_QUESTION").attr("href", data);

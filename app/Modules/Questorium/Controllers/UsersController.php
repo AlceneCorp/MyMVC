@@ -70,7 +70,7 @@ class UsersController extends Controller
         $quiz = $this->_quizManager->findOneQuiz(['SLUG' => CoreManager::encrypt($quiz_slug), 'ID' => $quiz->getID()]);
         if (!$quiz) 
         {
-            return $this->render('error.twig', ['error_message' => 'Quiz introuvable']);
+            return $this->render('error\error.twig', ['error_message' => 'Quiz introuvable']);
         }
 
         // Récupérer toutes les catégories du quiz
@@ -79,7 +79,7 @@ class UsersController extends Controller
 
         if (!isset($categories[$categories_index])) 
         {
-            return $this->render('error.twig', ['error_message' => 'Catégorie introuvable']);
+            return $this->render('error\error.twig', ['error_message' => 'Catégorie introuvable']);
         }
 
         $current_category = $categories[$categories_index];
@@ -88,7 +88,7 @@ class UsersController extends Controller
 
         if (!isset($questions[$questions_index])) 
         {
-            return $this->render('error.twig', ['error_message' => 'Question introuvable']);
+            return $this->render('error\error.twig', ['error_message' => 'Question introuvable']);
         }
 
         $current_question = $questions[$questions_index];
@@ -157,9 +157,9 @@ class UsersController extends Controller
             'answers' => $answers,
             'answers_with_subanswers' => $answers_with_subanswers,
             'previous_questions_index' => $previous_questions_index,
-            'next_questions_index' => $next_questions_index,
+            'next_questions_index' => $next_questions_index ?? $questions_index + 1,
             'previous_categorie_index' => $previous_categorie_index,
-            'next_categorie_index' => $next_categorie_index,
+            'next_categorie_index' => $next_categorie_index ?? $categories_index + 1,
             'quiz_slug' => $quiz_slug,
             'categories_index' => $categories_index + 1,
             'questions_index' => $questions_index + 1,

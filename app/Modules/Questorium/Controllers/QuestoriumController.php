@@ -158,7 +158,7 @@ class QuestoriumController extends Controller
             $databaseManager->rawQuery($req);
         }
 
-        $this->generateModels();
+        $this->generateSQL();
 
         foreach($this->permissions as $permission)
         {

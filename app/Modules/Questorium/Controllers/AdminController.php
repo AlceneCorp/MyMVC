@@ -238,6 +238,18 @@ class AdminController extends Controller
 		$this->render('admin/viewCreationAnswers.twig');
 	}
 
+	public function createUsers()
+	{
+		$quizManager = new QuizManager();
+
+
+
+		$this->render('admin/viewCreateUsers.twig',
+		[
+			'allQuiz' => $quizManager->findAllQuiz()
+		]);
+	}
+
 	public function help()
 	{
 		$this->render('admin/help.twig');
