@@ -17,7 +17,8 @@ class ModulesManager
     {
         $modules = [];
 
-        foreach (glob(self::$modulesPath . '*', GLOB_ONLYDIR) as $moduleDir) {
+        foreach (glob(self::$modulesPath . '*', GLOB_ONLYDIR) as $moduleDir) 
+        {
             $moduleName = basename($moduleDir);
             $configPath = $moduleDir . '/config/config.php';
 

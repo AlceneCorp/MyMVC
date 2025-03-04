@@ -344,7 +344,7 @@ class DatabaseManager
                 $primaryKey
             );
 
-            CoreManager::addLogs('DEBUG', 'WARNING', 'DatabaseManager::update() : ' . $sql);
+            CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . $sql);
 
             // Ajouter le paramètre pour la clé primaire
             $data['primary_key'] = $param_id;

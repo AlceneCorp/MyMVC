@@ -570,8 +570,8 @@
 			// Active ou désactive le bouton de question suivante en fonction de la complétion du formulaire
 			if (formComplete) 
 			{
-				$("#NEXT_QUESTION").prop("disabled", false);
-				$("#NEXT_QUESTION").removeClass("disabled-link");
+				//$("#NEXT_QUESTION").prop("disabled", false);
+				//$("#NEXT_QUESTION").removeClass("disabled-link");
 				$("#NEXT_QUESTION").html('Question suivante  <i class="fas fa-arrow-right"></i>');
 			} 
 			else 
@@ -606,6 +606,12 @@
 							success: function(data)
 							{
 								//$(".progress-bar").css("width", (data * $("#COEF").val()) + "%").text(Math.round(data * $("#COEF").val()) + "%");
+							},
+							complete: function(data)
+							{
+								
+								$("#NEXT_QUESTION").prop("disabled", false);
+								$("#NEXT_QUESTION").removeClass("disabled-link");
 							}
 						}
 					);
@@ -641,10 +647,13 @@
 							data: {"ANSWER" : true, "ACCOUNTS_ID" : data.attr('idcat').split("_")[0], "QUIZ_ID" : data.attr('idcat').split("_")[1], "CATEGORIES_ID" : data.attr('idcat').split("_")[2], "QUESTIONS_ID" : data.attr('idcat').split("_")[3], "ANSWERS_ID" : data.attr('idcat').split("_")[4], "RESULT_VALUES" : value, "QUESTIONS_INDEX" : {{next_questions_index}}, "CATEGORIES_INDEX" : {{next_categorie_index}}, "QUIZ_SLUG" : "{{ quiz_slug }}"},
 							success: function(data)
 							{
+								$("#NEXT_QUESTION").addClass("disabled-link");
+								$("#NEXT_QUESTION").prop("disabled", true);
 								$("#NEXT_QUESTION").attr("href", data);
 							},
 							complete: function(data)
 							{
+								
 								$("#NEXT_QUESTION").prop("disabled", false);
 								$("#NEXT_QUESTION").removeClass("disabled-link");
 							}
@@ -664,6 +673,12 @@
 							{
 								// $(".progress-bar").css("width", (data * $("#COEF").val()) + "%");
 								//$(".progress-bar").css("width", (data * $("#COEF").val()) + "%").text(Math.round(data * $("#COEF").val()) + "%");
+							},
+							complete: function(data)
+							{
+								
+								$("#NEXT_QUESTION").prop("disabled", false);
+								$("#NEXT_QUESTION").removeClass("disabled-link");
 							}
 						}
 					);

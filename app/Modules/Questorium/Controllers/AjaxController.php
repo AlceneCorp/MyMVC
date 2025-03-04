@@ -173,8 +173,7 @@ class AjaxController extends Controller
 				$resultManager->addResult($data);
 			}
 		}
-
-		if(isset($_POST["ANSWER"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]))
+		else if(isset($_POST["ANSWER"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]))
 		{
 			$data = 
 			[
@@ -201,8 +200,7 @@ class AjaxController extends Controller
 				$resultManager->addResult($data);
 			}
 		}
-
-		if(isset($_POST["SUBANSWERS"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]) && isset($_POST["SUBANSWERS_ID"]))
+		else if(isset($_POST["SUBANSWERS"]) && isset($_POST["ACCOUNTS_ID"]) && isset($_POST["QUIZ_ID"]) && isset($_POST["CATEGORIES_ID"]) && isset($_POST["QUESTIONS_ID"]) && isset($_POST["ANSWERS_ID"]) && isset($_POST["SUBANSWERS_ID"]))
 		{
 			$data = 
 			[
@@ -228,9 +226,7 @@ class AjaxController extends Controller
 				$resultManager->addResult($data);
 			}
 		}
-
 		
-
 		if(isset($_POST['QUESTIONS_INDEX']))
 		{
 			//Gestion conditions
@@ -259,6 +255,7 @@ class AjaxController extends Controller
 				{
 					break;
 				}
+
 				// Vérification de la condition de la réponse
 				$condition = $resultManager->findOneResult([
 					'USERS_ID' => SessionsManager::get('USERS')->getID(),
@@ -279,13 +276,7 @@ class AjaxController extends Controller
 					$index_boucle++;  // Avancer l'index même si la condition n'est pas remplie
 				}
 				$index_boucle++;
-			}
-			/*
-			<a href="{{ base_url }}/questionnaire/{{ quiz_slug }}/{{ next_categorie_index }}/{{ next_questions_index }}" id="NEXT_QUESTION" class="btn btn-primary ml-auto disabled-link">
-				Répondre pour passer à la question suivante <i class="fas fa-arrow-right"></i>
-			</a>*/
-
-		
+			}	
 
 			echo  URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
 		}
