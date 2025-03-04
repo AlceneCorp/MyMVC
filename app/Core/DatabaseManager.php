@@ -286,7 +286,7 @@ class DatabaseManager
         }
         catch (Exception $e)
         {
-            CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::insert() : ' . $e->getMessage());
+            //CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::insert() : ' . $e->getMessage());
             return false;
         }
         catch(PDOException $e)
@@ -325,7 +325,7 @@ class DatabaseManager
             // Vérifier que $param_id est défini
             if (empty($param_id)) 
             {
-                CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . "Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
+                //CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . "Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
                 throw new Exception("Aucune valeur pour la clé primaire '$primaryKey' n'a été fournie.");
             }
 
@@ -344,7 +344,7 @@ class DatabaseManager
                 $primaryKey
             );
 
-            CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . $sql);
+            //CoreManager::addLogs('APPLICATION', 'WARNING', 'DatabaseManager::update() : ' . $sql);
 
             // Ajouter le paramètre pour la clé primaire
             $data['primary_key'] = $param_id;
