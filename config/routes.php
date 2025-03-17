@@ -28,7 +28,7 @@ return
 		'children' => []
 	],
 	[
-		'name' => 'Contact',
+		'name' => 'Prise de contact',
 		'url' => '/MyMVC/contact',
 		'controller' => \App\Controllers\HomeController::class,
 		'method' => 'contact',
