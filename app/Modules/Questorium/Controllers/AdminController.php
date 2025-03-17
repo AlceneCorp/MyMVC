@@ -7,12 +7,15 @@ use App\Core\DatabaseManager;
 use App\Core\CoreManager;
 
 use App\Managers\PermissionsManager;
+use App\Managers\UsersManager;
+
 
 use App\Modules\Questorium\Managers\QuizManager;
 use App\Modules\Questorium\Managers\CategoriesManager;
 use App\Modules\Questorium\Managers\QuestionsManager;
 use App\Modules\Questorium\Managers\AnswersManager;
 use App\Modules\Questorium\Managers\SubanswersManager;
+use App\Modules\Questorium\Managers\UsersQuizManager;
 
 class AdminController extends Controller
 {
@@ -240,13 +243,40 @@ class AdminController extends Controller
 
 	public function createUsers()
 	{
+		$usersManager = new UsersManager();
+		$usersQuizManager = new UsersQuizManager();
 		$quizManager = new QuizManager();
 
+		$users = null;
 
+		
+
+		if(isset($_POST))
+		{
+			var_dump($_POST);
+
+			if(isset($_POST['nbAcc']))
+			{
+				$nbAcc = $_POST['nbAcc'];
+				$quiz_id = $_POST['quizselected'];
+			}
+				
+
+
+			//Creation des comptes
+			/*
+			for($i = 0; $i < $nbAcc; $i++)
+			{
+				$user_id = $usersManager->addUsers(['USERNAME' => CoreManager::generateRandomString(10), 'PASSWORD' => password_hash(CoreManager::generateRandomString(10), PASSWORD_BCRYPT), 'STATUS' => 'active']);
+				$usersQuizManager->addUsersQuiz(['USERS_ID' => $user_id, 'QUIZ_ID' => $quiz_id]);
+			}
+			*/
+		}
 
 		$this->render('admin/viewCreateUsers.twig',
 		[
-			'allQuiz' => $quizManager->findAllQuiz()
+			'allQuiz' => $quizManager->findAllQuiz(),
+			'users' => $users
 		]);
 	}
 

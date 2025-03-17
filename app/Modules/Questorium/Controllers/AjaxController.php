@@ -236,7 +236,12 @@ class AjaxController extends Controller
 			$questions = $questionsManager->findAllQuestions(['CATEGORIES_ID' => $_POST["CATEGORIES_ID"]], ['ORDER BY' => 'ID ASC']);
 
 			$nextQuestion = $questionsManager->findOneSignQuestions([['ID', ">", $_POST['QUESTIONS_ID'], 'CATEGORIES_ID', '=', $_POST["CATEGORIES_ID"]]], ['ORDER BY' => 'ID ASC']);
-		
+			
+
+			if(!$nextQuestion)
+			{
+				return;
+			}
 
 			// Vérification si la question doit être ignorée
 			if($nextQuestion)

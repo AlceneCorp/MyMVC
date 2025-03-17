@@ -238,4 +238,18 @@ class CoreManager
     {
         return ((isset($_POST[$param_Data]) && is_numeric($_POST[$param_Data]) && $_POST[$param_Data] > 0) ? (int)$_POST[$param_Data] : 0);
     }
+
+    public static function generateRandomString($size)
+    {
+        $characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $randomString = '';
+
+        for($i = 0; $i < $size; $i++)
+        {
+            $index = rand(0, strlen($characters) - 1);
+            $randomString .= $characters[$index];
+        }
+
+        return $randomString;
+    }
 }

@@ -11,8 +11,75 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2"><i class="fas fa-users me-2"></i> Création d'utilisateurs</h1>
             </div>
+			<div class="rounded p-4 bg-white shadow-lg">
+                
+                <form method="POST" class="form-group">
+                    <div class="mb-3">
+                        <small>Indiquez le questionnaire.</small>
+                        <select name="quizselected" class="form-control col-md-12 col-xs-12">
+                            <option value=0 selected>Choissisez un questionnaire</option>
+                            {% for quiz in allQuiz %}
+                            <option value="{{quiz.ID}}">{{decrypt(quiz.TEXT)}}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
 
+                    <div class="mb-3">
+                        <input class="form-control col-12" type="text" value="Génération_ID_{{ "now" | date('d_m_Y__H_i_s') }}" hidden id="FILENAME">
+                    </div>
+
+                    <div class="mb-3">
+					    <small>Indiquez combien de comptes vous souhaitez créer.</small>
+					    <input type="number" class='form-control col-md-12 col-xs-12' name="nbAcc" value="0">
+                    </div>
+
+                    <div class="mb-3">
+                        <div class="col-12">
+						    <input style="margin-top:10px" type="submit" class='btn btn-primary btn-success col-md-12 col-xs-12' value="Créer">
+					    </div>
+                    </div>
+                </form>
+
+                {% if users %}
+                <div class="row">
+			        <div class="col-12">
+				        <input type="submit" id="LoginExport" class='btn btn-success col-md-12 col-xs-12' value="Exporter les identifiants" />
+			        </div>
+		        </div>
+
+                
+				<table class="table table-striped table-bordered" id="tblCustomers">
+                    <thead>
+                        <tr>
+                            <th>Nom d'utilisateur</th>
+                            <th>Mot de passe</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for user in users %}
+                            <tr>
+                                <td>{{ user[0] }}</td>
+                                <td>{{ user[1] }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                {% endif %}
+			</div>
 		</main>
 	</div>
 </div>
+{% endblock %}
+
+{% block jquery %}
+<script src="{{ base_url }}{{ asset('js/table2excel.js') }}"></script>
+
+<script>
+	$("#LoginExport").click(function () {
+		$("#tblCustomers").table2excel({
+			exclude:".noExl",
+			filename: $("#FILENAME").val()
+		});
+	});
+</script>
 {% endblock %}

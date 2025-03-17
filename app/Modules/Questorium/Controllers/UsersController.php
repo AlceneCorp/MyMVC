@@ -157,7 +157,7 @@ class UsersController extends Controller
             'answers' => $answers,
             'answers_with_subanswers' => $answers_with_subanswers,
             'previous_questions_index' => $previous_questions_index,
-            'next_questions_index' => $next_questions_index ?? $questions_index + 1,
+            'next_questions_index' => $next_questions_index ?? null,
             'previous_categorie_index' => $previous_categorie_index,
             'next_categorie_index' => $next_categorie_index ?? $categories_index + 1,
             'quiz_slug' => $quiz_slug,

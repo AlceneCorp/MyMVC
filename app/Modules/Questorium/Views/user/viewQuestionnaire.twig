@@ -356,7 +356,7 @@
             <div class="question-container mt-4">
                 <div class="col-12 border rounded" style="margin-top:20px; padding:25px; background-color:#f0f0f0;">
                     <div class="row text-secondary">
-						<h3 class="col-8 offset-2" style="margin-bottom:70px;">{{current_question.ID}} - {{ decrypt(current_question.TEXT) }}</h3>
+						<h3 class="col-8 offset-2" style="margin-bottom:70px;">{{ decrypt(current_question.TEXT) }}</h3>
 					</div>
 
 
@@ -609,9 +609,11 @@
 							},
 							complete: function(data)
 							{
-								
-								$("#NEXT_QUESTION").prop("disabled", false);
-								$("#NEXT_QUESTION").removeClass("disabled-link");
+								if(checkFormCompletion())
+								{
+									$("#NEXT_QUESTION").prop("disabled", false);
+									$("#NEXT_QUESTION").removeClass("disabled-link");
+								}
 							}
 						}
 					);
@@ -676,9 +678,11 @@
 							},
 							complete: function(data)
 							{
-								
-								$("#NEXT_QUESTION").prop("disabled", false);
-								$("#NEXT_QUESTION").removeClass("disabled-link");
+								if(checkFormCompletion())
+								{
+									$("#NEXT_QUESTION").prop("disabled", false);
+									$("#NEXT_QUESTION").removeClass("disabled-link");
+								}
 							}
 						}
 					);
