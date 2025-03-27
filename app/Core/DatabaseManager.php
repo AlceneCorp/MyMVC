@@ -158,6 +158,7 @@ class DatabaseManager
         $where = [];
         $bindValues = [];
 
+
         foreach ($conditions as $condition) 
         {
             $column = $condition[0];

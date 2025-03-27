@@ -227,63 +227,100 @@ class AjaxController extends Controller
 			}
 		}
 		
-		if(isset($_POST['QUESTIONS_INDEX']))
+		//Calcul des liens suivant et précédent.
+		if(isset($_POST['NEXT_QUESTIONS_INDEX']) && isset($_POST['PREV_QUESTIONS_INDEX']))
 		{
+
 			//Gestion conditions
-			$index_boucle = $_POST['QUESTIONS_INDEX'];
-			$categories_index = $_POST['CATEGORIES_INDEX'];
 			$quiz_slug = $_POST['QUIZ_SLUG'];
-			$questions = $questionsManager->findAllQuestions(['CATEGORIES_ID' => $_POST["CATEGORIES_ID"]], ['ORDER BY' => 'ID ASC']);
 
-			$nextQuestion = $questionsManager->findOneSignQuestions([['ID', ">", $_POST['QUESTIONS_ID'], 'CATEGORIES_ID', '=', $_POST["CATEGORIES_ID"]]], ['ORDER BY' => 'ID ASC']);
 			
+			$values = array
+			(
+				"PREV" => $this->GetPrevQuestionLink($_POST["CATEGORIES_ID"], $_POST['QUESTIONS_ID'], $quiz_slug, $_POST['PREV_CATEGORIES_INDEX'], $_POST['PREV_QUESTIONS_INDEX']),
+				"NEXT" => $this->GetNextQuestionLink($_POST["CATEGORIES_ID"], $_POST['QUESTIONS_ID'], $quiz_slug, $_POST['NEXT_CATEGORIES_INDEX'], $_POST['NEXT_QUESTIONS_INDEX'])
+			);
 
-			if(!$nextQuestion)
+			echo json_encode($values);
+			
+		}
+	}
+
+	private function GetNextQuestionLink($param_CategriesID, $param_QuestionID, $quiz_slug, $categories_index, $index_boucle)
+	{
+		$resultManager = new ResultManager();
+		$questionsManager = new QuestionsManager();
+
+
+		while($nextQuestion = $questionsManager->findOneSignQuestions([['ID', ">", $param_QuestionID], ['CATEGORIES_ID', '=', $param_CategriesID]], ['ORDER BY' => 'ID ASC']))
+		{
+			$param_QuestionID = $nextQuestion->getID();
+
+			if ($nextQuestion->getANSWERS_CONDITION_ID() == 0 && $nextQuestion->getANSWERS_CONDITION_VALUES() == 0) 
 			{
-				return;
+				return URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
 			}
-
-			// Vérification si la question doit être ignorée
-			if($nextQuestion)
+			else
 			{
-
-				if ($nextQuestion->getANSWERS_CONDITION_ID() == 0 && $nextQuestion->getANSWERS_CONDITION_VALUES() == 0) 
-				{
-					echo URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
-					return;  // Si condition non remplie, on arrête la boucle
-				}
-			}
-
-			while (isset($questions[$index_boucle])) 
-			{
-				if ($questions[$index_boucle]->getANSWERS_CONDITION_ID() == 0 && $questions[$index_boucle]->getANSWERS_CONDITION_VALUES() == 0) 
-				{
-					break;
-				}
-
 				// Vérification de la condition de la réponse
 				$condition = $resultManager->findOneResult([
 					'USERS_ID' => SessionsManager::get('USERS')->getID(),
 					'QUIZ_ID' => $_POST["QUIZ_ID"],
-					'QUESTIONS_ID' => $questions[$index_boucle]->getANSWERS_CONDITION_ID(),
-					'ANSWERS_ID' => $questions[$index_boucle]->getANSWERS_CONDITION_VALUES()
+					'QUESTIONS_ID' => $nextQuestion->getANSWERS_CONDITION_ID(),
+					'ANSWERS_ID' => $nextQuestion->getANSWERS_CONDITION_VALUES()
 				]);
 
 				// Si la condition est remplie, on avance l'index, sinon on passe à la question suivante
 				if ($condition) 
 				{
-					// Avancer l'index de la question
-					//$index_boucle++;
+					//On casse la bouche
 					break;
 				} 
 				else 
 				{
 					$index_boucle++;  // Avancer l'index même si la condition n'est pas remplie
 				}
-				$index_boucle++;
-			}	
-
-			echo  URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
+			}
 		}
+
+		return  URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
+	}
+
+	private function GetPrevQuestionLink($param_CategriesID, $param_QuestionID, $quiz_slug, $categories_index, $index_boucle)
+	{
+		$resultManager = new ResultManager();
+		$questionsManager = new QuestionsManager();
+    
+		while($previousQuestion = $questionsManager->findOneSignQuestions([['ID', "<", $param_QuestionID], ['CATEGORIES_ID', '=', $param_CategriesID]], ['ORDER BY' => 'ID DESC']))
+		{
+			$param_QuestionID = $previousQuestion->getID();
+			// Si la question précédente n'a pas de condition, on retourne directement le lien
+			if ($previousQuestion->getANSWERS_CONDITION_ID() == 0 && $previousQuestion->getANSWERS_CONDITION_VALUES() == 0) 
+			{
+				return URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
+			}
+			else
+			{
+				// Vérification de la condition de la réponse
+				$condition = $resultManager->findOneResult([
+					'USERS_ID' => SessionsManager::get('USERS')->getID(),
+					'QUIZ_ID' => $_POST["QUIZ_ID"],
+					'QUESTIONS_ID' => $previousQuestion->getANSWERS_CONDITION_ID(),
+					'ANSWERS_ID' => $previousQuestion->getANSWERS_CONDITION_VALUES()
+				]);
+
+				// Si la condition est remplie, on avance l'index, sinon on passe à la question suivante
+				if ($condition) 
+				{
+					break;
+				} 
+				else 
+				{
+					$index_boucle--;  // Avancer l'index même si la condition n'est pas remplie
+				}
+			}
+		}
+
+		return URL . "/questionnaire/{$quiz_slug}/{$categories_index}/{$index_boucle}";
 	}
 }
