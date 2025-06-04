@@ -44,10 +44,11 @@ class Router
         }
 
 
-        foreach(ConfigManager::get('modules') as $key => $module)
+        $modules = ConfigManager::get('modules', []);
+        foreach ($modules as $key => $module)
         {
             //var_dump(ConfigManager::get('modules.' . $key . '.active.value'));
-            if(ConfigManager::get('modules.' . $key . '.active.value'))
+            if (ConfigManager::get('modules.' . $key . '.active.value'))
             {
                 $moduleRoute = require __DIR__ . '\\..\\Modules\\' . $key . '\\config\\routes.php';
 
