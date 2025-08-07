@@ -365,3 +365,4 @@ config/config.php
 /cache
 config/config.php
 /DEV
+/public/uploads
