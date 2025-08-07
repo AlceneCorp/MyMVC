@@ -29,6 +29,28 @@ return
 		'children' => []
 	],
 	[
+		'name' => 'Articles',
+		'url' => ConfigManager::get('SITE.root_path.value').'/articles',
+		'controller' => \App\Controllers\HomeController::class,
+		'method' => 'articles',
+		'params' => [],
+		'perm' => '',
+		'icon' => '<i class="fas fa-newspaper"></i>',
+		'inMenu' => true,
+		'children' => []
+	],
+	[
+		'name' => 'Articles Détail',
+		'url' => ConfigManager::get('SITE.root_path.value').'/article/{id}',
+		'controller' => \App\Controllers\HomeController::class,
+		'method' => 'article_details',
+		'params' => [],
+		'perm' => '',
+		'icon' => '<i class="fas fa-newspaper"></i>',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
 		'name' => 'Prise de contact',
 		'url' => ConfigManager::get('SITE.root_path.value').'/contact',
 		'controller' => \App\Controllers\HomeController::class,

@@ -21,6 +21,24 @@ class CoreManager
 {
     private static $twig;
 
+
+    public static function GetCoreTables()
+    {
+        return 
+        [
+            'contacts',
+            'logs',
+            'permissions',
+            'settings',
+            'settings_categories',
+            'users',
+            'users_permissions',
+            'users_profile',
+            'visitor',
+            'articles'
+        ];
+    }
+
     public static function initTwig(array $pathViews)
     {
         $loader = new FilesystemLoader($pathViews);
@@ -89,6 +107,8 @@ class CoreManager
             ini_set('log_errors', 1); // Active l'enregistrement des erreurs dans les logs
             ini_set('error_log', __DIR__ . '/../../logs/php_errors_dev.log'); // Chemin pour les logs d'erreur
 
+
+            //Liste des tables dans CoreManager::GetCoreTables()
             $tablegen = new TablesGenerator();
             $tablegen->generateAll();
 

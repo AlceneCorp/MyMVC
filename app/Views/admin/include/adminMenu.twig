@@ -1,12 +1,14 @@
 <!-- Sidebar -->
-<nav class="col-12 col-sm-12 col-md-12 col-lg-2 d-md-block bg-dark sidebar" id="sidebar">
+<nav class="col-12 col-sm-12 col-md-12 col-lg-2 d-md-block bg-dark sidebar" id="sidebar" role="navigation" aria-label="Menu d'administration">
 	<div class="position-sticky">
 		<h4 class="text-left text-white py-4 fs-4 small">Menu</h4>
 		<ul class="nav flex-column">
 
+			{% set current = currentRoute|default('') %}
+
 			{% if checkPerm('view_site_statistics') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/dashboard">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/dashboard' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/admin/dashboard">
 					<i class="fas fa-tachometer-alt me-3 fs-4"></i>
 					Panel Administrateur
 				</a>
@@ -15,7 +17,7 @@
 
 			{% if checkPerm('edit_own_profil') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/user/myprofil">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/user/myprofil' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/user/myprofil">
 					<i class="fas fa-user me-3 fs-4"></i>
 					Mon Profil
 				</a>
@@ -24,7 +26,7 @@
 
 			{% if checkPerm('manage_user_groups') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/users">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/users' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/admin/users">
 					<i class="fas fa-users me-3 fs-4"></i>
 					Utilisateurs
 				</a>
@@ -33,7 +35,7 @@
 
 			{% if checkPerm('manage_plugins') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/mods">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/mods' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/admin/mods">
 					<i class="fas fa-puzzle-piece me-3 fs-4"></i>
 					Modules
 				</a>
@@ -42,7 +44,7 @@
 
 			{% if checkPerm('edit_site_settings') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/settings">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/settings' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/admin/settings">
 					<i class="fas fa-cogs me-3 fs-4"></i>
 					Configuration
 				</a>
@@ -51,7 +53,7 @@
 
 			{% if checkPerm('manage_error_logs') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/logs">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/logs' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/admin/logs">
 					<i class="fas fa-book me-3 fs-4"></i>
 					Logs
 				</a>
@@ -60,7 +62,7 @@
 
 			{% if checkPerm('view_site_statistics') %}
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/genimages">
+				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/genimages' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{base_url}}/admin/genimages">
 					<i class="fas fa-wand-magic-sparkles me-3 fs-4"></i>
 					Génération d'images
 				</a>
@@ -76,4 +78,3 @@
 		</ul>
 	</div>
 </nav>
-

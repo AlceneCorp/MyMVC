@@ -17,18 +17,6 @@ class DatabaseManager
      */
     private PDO $pdo;
 
-    protected array $coreTables = 
-    [
-        'contacts',
-        'logs',
-        'permissions',
-        'settings',
-        'settings_categories',
-        'users',
-        'users_permissions',
-        'users_profile',
-        'visitor'
-    ];
 
     /**
      * Constructeur du DatabaseManager.

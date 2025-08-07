@@ -3,12 +3,13 @@
 namespace App\Core;
 
 use App\Core\DatabaseManager;
+use App\Core\CoreManager;
 
 class TablesGenerator extends DatabaseManager
 {
 	public function generateModels() : void
 	{
-		foreach($this->coreTables as $table)
+		foreach(CoreManager::GetCoreTables() as $table)
 		{
 			parent::generateModelClass($table);
 		}
@@ -16,7 +17,7 @@ class TablesGenerator extends DatabaseManager
 
 	public function generateManagers() : void
 	{
-		foreach($this->coreTables as $table)
+		foreach(CoreManager::GetCoreTables() as $table)
 		{
 			parent::generateManagersClass($table);
 		}

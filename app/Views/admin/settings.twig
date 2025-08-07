@@ -8,7 +8,7 @@
     .switch input:checked + .slider {
         background-color: {{ config('SITE.site_color_1.value') }};
     }
-    /* Personnalisation du curseur */
+
     .custom-range {
         -webkit-appearance: none;
         appearance: none;
@@ -20,7 +20,6 @@
         transition: background-color 0.3s ease;
     }
 
-    /* Rendre le curseur plus visible et attrayant */
     .custom-range::-webkit-slider-thumb {
         -webkit-appearance: none;
         appearance: none;
@@ -29,29 +28,29 @@
         background: {{ config('SITE.site_color_1.value') }};
         border-radius: 50%;
         cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
+        transition: transform 0.3s ease;
     }
 
-    /* Ajustement pour Firefox */
     .custom-range::-moz-range-thumb {
         width: 20px;
         height: 20px;
         background: {{ config('SITE.site_color_1.value') }};
         border-radius: 50%;
         cursor: pointer;
-        transition: background-color 0.3s ease, transform 0.3s ease;
+        transition: transform 0.3s ease;
     }
 
-    /* Effet de transformation sur le thumb au survol */
     .custom-range:hover::-webkit-slider-thumb,
     .custom-range:hover::-moz-range-thumb {
-        background: darken({{ config('SITE.site_color_1.value') }}, 10%);
-        transform: scale(1.2); /* Effet de zoom pour un retour visuel dynamique */
+        transform: scale(1.2);
     }
 
-    /* Barre de curseur colorée lorsque l'utilisateur interagit */
     .custom-range:active {
         background: linear-gradient(to right, {{ config('SITE.site_color_1.value') }} 0%, {{ config('SITE.site_color_2.value') }} 100%);
+    }
+
+    .collapse {
+        transition: height 0.3s ease-in-out;
     }
 </style>
 {% endblock %}
@@ -59,98 +58,74 @@
 {% block content %}
 <div class="container-fluid mt-4">
     <div class="row">
-        <!-- Menu latéral -->
         {% include 'admin/include/adminMenu.twig' %}
 
-        <!-- Main content -->
         <main class="col-md-9 col-lg-9 px-md-4">
-            <!-- Header Section -->
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="text-center mb-4"><i class="fas fa-cogs me-2"></i> Paramètres de l'application</h1>
             </div>
 
+            {% if flash_message is defined %}
+                <div class="alert alert-success">{{ flash_message }}</div>
+            {% endif %}
+
             <form method="POST">
                 {% for category in settings_categories %}
                     <div class="category-card mb-3">
-                        <!-- Bouton pour replier/déplier -->
                         <h2 class="d-flex justify-content-between align-items-center text-start" style="color:{{ config('SITE.site_color_1.value') }};">
                             <span><i class="fa {{category.ICON}}"></i> {{ category.DESCRIPTION }}</span>
-                            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory{{ category.ID }}" aria-expanded="false" aria-controls="collapseCategory{{ category.ID }}">
+                            <button class="btn btn-link" type="button" data-bs-toggle="collapse" data-bs-target="#collapseCategory{{ category.ID }}">
                                 <i class="fas fa-chevron-down"></i>
                             </button>
                         </h2>
 
-                        <!-- Contenu de la catégorie avec collapse -->
                         <div id="collapseCategory{{ category.ID }}" class="collapse">
                             <table class="table table-bordered table-striped">
                                 <thead>
                                     <tr>
-                                    {% if config('SITE.debug.value') %}
-                                        <th class='col-2'>Clé</th>
-                                    {% endif %}
+                                        {% if config('SITE.debug.value') %}<th class='col-2'>Clé</th>{% endif %}
                                         <th class='col-6'>Description</th>
-                                        <th>Value</th>
+                                        <th>Valeur</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% set category_settings = grouped_settings[category.ID] ?? [] %}
-
                                     {% if category_settings is empty %}
-                                        <tr>
-                                            <td colspan="3">Aucun paramètre pour cette catégorie.</td>
-                                        </tr>
+                                        <tr><td colspan="3">Aucun paramètre pour cette catégorie.</td></tr>
                                     {% else %}
                                         {% for setting in category_settings %}
                                             <tr>
-                                            {% if config('SITE.debug.value') %}
-                                                <td>{{ setting.NAME }}</td>
-                                            {% endif %}
+                                                {% if config('SITE.debug.value') %}<td>{{ setting.NAME }}</td>{% endif %}
                                                 <td><strong>{{ setting.DESCRIPTION ?: setting.NAME }}</strong></td>
                                                 <td>
-                                                    {% if setting.TYPE == 'text' %}
-                                                        <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" {% if setting.VALUE is empty %} placeholder="Pas de valeurs" {% endif %} value="{{ setting.VALUE }}">
-                                                    {% elseif setting.TYPE == 'mail' %}
-                                                        <input type="email" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" {% if setting.VALUE is empty %} placeholder="Pas de valeurs" {% endif %} value="{{ setting.VALUE }}">
-                                                    {% elseif setting.TYPE == 'phone' %}
-                                                        <input type="tel" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" {% if setting.VALUE is empty %} placeholder="Pas de valeurs" {% endif %} value="{{ setting.VALUE }}">
+                                                    {% set field_name = "data[" ~ category.NAME ~ "][" ~ setting.NAME ~ "]" %}
+                                                    {% if setting.TYPE == 'textarea' %}
+                                                        <textarea id="{{ setting.NAME }}" name="{{ field_name }}" class="form-control" rows="4">{{ setting.VALUE }}</textarea>
+                                                    {% elseif setting.TYPE == 'text' or setting.TYPE == 'mail' or setting.TYPE == 'phone' or setting.TYPE == 'date' or setting.TYPE == 'datetime-local' %}
+                                                        <input type="{{ setting.TYPE }}" id="{{ setting.NAME }}" name="{{ field_name }}" class="form-control" value="{{ setting.VALUE }}" aria-label="{{ setting.DESCRIPTION }}">
                                                     {% elseif setting.TYPE == 'checkbox' %}
                                                         <label class="switch">
-                                                            <input type="hidden" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="0">
-                                                            <input type="checkbox" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
+                                                            <input type="hidden" name="{{ field_name }}" value="0">
+                                                            <input type="checkbox" id="{{ setting.NAME }}" name="{{ field_name }}" value="1" class="slider" {% if setting.VALUE == '1' %}checked{% endif %}>
                                                             <span class="slider"></span>
                                                         </label>
                                                     {% elseif setting.TYPE == 'color' %}
-                                                        <div class="mb-3">
-                                                            <input class="form-control form-control-color" type="color" id="{{ setting.NAME }}" name="data[{{ category.NAME }}][{{ setting.NAME }}]" value="{{ setting.VALUE }}">
-                                                        </div>
+                                                        <input class="form-control form-control-color" type="color" id="{{ setting.NAME }}" name="{{ field_name }}" value="{{ setting.VALUE }}">
                                                     {% elseif setting.TYPE == 'number' %}
-                                                        <input type="number" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
-                                                    {% elseif setting.TYPE == 'date' %}
-                                                        <input type="date" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
-                                                    {% elseif setting.TYPE == 'datetime-local' %}
-                                                        <input type="datetime-local" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                        <input type="number" id="{{ setting.NAME }}" name="{{ field_name }}" class="form-control" value="{{ setting.VALUE }}">
                                                     {% elseif setting.TYPE == 'range' %}
                                                         <div class="mb-3 row position-relative">
                                                             <div class="col-10">
-                                                                <input type="range" 
-                                                                       id="{{ setting.NAME }}" 
-                                                                       name="data[{{category.NAME}}][{{ setting.NAME }}]" 
-                                                                       class="form-range custom-range" 
-                                                                       value="{{ setting.VALUE }}" 
-                                                                       min="0" 
-                                                                       max="360" 
-                                                                       oninput="updateRangeValue(this)">
+                                                                <input type="range" id="{{ setting.NAME }}" name="{{ field_name }}" class="form-range custom-range" value="{{ setting.VALUE }}" min="0" max="360" oninput="updateRangeValue(this)">
                                                             </div>
                                                             <div class="col-2 d-flex justify-content-center align-items-center">
-                                                                <span id="range-value-{{ setting.NAME }}" 
-                                                                      class="range-value fs-5" 
-                                                                      style="font-weight: bold; color: {{ config('SITE.site_color_1.value') }}; white-space: nowrap;">
-                                                                    {{ setting.VALUE }}
+                                                                <span id="range-value-{{ setting.NAME }}" class="range-value fs-5" style="font-weight: bold; color: {{ config('SITE.site_color_1.value') }}; white-space: nowrap;">
+                                                                    {{ setting.VALUE }}°
                                                                 </span>
                                                             </div>
                                                         </div>
                                                     {% else %}
-                                                        <input type="text" id="{{ setting.NAME }}" name="data[{{category.NAME}}][{{ setting.NAME }}]" class="form-control" value="{{ setting.VALUE }}">
+                                                        <input type="text" id="{{ setting.NAME }}" name="{{ field_name }}" class="form-control" value="{{ setting.VALUE }}">
                                                     {% endif %}
                                                 </td>
                                             </tr>
@@ -162,7 +137,6 @@
                     </div>
                 {% endfor %}
 
-                <!-- Bouton "Mettre à jour" -->
                 <div class="fixed-button">
                     <button type="submit" class="btn-primary btn-sm ml-2" value="1" style="background-color:{{ config('SITE.site_color_1.value') }};">Mettre à jour</button>
                 </div>
@@ -170,15 +144,15 @@
         </main>
     </div>
 </div>
-
 {% endblock %}
 
 {% block jquery %}
 <script>
     function updateRangeValue(input) {
-        // Met à jour la valeur dynamique du span en fonction du range
         const rangeValueElement = document.getElementById('range-value-' + input.id);
-        rangeValueElement.textContent = input.value;
+        if (rangeValueElement) {
+            rangeValueElement.textContent = input.value + "°";
+        }
     }
 </script>
 {% endblock %}

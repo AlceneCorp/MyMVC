@@ -4,15 +4,18 @@ namespace App\Core;
 
 use App\Core\SessionsManager;
 
-
+use App\Managers\ArticlesManager;
 
 class Controller
 {
 	protected $twig;
+	
+	protected $articlesManager;
 
 	public function __construct($param_twig)
 	{
 		$this->twig = $param_twig;
+		$this->articlesManager = new ArticlesManager();
 	}
 
 	// Méthode pour afficher un template Twig avec les données passées

@@ -47,7 +47,50 @@
                 {% endif %}
             </ul>
             {% endif %}
+
+            {% if config('ADMIN.admin_address.value') %}
+                <div class="mt-4">
+                    <h4><i class="fas fa-map-marked-alt"></i> Nous situer</h4>
+                    <div class="ratio ratio-4x3 rounded shadow-sm overflow-hidden">
+                        <iframe
+                            src="https://www.google.com/maps?q={{ config('ADMIN.admin_address.value')|url_encode }}&output=embed"
+                            width="100%"
+                            height="100%"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy"
+                            referrerpolicy="no-referrer-when-downgrade">
+                        </iframe>
+                    </div>
+                </div>
+            {% endif %}
         </div>
+    </div>
+    <div class="mt-5">
+        <h4><i class="fas fa-question-circle"></i> Questions fréquentes</h4>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item"><strong>📦 Quand vais-je recevoir une réponse ?</strong><br>Nous répondons en général sous 24 à 48h ouvrées.</li>
+            <li class="list-group-item"><strong>💬 Puis-je vous appeler directement ?</strong><br>Oui, nos horaires téléphoniques sont de 9h à 18h du lundi au vendredi.</li>
+            <li class="list-group-item"><strong>📍 Avez-vous un bureau physique ?</strong><br>Oui, l’adresse est indiquée ci-dessus.</li>
+        </ul>
+    </div>
+
+    <div class="mt-5">
+        <h4><i class="fas fa-users"></i> Notre équipe</h4>
+        <p>Notre équipe support est composée de professionnels passionnés, disponibles pour répondre à toutes vos questions techniques, administratives ou commerciales.</p>
+    </div>
+
+    <div class="mt-4">
+        <h4><i class="fas fa-clock"></i> Horaires d’ouverture</h4>
+        <ul class="list-unstyled">
+            <li>Lundi - Vendredi : 9h - 18h</li>
+            <li>Samedi : 10h - 14h</li>
+            <li>Dimanche : Fermé</li>
+        </ul>
+    </div>
+
+    <div class="alert alert-info mt-4" role="alert">
+        📢 <strong>Note :</strong> En période de forte demande, les délais de réponse peuvent être un peu plus longs. Merci pour votre patience !
     </div>
 </div>
 {% endblock %}

@@ -1,0 +1,129 @@
+{% extends "base.twig" %}
+
+{% block content %}
+{% if article is defined %}
+<section class="bg-light py-5 border-bottom">
+    <div class="container">
+        <a href="{{ config('SITE.root_path.value') }}/articles" class="btn btn-outline-secondary btn-sm mb-4">
+            <i class="fas fa-arrow-left"></i> Retour aux articles
+        </a>
+
+        <h1 class="display-5 fw-bold text-dark mb-3">{{ article.TITLE }}</h1>
+
+        <div class="text-muted">
+            <i class="fas fa-calendar-alt me-2"></i>
+            Publié le {{ article.DATE|date("d/m/Y à H:i") }}
+            {% if article.UPDATED_AT and article.UPDATED_AT != article.DATE %}
+                <span class="ms-3 small">
+                    <i class="fas fa-sync-alt me-1"></i>
+                    Mis à jour le {{ article.UPDATED_AT|date("d/m/Y à H:i") }}
+                </span>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="py-5" style="background-color: #f8f9fa;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+
+                {% if article.IMG %}
+                    <img src="{{ article.IMG }}" class="img-fluid rounded mb-4" alt="{{ article.TITLE }}">
+                {% endif %}
+
+                {% if article.DESCRIPTION %}
+                    <p class="lead">{{ article.DESCRIPTION }}</p>
+                {% endif %}
+
+                <hr>
+
+                <div class="article-text">
+                    {{ article.TEXT|raw }}
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <hr class="mt-5 mb-3">
+    <div class="article-signature">
+        Rédigé par <strong>{{ article.author|default('Admin') }}</strong>
+    </div>
+</section>
+{% else %}
+<div class="container my-5">
+    <div class="alert alert-warning">
+        <i class="fas fa-exclamation-triangle"></i>
+        Article introuvable.
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block style %}
+<style>
+.article-text 
+{
+    color: #212529;
+    font-size: 1.05rem;
+    line-height: 1.7;
+}
+
+.article-text p 
+{
+    margin-bottom: 1.5rem;
+    line-height: 1.7;
+    font-size: 1.05rem;
+
+}
+
+.article-text img 
+{
+    max-width: 100%;
+    height: auto;
+    margin: 2rem 0;
+    border-radius: 0.5rem;
+}
+
+.lead 
+{
+    color: #212529; /* gris foncé par défaut Bootstrap */
+}
+
+.article-text, .lead 
+{
+    font-size: 1.1rem;
+    line-height: 1.8;
+}
+
+hr 
+{
+    opacity: 0.2;
+    margin: 2rem 0;
+}
+
+section.py-5 
+{
+    padding-top: 6rem;
+    padding-bottom: 6rem;
+}
+
+.article-signature 
+{
+    text-align: right;
+    margin-top: 3rem;
+    padding-bottom: 1.5rem;
+    color: #6c757d;
+    font-size: 0.9rem;
+    padding-right:50px;
+}
+.article-text p 
+{
+    margin-bottom: 1.5rem;
+}
+.lead 
+{
+    margin-bottom: 2rem;
+}
+</style>
+{% endblock %}
