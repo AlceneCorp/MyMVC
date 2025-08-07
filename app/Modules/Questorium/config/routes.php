@@ -1,6 +1,7 @@
 <?php
 
 use App\Core\CoreManager;
+use App\Core\ConfigManager;
 
 return 
 [
@@ -17,7 +18,7 @@ return
 		[
 			[
 				'name' => 'Creation Questionnaire',
-				'url' => '/MyMVC/admin/quiz/',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/quiz/',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createQuiz',
 				'params' => [],
@@ -28,7 +29,7 @@ return
 			],
 			[
 				'name' => 'Creation Catégories',
-				'url' => '/MyMVC/admin/categories/',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/categories/',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createCategories',
 				'params' => [],
@@ -39,7 +40,7 @@ return
 			],
 			[
 				'name' => 'Creation Questions',
-				'url' => '/MyMVC/admin/questions/',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/questions/',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createQuestions',
 				'params' => [],
@@ -50,7 +51,7 @@ return
 			],
 			[
 				'name' => 'Creation Réponse',
-				'url' => '/MyMVC/admin/answers/',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/answers/',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createAnswers',
 				'params' => [],
@@ -61,7 +62,7 @@ return
 			],
 			[
 				'name' => 'Creation Utilisateurs',
-				'url' => '/MyMVC/questorium/createusers',
+				'url' => ConfigManager::get('SITE.root_path.value').'/questorium/createusers',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'createUsers',
 				'params' => [],
@@ -72,7 +73,7 @@ return
 			],
 			[
 				'name' => 'Analyse des Résultats',
-				'url' => '/MyMVC/categories/{categories_id}',
+				'url' => ConfigManager::get('SITE.root_path.value').'/categories/{categories_id}',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'resultQuiz',
 				'params' => [],
@@ -83,7 +84,7 @@ return
 			],
 			[
 				'name' => 'Aide',
-				'url' => '/MyMVC/questorium/help',
+				'url' => ConfigManager::get('SITE.root_path.value').'/questorium/help',
 				'controller' => \App\Modules\Questorium\Controllers\AdminController::class,
 				'method' => 'help',
 				'params' => [],
@@ -96,7 +97,7 @@ return
 	],
 	[
 		'name' => 'Questionnaire',
-		'url' => '/MyMVC/questionnaire/',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questionnaire/',
 		'controller' => \App\Modules\Questorium\Controllers\UsersController::class,
 		'method' => 'startQuestionnaire',
 		'params' => [],
@@ -107,7 +108,7 @@ return
 	],
 	[
 		'name' => 'Questionnaire',
-		'url' => '/MyMVC/questionnaire/{quiz_slug}/{categories_index}/{questions_index}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questionnaire/{quiz_slug}/{categories_index}/{questions_index}',
 		'controller' => \App\Modules\Questorium\Controllers\UsersController::class,
 		'method' => 'showQuestionnaire',
 		'params' => [],
@@ -118,7 +119,7 @@ return
 	],
 	[
 		'name' => 'Questionnaire',
-		'url' => '/MyMVC/questionnaire/{quiz_slug}/finish',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questionnaire/{quiz_slug}/finish',
 		'controller' => \App\Modules\Questorium\Controllers\UsersController::class,
 		'method' => 'finishQuestionnaire',
 		'params' => [],
@@ -129,7 +130,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/quiz',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/quiz',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuiz',
 		'params' => [],
@@ -140,7 +141,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/categories',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/categories',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxCategories',
 		'params' => [],
@@ -151,7 +152,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/questions',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/questions',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuestions',
 		'params' => [],
@@ -162,7 +163,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/answers',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/answers',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxAnswers',
 		'params' => [],
@@ -173,7 +174,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/autoload',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/autoload',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxAutoLoad',
 		'params' => [],
@@ -184,7 +185,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/resultinsert',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/resultinsert',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxResultInsert',
 		'params' => [],
@@ -195,7 +196,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/quizdel/{quiz_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/quizdel/{quiz_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuizDel',
 		'params' => [],
@@ -206,7 +207,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/categoriesdel/{categories_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/categoriesdel/{categories_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxCategoriesDel',
 		'params' => [],
@@ -217,7 +218,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/questionsdel/{questions_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/questionsdel/{questions_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxQuestionsDel',
 		'params' => [],
@@ -228,7 +229,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/questorium/ajax/answersdel/{answers_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/questorium/ajax/answersdel/{answers_id}',
 		'controller' => \App\Modules\Questorium\Controllers\AjaxController::class,
 		'method' => 'ajaxAnswersDel',
 		'params' => [],
@@ -239,7 +240,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/questorium/regenerate',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/questorium/regenerate',
 		'controller' => \App\Modules\Questorium\Controllers\QuestoriumController::class,
 		'method' => 'regenerateSQL',
 		'params' => [],

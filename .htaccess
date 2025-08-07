@@ -3,4 +3,4 @@ RewriteEngine On
 # Si la requête n'est pas un fichier ou un répertoire existant, rediriger vers index.php
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^ index.php [QSA,L]
+RewriteRule ^ public/index.php [QSA,L]

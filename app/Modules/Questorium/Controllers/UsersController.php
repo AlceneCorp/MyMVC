@@ -102,9 +102,9 @@ class UsersController extends Controller
         }
 
         // Gestion des indices de navigation
-        $previous_questions_index = null;
+        $previous_questions_index = 1;
         $next_questions_index = null;
-        $previous_categorie_index = null;
+        $previous_categorie_index = 1;
         $next_categorie_index = null;
 
         // Déterminer la question précédente
@@ -147,7 +147,6 @@ class UsersController extends Controller
 
         //var_dump($this->_questionsManager->findOneSignQuestions([['ID', '>', $current_question->getID()]]));
         //var_dump($this->_questionsManager->findOneSignQuestions([['ID', '<', $current_question->getID()]], ['ORDER BY' => 'ID DESC']));
-
 
         return $this->render('user/viewQuestionnaire.twig', [
             'quiz' => $quiz,

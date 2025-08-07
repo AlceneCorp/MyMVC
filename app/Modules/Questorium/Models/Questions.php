@@ -8,6 +8,7 @@ class Questions
     private $ID;
     private $CATEGORIES_ID;
     private $TEXT;
+    private $STYLE;
     private $ANSWERS_CONDITION_ID;
     private $ANSWERS_CONDITION_VALUES;
 
@@ -61,6 +62,16 @@ class Questions
     public function setTEXT($TEXT)
     {
         $this->TEXT = $TEXT;
+    }
+
+    public function getSTYLE()
+    {
+        return $this->STYLE;
+    }
+
+    public function setSTYLE($STYLE)
+    {
+        $this->STYLE = $STYLE;
     }
 
     public function getANSWERS_CONDITION_ID()

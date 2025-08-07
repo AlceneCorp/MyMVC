@@ -9,6 +9,7 @@ class Permissions
     private $NAME;
     private $FULLNAME;
     private $DESCRIPTION;
+    private $COLOR;
     private $ORDERS;
     private $AUTO_ATTRIBUTE;
 
@@ -72,6 +73,16 @@ class Permissions
     public function setDESCRIPTION($DESCRIPTION)
     {
         $this->DESCRIPTION = $DESCRIPTION;
+    }
+
+    public function getCOLOR()
+    {
+        return $this->COLOR;
+    }
+
+    public function setCOLOR($COLOR)
+    {
+        $this->COLOR = $COLOR;
     }
 
     public function getORDERS()

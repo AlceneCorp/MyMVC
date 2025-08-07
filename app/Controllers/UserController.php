@@ -25,6 +25,7 @@ class UserController extends Controller
         {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') 
             {
+
                 $userId = $_POST['USERS_ID'] ?? $user_id;
 
                 $uploadDir = '\\images\\avatars\\' . $userId . '\\';
@@ -47,6 +48,7 @@ class UserController extends Controller
                 // Gestion de l'upload de l'image
 
                 $profilePictureUrl = FileManager::uploadFile($uploadDir, 'PROFILE_PICTURE');
+
                 
 
                 $datas = [

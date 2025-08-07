@@ -20,6 +20,12 @@ use App\Managers\UsersPermissionsManager;
 
 class AdminController extends Controller
 {
+
+	protected function isAjax(): bool
+	{
+		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
+			   strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest';
+	}
 	
 	public function dashboard()
 	{
@@ -36,6 +42,9 @@ class AdminController extends Controller
 		$mysqlVersion = '';
 		$apacheProcesses = 0;
 		$uptime = 'Indisponible';
+
+
+
 
 		
 		if(ConfigManager::get('SITE.show_informations_details.value'))
@@ -370,4 +379,121 @@ class AdminController extends Controller
 			'modules' => ModulesManager::detectModules()
 		]);
 	}
+
+	public function genImages()
+	{
+
+
+		$prompt = $_POST['prompt'] ?? '';
+		$negative = $_POST['negative_prompt'] ?? '';
+
+		if (empty(trim($prompt))) {
+			// Prompt vide
+			if ($this->isAjax()) {
+				echo $this->twig->render('admin/include/error.twig', ['error' => 'Le prompt ne peut pas être vide.']);
+				exit;
+			} else {
+				$this->render('admin/genImages.twig', [
+					'error' => 'Le prompt ne peut pas être vide.',
+					'prompt' => $prompt,
+					'negative_prompt' => $negative,
+				]);
+				exit;
+			}
+		}
+
+		$api_url = "http://" . ConfigManager::get('API.sd_ip.value') . ":" . ConfigManager::get('API.sd_port.value') . "/sdapi/v1/txt2img";
+		$data = [
+			'prompt' => $prompt,
+			'negative_prompt' => $negative . " ugly, blurry, bad anatomy, extra limbs, disfigured, deformed, duplicate, low quality, lowres, bad hands, bad proportions, watermark, signature, open clothes, bad hands, wrong anatomy, missing fingers, extra fingers, blurry, deformed, poorly drawn hands, poorly drawn face, poorly drawn body, disfigured, mutated hands",
+			'steps' => ConfigManager::get('API.sd_step.value'),
+			'width' => ConfigManager::get('API.sd_width.value'),
+			'height' => ConfigManager::get('API.sd_height.value'),
+			'cfg_scale' => ConfigManager::get('API.sd_scale.value'),
+			'sampler_name' => 'Heun',
+			'scheduler' => 'Karras',
+		];
+
+		$options = [
+			'http' => [
+				'header'  => "Content-type: application/json",
+				'method'  => 'POST',
+				'content' => json_encode($data),
+				'timeout' => 6000, // optionnel : timeout en secondes
+			]
+		];
+
+		$context  = stream_context_create($options);
+		$response = @file_get_contents($api_url, false, $context);
+
+		if ($response === false) {
+			$errorMessage = 'Erreur de connexion à l\'API Stable Diffusion.';
+			if ($this->isAjax()) {
+				echo $this->twig->render('admin/include/error.twig', ['error' => $errorMessage]);
+				exit;
+			} else {
+				$this->render('admin/genImages.twig', [
+					'error' => $errorMessage,
+					'prompt' => $prompt,
+					'negative_prompt' => $negative,
+				]);
+				exit;
+			}
+		}
+
+		$json = json_decode($response, true);
+		if (!isset($json['images'][0])) 
+		{
+			$errorMessage = 'Aucune image générée par l\'API.';
+			if ($this->isAjax()) 
+			{
+				echo $this->twig->render('admin/include/error.twig', ['error' => $errorMessage]);
+				exit;
+			}
+			else 
+			{
+				$this->render('admin/genImages.twig', [
+					'error' => $errorMessage,
+					'prompt' => $prompt,
+					'negative_prompt' => $negative,
+				]);
+				exit;
+			}
+		}
+
+		if(ConfigManager::get("SITE.debug.value"))
+        {
+            CoreManager::addLogs('DEBUG', 'APPLICATION', "Génération d'images :\n\rPrompt : " . $prompt);
+        }
+
+		$base64Image = $json['images'][0];
+
+		// Enregistre localement l'image (optionnel, peut être utile pour url statique)
+		$imageData = base64_decode($base64Image);
+		$uploadDir = __DIR__ . '/../../public/uploads/';
+		if (!is_dir($uploadDir)) 
+		{
+			mkdir($uploadDir, 0755, true);
+		}
+		$filename = 'generated_' . date('Ymd_His') . '_' . bin2hex(random_bytes(4)) . '.png';
+		$filepath = $uploadDir . $filename;
+		file_put_contents($filepath, $imageData);
+		$imageUrl = '/uploads/' . $filename;
+
+		// Réponse Ajax : uniquement l’image encodée en base64 (pour éviter une requête supplémentaire)
+		if ($this->isAjax()) 
+		{
+			echo $this->twig->render('admin/include/image.twig', ['image' => $base64Image]);
+			exit;
+		}
+
+		// Requête normale (non-AJAX) — afficher la page complète
+		$this->render('admin/genImages.twig', [
+			'image' => $base64Image,
+			'imageUrl' => $imageUrl,
+			'prompt' => $prompt,
+			'negative_prompt' => $negative,
+		]);
+	}
+
 }

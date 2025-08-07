@@ -42,7 +42,7 @@ class FileManager
 
         $fileName = $file['name'];
         $uploadPath = $uploadDir . $fileName;
-        $fullPath = __DIR__ . "\\..\\..\\public\\assets" . $uploadPath;
+        $fullPath = realpath(__DIR__ . '/../../public/assets') . $uploadPath;
 
 
         return move_uploaded_file($file['tmp_name'], $fullPath) ? $uploadPath : null;

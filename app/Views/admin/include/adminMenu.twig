@@ -58,6 +58,15 @@
 			</li>
 			{% endif %}
 
+			{% if checkPerm('view_site_statistics') %}
+			<li class="nav-item mb-3">
+				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/admin/genimages">
+					<i class="fas fa-wand-magic-sparkles me-3 fs-4"></i>
+					Génération d'images
+				</a>
+			</li>
+			{% endif %}
+
 			<li class="nav-item mb-3">
 				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/logout">
 					<i class="fas fa-sign-out-alt me-3 fs-4"></i>

@@ -10,17 +10,17 @@
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
                 <h1 class="h2"><i class="fas fa-question-circle me-2"></i> {{ decrypt(quiz.TEXT) }}</h1>
                 <div class="d-inline-block rounded-circle overflow-hidden shadow" style="width: 100px; height: 100px; background-color: white;">
-                    <img src="{{ base_url }}{% if quiz.LOGO %}{{ asset(decrypt(quiz.LOGO)) }}{% else %}{{ asset('/images/avatars/noimage.jpg') }}{% endif %}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="Logo du questionnaire" />
+                    <img src="{{ base_url }}{% if quiz.LOGO %}{{ asset('images/questorium/logo/' ~  decrypt(quiz.slug)  ~ '/' ~ decrypt(quiz.LOGO)) }}{% else %}{{ asset('/images/avatars/noimage.jpg') }}{% endif %}" class="img-fluid" style="width: 100%; height: 100%; object-fit: cover;" alt="Logo du questionnaire" />
                 </div>
             </div>
             <div class="row mb-3">
-                <div class="col-12">
+                <div class="col-12 rounded border" style="margin-top:20px; padding:25px; background-color:#f0f0f0;">
                     {{ decrypt(quiz.DESC) | raw }}
-                </div>
-            </div>
 
-            <div class="mb-3">
-                <a href="{{base_url}}/questionnaire/{{ decrypt(quiz.slug) }}/1/1" class="btn btn-primary">Commencer le questionnaire</a>
+                    <div class="mb-3">
+                        <a href="{{base_url}}/questionnaire/{{ decrypt(quiz.slug) }}/1/1" class="btn btn-primary">Commencer le questionnaire</a>
+                    </div>
+                </div>
             </div>
         </main>
     </div>

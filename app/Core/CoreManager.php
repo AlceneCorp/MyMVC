@@ -77,6 +77,8 @@ class CoreManager
         define("URL", rtrim("$protocol://$host$projectPath", '/'));
         define("BASE_URL", rtrim("$protocol://$host", '/'));
 
+        set_time_limit(ConfigManager::get("SITE.site_timeout.value"));
+
         //var_dump(ConfigManager::getAll());
         if(ConfigManager::get("SITE.debug.value"))
         {
@@ -251,5 +253,28 @@ class CoreManager
         }
 
         return $randomString;
+    }
+
+    public static function ShowLogs($param_Message)
+    {
+        echo '
+            <div class="row">
+                <div class="col-md-6 mt-5 offset-3">
+                    <div class="text-center p-5 shadow-lg rounded bg-white" 
+                         style="box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);  animation: fadeIn 1s;">
+                        <h1 class="display-1 text-danger mb-4 animate__animated animate__shakeX">
+                            <i class="fa fa-exclamation-triangle"></i>
+                        </h1>
+                        <h2 class="display-5 fw-bold text-dark mb-3">Oups, une erreur est survenue !</h2>
+                        <p class="lead text-muted mb-4">
+                            Nous avons rencontré un problème en traitant votre requête.
+                        </p>
+                        <p class="text-danger fw-bold fs-5 mb-3">
+                            Code d\'erreur : <strong> ' . $param_Message . '</strong>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        ';
     }
 }

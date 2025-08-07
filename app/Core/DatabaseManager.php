@@ -182,6 +182,8 @@ class DatabaseManager
         // Ajouter les autres paramètres comme ORDER BY, LIMIT, etc.
         $sql .= $this->buildQueryParameters($parameters);
 
+
+
         try 
         {
             $statement = $this->pdo->prepare($sql);
@@ -243,21 +245,37 @@ class DatabaseManager
         // Ajouter les paramètres supplémentaires (ORDER BY, GROUP BY, LIMIT, etc.)
         $sql .= $this->buildQueryParameters($parameters);
 
-        // Préparation et exécution de la requête
-        $statement = $this->pdo->prepare($sql);
-        $statement->execute($bindValues);
+        
 
-        // Récupération des résultats
-        $results = $statement->fetchAll(PDO::FETCH_ASSOC);
 
-        // Hydratation manuelle des objets
-        $objects = [];
-        foreach ($results as $data) 
+        try
         {
-            $objects[] = new $classObject($data);
+            
+            // Préparation et exécution de la requête
+            $statement = $this->pdo->prepare($sql);
+            $statement->execute($bindValues);
+
+            // Récupération des résultats
+            $results = $statement->fetchAll(PDO::FETCH_ASSOC);
+
+            // Hydratation manuelle des objets
+            $objects = [];
+            foreach ($results as $data) 
+            {
+                $objects[] = new $classObject($data);
+            }
+        }
+        catch (Exception $e)
+        {
+            CoreManager::ShowLogs($this->buildQueryParameters($parameters));
+            CoreManager::ShowLogs($sql);
+            CoreManager::ShowLogs($e->getMessage());
+
         }
 
-        return $objects;
+        
+
+        return $objects ?? [null];
     }
 
     /**
@@ -382,6 +400,7 @@ class DatabaseManager
         }
 
         $sql = sprintf('DELETE FROM %s WHERE %s', $table, implode(' AND ', $whereClauses));
+
 
         $statement = $this->pdo->prepare($sql);
         $statement->execute($parameters);

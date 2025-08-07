@@ -247,30 +247,37 @@ class AdminController extends Controller
 		$usersQuizManager = new UsersQuizManager();
 		$quizManager = new QuizManager();
 
-		$users = null;
+		$users = [];
 
 		
 
 		if(isset($_POST))
 		{
-			var_dump($_POST);
 
 			if(isset($_POST['nbAcc']))
 			{
 				$nbAcc = $_POST['nbAcc'];
 				$quiz_id = $_POST['quizselected'];
+
+
+				//Creation des comptes
+				for($i = 0; $i < $nbAcc; $i++)
+				{
+					$login = CoreManager::generateRandomString(10);
+					$password = CoreManager::generateRandomString(10);
+
+					$users[] = array($login, $password);
+
+
+					$user_id = $usersManager->addUsers(['USERNAME' => $login, 'PASSWORD' => password_hash($password, PASSWORD_BCRYPT), 'STATUS' => 'active']);
+					$usersQuizManager->addUsersQuiz(['USERS_ID' => $user_id, 'QUIZ_ID' => $quiz_id]);
+				}
 			}
 				
 
 
-			//Creation des comptes
-			/*
-			for($i = 0; $i < $nbAcc; $i++)
-			{
-				$user_id = $usersManager->addUsers(['USERNAME' => CoreManager::generateRandomString(10), 'PASSWORD' => password_hash(CoreManager::generateRandomString(10), PASSWORD_BCRYPT), 'STATUS' => 'active']);
-				$usersQuizManager->addUsersQuiz(['USERS_ID' => $user_id, 'QUIZ_ID' => $quiz_id]);
-			}
-			*/
+			
+			
 		}
 
 		$this->render('admin/viewCreateUsers.twig',

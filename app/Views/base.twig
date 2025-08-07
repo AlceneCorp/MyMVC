@@ -65,6 +65,7 @@
 
     <!-- Header Section -->
     <header class="py-3 bg-dark">
+        <div class="overlay"></div>
         <nav class="navbar navbar-expand-lg">
             <div class="container-fluid ms-5">
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,6 +87,13 @@
                     <span class="subbrand">
                         <h2 class="h5 text-white mb-0">{{ config('SITE.brand.value') }}</h2>
                     </span>
+                    {% if config('SITE.sub_brand.value') %}
+                    <br />
+                    <span class="subbrand">
+                        <h2 class="h5 text-white mb-0">{{ config('SITE.sub_brand.value') }}</h2>
+                    </span>
+                    {% endif %}
+
                 </span>
                 <div class="collapse navbar-collapse" id="navbarToggler">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -98,6 +106,7 @@
 
     <!-- Main Content -->
     <main class="pt-3 pb-3 hero" id="main-content">
+    <div class="overlay"></div>
         <section class="container-fluid" data-aos="fade-up">
             <div class="row">
                 <div class="col-md-10 col-12 offset-md-1">
@@ -111,6 +120,7 @@
 
     <!-- Footer Section -->
     <footer class="py-2">
+    <div class="overlay"></div>
         <div class="container-fluid text-center">
             {% if config('SOCIALNETWORK.sn_facebook.value') or config('SOCIALNETWORK.sn_instagram.value') or config('SOCIALNETWORK.sn_linkedin.value') or config('SOCIALNETWORK.sn_x.value') %}
             <div class="social-buttons mb-3">

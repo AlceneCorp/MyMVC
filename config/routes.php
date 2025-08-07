@@ -2,12 +2,13 @@
 
 use App\Core\CoreManager;
 use App\Core\SessionsManager;
+use App\Core\ConfigManager;
 
 return 
 [
 	[
 		'name' => 'Accueil',
-		'url' => '/MyMVC/',
+		'url' => ConfigManager::get('SITE.root_path.value').'/',
 		'controller' => \App\Controllers\HomeController::class,
 		'method' => 'home',
 		'params' => [],
@@ -18,7 +19,7 @@ return
 	],
 	[
 		'name' => 'Accueil',
-		'url' => '/MyMVC/accueil',
+		'url' => ConfigManager::get('SITE.root_path.value').'/accueil',
 		'controller' => \App\Controllers\HomeController::class,
 		'method' => 'home',
 		'params' => [],
@@ -29,7 +30,7 @@ return
 	],
 	[
 		'name' => 'Prise de contact',
-		'url' => '/MyMVC/contact',
+		'url' => ConfigManager::get('SITE.root_path.value').'/contact',
 		'controller' => \App\Controllers\HomeController::class,
 		'method' => 'contact',
 		'params' => [],
@@ -51,7 +52,7 @@ return
 		[
 			[
 				'name' => 'Panel Administrateur',
-				'url' => '/MyMVC/admin/dashboard',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/dashboard',
 				'controller' => \App\Controllers\AdminController::class,
 				'method' => 'dashboard',
 				'params' => [],
@@ -62,7 +63,7 @@ return
 			],
 			[
 				'name' => 'Mon Profil',
-				'url' => '/MyMVC/user/myprofil',
+				'url' => ConfigManager::get('SITE.root_path.value').'/user/myprofil',
 				'controller' => \App\Controllers\UserController::class,
 				'method' => 'myProfil',
 				'params' => [],
@@ -73,7 +74,7 @@ return
 			],
 			[
 				'name' => 'Utilisateurs',
-				'url' => '/MyMVC/admin/users',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/users',
 				'controller' => \App\Controllers\AdminController::class,
 				'method' => 'users',
 				'params' => ['page' => 1],
@@ -84,7 +85,7 @@ return
 			],
 			[
 				'name' => 'Modules',
-				'url' => '/MyMVC/admin/mods',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/mods',
 				'controller' => \App\Controllers\AdminController::class,
 				'method' => 'mods',
 				'params' => [],
@@ -95,7 +96,7 @@ return
 			],
 			[
 				'name' => 'Configuration',
-				'url' => '/MyMVC/admin/settings',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/settings',
 				'controller' => \App\Controllers\AdminController::class,
 				'method' => 'settings',
 				'params' => [],
@@ -106,7 +107,7 @@ return
 			],
 			[
 				'name' => 'Logs',
-				'url' => '/MyMVC/admin/logs',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/logs',
 				'controller' => \App\Controllers\AdminController::class,
 				'method' => 'logs',
 				'params' => ['page' => 1],
@@ -116,8 +117,19 @@ return
 				'children' => []
 			],
 			[
+				'name' => 'Génération d\'images',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/genimages',
+				'controller' => \App\Controllers\AdminController::class,
+				'method' => 'genImages',
+				'params' => [],
+				'perm' => 'view_site_statistics',
+				'icon' => '<i class="fas fa-wand-magic-sparkles me-3 fs-4"></i>',
+				'inMenu' => CoreManager::checkPerm('view_site_statistics'),
+				'children' => []
+			],
+			[
 				'name' => 'Se Déconnecter',
-				'url' => '/MyMVC/logout',
+				'url' => ConfigManager::get('SITE.root_path.value').'/logout',
 				'controller' => \App\Controllers\LoginController::class,
 				'method' => 'logout',
 				'params' => [],
@@ -130,7 +142,7 @@ return
 	],
 	[
 		'name' => 'Se connecter <i class="fas fa-sign-in-alt me-2"></i>',
-		'url' => '/MyMVC/login',
+		'url' => ConfigManager::get('SITE.root_path.value').'/login',
 		'controller' => \App\Controllers\LoginController::class,
 		'method' => 'login',
 		'params' => [],
@@ -141,7 +153,7 @@ return
 	],
 	[
 		'name' => 'S\'enregistrer',
-		'url' => '/MyMVC/register',
+		'url' => ConfigManager::get('SITE.root_path.value').'/register',
 		'controller' => \App\Controllers\LoginController::class,
 		'method' => 'register',
 		'params' => [],
@@ -152,7 +164,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/logs/{page}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/logs/{page}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'logs',
 		'params' => [],
@@ -163,7 +175,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/ajax/dashboard',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/ajax/dashboard',
 		'controller' => \App\Controllers\AjaxController::class,
 		'method' => 'ajaxAdminDashboard',
 		'params' => [],
@@ -174,7 +186,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/users/{page}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/users/{page}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'users',
 		'params' => [],
@@ -185,7 +197,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/block/{user_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/block/{user_id}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'blockUser',
 		'params' => [],
@@ -196,7 +208,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/unblock/{user_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/unblock/{user_id}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'unBlockUser',
 		'params' => [],
@@ -207,7 +219,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/unblock/{user_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/unblock/{user_id}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'unBlockUser',
 		'params' => [],
@@ -218,7 +230,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/edit-permissions/{user}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/edit-permissions/{user}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'usersPermissions',
 		'params' => [],
@@ -229,7 +241,7 @@ return
 	],
 	[
 		'name' => '',
-		'url' => '/MyMVC/admin/users/view-profil/{user_id}',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/users/view-profil/{user_id}',
 		'controller' => \App\Controllers\AdminController::class,
 		'method' => 'viewUserProfil',
 		'params' => [],
