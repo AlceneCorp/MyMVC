@@ -76,7 +76,7 @@ class Router
         
 
         CoreManager::getTwig()->addExtension(new \Twig\Extension\DebugExtension());
-        CoreManager::getTwig()->addGlobal('base_url', $this->getBaseUrl());
+        CoreManager::getTwig()->addGlobal('base_url', URL);
         CoreManager::getTwig()->addGlobal('is_login', SessionsManager::get('USERS') ?? null);
 
         // Génération du menu à partir des routes

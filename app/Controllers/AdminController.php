@@ -88,7 +88,7 @@ class AdminController extends Controller
 				'php_version' => PHP_VERSION,
 				'os' => $os,
 				'server_software' => $_SERVER['SERVER_SOFTWARE'] ?? 'Unknown',
-				'server_ip' => gethostbyname(gethostname()),
+				'server_ip' => trim(shell_exec("curl -s https://api.ipify.org")),
 				'max_execution_time' => ini_get('max_execution_time') . ' secondes',
 				'upload_max_filesize' => ini_get('upload_max_filesize'),
 				'post_max_size' => ini_get('post_max_size'),

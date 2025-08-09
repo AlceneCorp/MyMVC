@@ -100,10 +100,11 @@ class ConfigManager
      * Récupère une valeur de configuration.
      *
      * @param string $key La clé de la configuration à récupérer, peut utiliser une syntaxe en point pour les sous-clés.
-     * @param mixed $default La valeur par défaut à retourner si la clé n'est pas trouvée.
-     * @return mixed La valeur de configuration ou la valeur par défaut si non trouvée.
+     * @return mixed La valeur de configuration.
+     *
+     * @throws InvalidArgumentException Si la clé n'existe pas dans les paramètres.
      */
-    public static function get(string $key, $default = null)
+    public static function get(string $key)
     {
         if (strpos($key, '.') !== false) 
         {
@@ -112,9 +113,8 @@ class ConfigManager
 
             foreach ($keys as $keyPart) 
             {
-                if (!isset($value[$keyPart])) 
-                {
-                    return $default;
+                if (!isset($value[$keyPart])) {
+                    throw new \InvalidArgumentException("La clé de configuration '{$key}' est introuvable.");
                 }
                 $value = $value[$keyPart];
             }
@@ -122,7 +122,11 @@ class ConfigManager
             return $value;
         }
 
-        return self::$settings[$key] ?? $default;
+        if (!isset(self::$settings[$key])) {
+            throw new \InvalidArgumentException("La clé de configuration '{$key}' est introuvable.");
+        }
+
+        return self::$settings[$key];
     }
 
     /**

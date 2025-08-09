@@ -1,0 +1,53 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h1 class="h3"><i class="fas fa-images me-2"></i> Gestion de la galerie</h1>
+        <a href="{{ base_url }}/admin/gallery/upload" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Ajouter une image
+        </a>
+    </div>
+
+    {% if images is empty %}
+        <div class="alert alert-info">Aucune image dans la galerie.</div>
+    {% else %}
+        <div class="row">
+            {% for img in images %}
+            <div class="col-md-3 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ base_url }}{{ img.FILE_PATH }}" class="card-img-top" alt="{{ img.TITLE }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ img.TITLE }}</h5>
+                        <p class="card-text">{{ img.DESCRIPTION|length > 60 ? img.DESCRIPTION|slice(0,60) ~ '…' : img.DESCRIPTION }}</p>
+                        <div class="d-flex justify-content-between">
+                            <button class="btn btn-warning btn-sm btn-edit" data-id="{{ img.ID }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-danger btn-sm btn-delete" data-id="{{ img.ID }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+$(function(){
+    $('.btn-delete').click(function(){
+        if(confirm("Supprimer cette image ?")) {
+            $.post('{{ base_url }}/gallery/ajax/delete/' + $(this).data('id'), {_csrf: '{{ csrf_token }}'}, function(resp){
+                if(resp.ok) location.reload();
+                else alert('Erreur lors de la suppression');
+            }, 'json');
+        }
+    });
+});
+</script>
+{% endblock %}

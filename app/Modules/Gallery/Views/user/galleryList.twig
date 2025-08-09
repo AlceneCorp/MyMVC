@@ -1,0 +1,146 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+{% set BASE_ASSETS = baseAssetsUrl|default('https://109.219.112.85/MyMVC/assets') %}
+
+<div class="container py-4">
+  <div class="d-flex align-items-center mb-4">
+    <i class="fas fa-images me-2"></i>
+    <h1 class="m-0">Galerie</h1>
+    <span class="ms-3 text-muted small">{{ images|length }} photo(s)</span>
+  </div>
+
+  {% if images is empty %}
+    <div class="alert alert-light border d-flex align-items-center">
+      <i class="far fa-image me-2"></i>
+      <div>Aucune image disponible.</div>
+    </div>
+  {% else %}
+    <div id="gallery" class="row g-4">
+      {% for img in images %}
+        {% set filePath = (img.FILE_PATH ?? '')|trim %}
+        {% set src = (BASE_ASSETS ~ filePath)|trim %}
+        {% set title = (img.TITLE ?? 'Sans titre')|trim %}
+        {% set alt = (img.ALT ?? title)|trim %}
+
+        <div class="col-12 col-sm-6 col-lg-4">
+          <div class="card h-100 shadow-sm">
+            <button type="button"
+                    class="p-0 border-0 bg-transparent w-100"
+                    data-bs-toggle="modal"
+                    data-bs-target="#imageModal"
+                    aria-label="Agrandir l’image « {{ title|e }} »">
+              <div class="ratio ratio-4x3 bg-light overflow-hidden">
+                <img
+                  data-gallery-img
+                  src="{{ src }}"
+                  class="w-100 h-100 object-fit-cover"
+                  alt="{{ alt|e }}"
+                  loading="lazy"
+                  width="800" height="600"
+                  onerror="this.onerror=null; this.src='/assets/img/placeholder.webp'; this.closest('.card')?.classList.add('border-danger');"
+                >
+              </div>
+            </button>
+            <div class="card-body">
+              <h2 class="h6 mb-1 text-truncate" title="{{ title|e }}">{{ title }}</h2>
+              {% if img.DESCRIPTION %}
+                <p class="card-text text-muted small mb-0 text-truncate-2">{{ img.DESCRIPTION }}</p>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>
+
+{# ---- Modal (lightbox) : on le met ici mais on le déplacera sous <body> en JS ---- #}
+<div class="modal fade" id="imageModal" tabindex="-1"
+     data-bs-backdrop="true" data-bs-keyboard="true" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-dark">
+      <div class="modal-header border-0">
+        <h3 class="modal-title h6 text-white" id="imageModalLabel">Aperçu</h3>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body p-0 position-relative">
+        <button type="button"
+                class="btn btn-light position-absolute top-0 end-0 m-2"
+                data-bs-dismiss="modal" aria-label="Fermer">✕</button>
+        <div class="ratio ratio-16x9 bg-black">
+          <img id="modalImage" class="w-100 h-100 object-fit-contain" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ parent() }}
+<style>
+  .object-fit-cover { object-fit: cover; }
+  .object-fit-contain { object-fit: contain; background: #000; }
+  .text-truncate-2 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+
+  /* Sécurité z-index (si un thème a modifié les valeurs Bootstrap) */
+  .modal { z-index: 2000 !important; }
+  .modal-backdrop { z-index: 1900 !important; }
+</style>
+{% endblock %}
+
+{% block scripts %}
+{{ parent() }}
+<script>
+  // Déplacer la modale directement sous <body> pour éviter tout stacking-context parent
+  (function () {
+    const m = document.getElementById('imageModal');
+    if (m && m.parentElement !== document.body) {
+      document.body.appendChild(m);
+    }
+  })();
+
+  // Remplir la modale depuis l'image cliquée
+  (function () {
+    const modalEl   = document.getElementById('imageModal');
+    const modalImg  = modalEl?.querySelector('#modalImage');
+    const modalText = modalEl?.querySelector('#imageModalLabel');
+
+    modalEl?.addEventListener('show.bs.modal', (event) => {
+      const trigger = event.relatedTarget; // <button> cliqué
+      if (!trigger) return;
+      const img   = trigger.querySelector('img[data-gallery-img]');
+      const src   = (img?.currentSrc || img?.getAttribute('src') || '').trim();
+      const title = (img?.getAttribute('alt') || 'Aperçu').trim();
+
+      if (src) {
+        modalImg.src = src;
+        modalImg.alt = title;
+        modalText.textContent = title;
+      } else {
+        modalImg.src = '/assets/img/placeholder.webp';
+        modalImg.alt = 'Image introuvable';
+        modalText.textContent = 'Image introuvable';
+      }
+    });
+
+    // Fermer facilement (backdrop, ESC, clic image)
+    const bsModal = modalEl ? bootstrap.Modal.getOrCreateInstance(modalEl) : null;
+
+    // Clic sur l'image pour fermer (confort)
+    modalEl?.querySelector('#modalImage')?.addEventListener('click', () => bsModal?.hide());
+
+    // Fallback ESC si nécessaire
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modalEl.classList.contains('show')) bsModal?.hide();
+    });
+
+    // Nettoyage
+    modalEl?.addEventListener('hidden.bs.modal', () => {
+      modalImg?.removeAttribute('src');
+      modalImg?.removeAttribute('alt');
+    });
+  })();
+</script>
+{% endblock %}

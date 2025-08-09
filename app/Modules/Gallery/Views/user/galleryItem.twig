@@ -1,0 +1,18 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+<div class="container mt-4">
+    <a href="{{ base_url }}/gallery" class="btn btn-secondary mb-3">
+        <i class="fas fa-arrow-left"></i> Retour
+    </a>
+
+    <div class="text-center">
+        <img src="{{ base_url }}{{ image.FILE_PATH }}" class="img-fluid rounded shadow-sm" alt="{{ image.TITLE }}">
+        <h2 class="mt-3">{{ image.TITLE }}</h2>
+        <p>{{ image.DESCRIPTION }}</p>
+        {% if image.CATEGORY %}
+            <span class="badge bg-primary">{{ image.CATEGORY }}</span>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

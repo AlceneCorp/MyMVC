@@ -32,6 +32,7 @@ class AjaxController extends Controller
 				if($_POST['QUIZ_TEXT'] !== "")
 				{
 					$uploadDir = "\\images\\questorium\\logo\\".CoreManager::slug($_POST['QUIZ_TEXT'])."\\";
+
 					echo $pictureUrl = FileManager::uploadFile($uploadDir, 'QUIZ_LOGO');
 
 					$data = 

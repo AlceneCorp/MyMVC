@@ -603,16 +603,17 @@ class DatabaseManager
     }
 
 
-    public function generateModelClass(string $tableName, $namespace = 'App\\Models', $modelDirectory = "..\\app\\Models\\"): void
+    public function generateModelClass(string $tableName, $namespace = 'App\\Models', $modelDirectory = __DIR__ . "\\..\\Models\\"): void
     {
         // Récupérer les colonnes de la table
         $columns = $this->getColumns($tableName);
 
 
         // Charger le template du modèle
-        $templatePath = '../templates/model_template.php';
+        $templatePath = __DIR__ . '/../../templates/model_template.php';
         if (!file_exists($templatePath)) 
         {
+            echo __DIR__;
             throw new Exception("Le fichier de template '$templatePath' n'existe pas.");
         }
 
@@ -655,6 +656,7 @@ class DatabaseManager
         // Vérifier si le dossier Models existe et est accessible
         if (!is_dir($modelDirectory)) 
         {
+            echo __DIR__;
             throw new Exception("Le dossier '$modelDirectory' n'existe pas.");
         }
 
@@ -695,7 +697,7 @@ class DatabaseManager
     {
 
         // Charger le template du manager
-        $template = file_get_contents('../templates/managers_template.php');
+        $template = file_get_contents(__DIR__ . '/../../templates/managers_template.php');
 
         // Remplacer les variables dans le template par les valeurs spécifiques à la table
         $managerContent = str_replace(

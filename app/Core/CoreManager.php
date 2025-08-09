@@ -92,7 +92,7 @@ class CoreManager
         // Chemin vers le dossier racine de l'application
         $projectPath = dirname($_SERVER['SCRIPT_NAME']);
 
-        define("URL", rtrim("$protocol://$host$projectPath", '/'));
+        define("URL", rtrim(preg_replace('#/public/?$#', '', "$protocol://$host$projectPath"),'/'));
         define("BASE_URL", rtrim("$protocol://$host", '/'));
 
         set_time_limit(ConfigManager::get("SITE.site_timeout.value"));

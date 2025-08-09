@@ -1,0 +1,39 @@
+{% extends 'base.twig' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-8">
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header text-start bg-primary text-white">
+                        <h4>
+                            <i class="fas fa-cogs me-2"></i> Page d'accueil du module Test
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="lead">Bienvenue sur la page d'accueil du module <strong>Test</strong>, utilisé pour valider l'implémentation des modules de votre application.</p>
+
+                        <div class="alert alert-info" role="alert">
+                            Ce module permet de tester l'intégration et la structure des autres modules sans fonctionnalité propre. Utilisez-le pour vérifier que l'architecture des modules fonctionne correctement.
+                        </div>
+
+                        <hr>
+
+                        <h5>État de l'implémentation des modules :</h5>
+                        <ul>
+                            <li><strong>Module 1</strong>: <span class="text-success">Implémenté</span></li>
+                            <li><strong>Module 2</strong>: <span class="text-warning">En cours de test</span></li>
+                            <li><strong>Module 3</strong>: <span class="text-danger">Non implémenté</span></li>
+                        </ul>
+
+                        <p class="mt-4">Pour chaque module, vérifiez les tests effectués et les résultats obtenus. Si un module n'est pas encore implémenté ou a échoué à son test, cela sera indiqué ci-dessus.</p>
+
+                    </div>
+                    <div class="card-footer text-end bg-light">
+                        <small class="text-muted">Module Test - Version 1.0 - Validation de l'intégration des modules</small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
