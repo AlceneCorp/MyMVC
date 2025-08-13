@@ -76,7 +76,8 @@ class Router
         
 
         CoreManager::getTwig()->addExtension(new \Twig\Extension\DebugExtension());
-        CoreManager::getTwig()->addGlobal('base_url', URL);
+        CoreManager::getTwig()->addGlobal('url', URL);
+        CoreManager::getTwig()->addGlobal('base_url', BASE_URL);
         CoreManager::getTwig()->addGlobal('is_login', SessionsManager::get('USERS') ?? null);
 
         // Génération du menu à partir des routes
@@ -85,7 +86,7 @@ class Router
         CoreManager::getTwig()->addGlobal('menu', $menuGenerate);
 
         // Ajouter la fonction asset
-        CoreManager::getTwig()->addFunction(new TwigFunction('asset', fn($path) => '/assets/' . ltrim($path, '/')));
+        CoreManager::getTwig()->addFunction(new TwigFunction('asset', fn($path) => '/public/assets/' . ltrim($path, '/')));
 
         CoreManager::getTwig()->addFunction(new TwigFunction('checkPerm', fn($param1) => CoreManager::checkPerm($param1)));
 

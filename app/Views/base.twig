@@ -20,7 +20,7 @@
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{{base_url}}{{ asset('css/base.css') }}">
+    <link rel="stylesheet" href="{{ url }}{{ asset('css/base.css') }}">
     
     <style>
         header 
@@ -75,7 +75,7 @@
                 {% if config('SITE.site_logo.value') %}
                     <a class="navbar-brand text-center my-4 me-3" href="{{ base_url }}/accueil">
                         <div class="d-inline-block rounded-circle overflow-hidden shadow-sm logo-container">
-                            <img src="{{ base_url }}{{ asset(config('SITE.site_logo.value')) }}" class="img-fluid logo-img" alt="Logo" />
+                            <img src="{{ url }}{{ asset(config('SITE.site_logo.value')) }}" class="img-fluid logo-img" alt="Logo" />
                         </div>
                     </a>
                 {% endif %}

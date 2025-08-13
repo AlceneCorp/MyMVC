@@ -1,63 +1,93 @@
 {% extends 'base.twig' %}
 
+{# Préfixe par défaut si FILE_PATH est relatif (pas s’il commence par / ou http) #}
+{% set BASE_ASSETS = baseAssetsUrl|default('http://109.219.112.85/MyMVC/public/assets/') %}
+
 {% block content %}
-{% set BASE_ASSETS = baseAssetsUrl|default('https://109.219.112.85/MyMVC/assets') %}
+<a id="top"></a>
 
 <div class="container py-4">
-  <div class="d-flex align-items-center mb-4">
+  <div class="d-flex align-items-center mb-3">
     <i class="fas fa-images me-2"></i>
-    <h1 class="m-0">Galerie</h1>
-    <span class="ms-3 text-muted small">{{ images|length }} photo(s)</span>
+    <h1 class="h3 m-0">Galerie</h1>
   </div>
 
-  {% if images is empty %}
-    <div class="alert alert-light border d-flex align-items-center">
-      <i class="far fa-image me-2"></i>
-      <div>Aucune image disponible.</div>
-    </div>
-  {% else %}
-    <div id="gallery" class="row g-4">
-      {% for img in images %}
-        {% set filePath = (img.FILE_PATH ?? '')|trim %}
-        {% set src = (BASE_ASSETS ~ filePath)|trim %}
-        {% set title = (img.TITLE ?? 'Sans titre')|trim %}
-        {% set alt = (img.ALT ?? title)|trim %}
-
-        <div class="col-12 col-sm-6 col-lg-4">
-          <div class="card h-100 shadow-sm">
-            <button type="button"
-                    class="p-0 border-0 bg-transparent w-100"
-                    data-bs-toggle="modal"
-                    data-bs-target="#imageModal"
-                    aria-label="Agrandir l’image « {{ title|e }} »">
-              <div class="ratio ratio-4x3 bg-light overflow-hidden">
-                <img
-                  data-gallery-img
-                  src="{{ src }}"
-                  class="w-100 h-100 object-fit-cover"
-                  alt="{{ alt|e }}"
-                  loading="lazy"
-                  width="800" height="600"
-                  onerror="this.onerror=null; this.src='/assets/img/placeholder.webp'; this.closest('.card')?.classList.add('border-danger');"
-                >
-              </div>
-            </button>
-            <div class="card-body">
-              <h2 class="h6 mb-1 text-truncate" title="{{ title|e }}">{{ title }}</h2>
-              {% if img.DESCRIPTION %}
-                <p class="card-text text-muted small mb-0 text-truncate-2">{{ img.DESCRIPTION }}</p>
-              {% endif %}
-            </div>
-          </div>
-        </div>
+  {# Sommaire des catégories (chips collantes) #}
+  <div class="mb-4 cat-chips">
+    <div class="d-flex flex-wrap gap-2">
+      {% for g in groups %}
+        {% set anchor = g.SLUG ?? g.NAME|lower|replace({' ':'-'}) %}
+        <a class="btn btn-sm btn-outline-white" href="#cat-{{ anchor }}">
+          {{ g.NAME }} <span class="badge bg-danger ms-1">{{ g.IMAGES|length }}</span>
+        </a>
       {% endfor %}
     </div>
-  {% endif %}
+  </div>
+
+  {% for g in groups %}
+    {% set anchor = g.SLUG ?? g.NAME|lower|replace({' ':'-'}) %}
+    <section id="cat-{{ anchor }}" class="mb-5">
+      <div class="d-flex align-items-center justify-content-between mb-3">
+        <div class="d-flex align-items-center">
+          <h2 class="h5 m-0">{{ g.NAME }}</h2>
+          <span class="ms-2 text-muted small">({{ g.IMAGES|length }})</span>
+        </div>
+        <a href="#top" class="small text-decoration-none text-muted"><i class="fas fa-arrow-up me-1"></i>Haut</a>
+      </div>
+
+      {% if g.IMAGES is empty %}
+        <div class="alert alert-light border small mb-0 empty-box">
+          Aucune image dans cette catégorie.
+        </div>
+      {% else %}
+        {% set visible = 12 %}
+        <div class="row g-3 gallery-grid" data-group="{{ anchor }}">
+          {% for img in g.IMAGES %}
+            {# Construction sûre du src #}
+            {% set p = (img.getFILE_PATH() ?? '')|trim %}
+            {% set src = BASE_ASSETS ~ '/' ~ p %}
+            {% set title = (img.getTITLE() ?? 'Sans titre')|trim %}
+
+            <div class="col-6 col-sm-4 col-lg-3 {{ loop.index > visible ? 'd-none extra' : '' }}">
+              <div class="card h-100 shadow-sm">
+                <button type="button"
+                        class="p-0 border-0 bg-transparent w-100"
+                        data-bs-toggle="modal" data-bs-target="#imageModal"
+                        aria-label="Agrandir « {{ title|e }} »">
+                  <div class="ratio ratio-4x3 bg-light overflow-hidden">
+                    <img
+                      data-gallery-img
+                      src="{{ src }}"
+                      data-full="{{ src }}"  {# remplace par l’URL HD si différente #}
+                      alt="{{ title|e }}"
+                      class="w-100 h-100 object-fit-cover"
+                      loading="lazy" width="800" height="600"
+                      onerror="this.onerror=null; this.src='/assets/images/noimage.jpg'; this.closest('.card')?.classList.add('border-danger');"
+                    >
+                  </div>
+                </button>
+                <div class="card-body p-2">
+                  <div class="small text-truncate" title="{{ title }}">{{ title }}</div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+
+        {% if g.IMAGES|length > visible %}
+          <div class="d-flex justify-content-center mt-3">
+            <button class="btn btn-outline-primary btn-sm btn-show-more" data-group="{{ anchor }}">
+              <i class="fas fa-plus me-1"></i> Afficher tout ({{ g.IMAGES|length - visible }})
+            </button>
+          </div>
+        {% endif %}
+      {% endif %}
+    </section>
+  {% endfor %}
 </div>
 
-{# ---- Modal (lightbox) : on le met ici mais on le déplacera sous <body> en JS ---- #}
-<div class="modal fade" id="imageModal" tabindex="-1"
-     data-bs-backdrop="true" data-bs-keyboard="true" aria-hidden="true">
+{# Modal unique (lightbox) #}
+<div class="modal fade" id="imageModal" tabindex="-1" data-bs-backdrop="true" data-bs-keyboard="true" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content bg-dark">
       <div class="modal-header border-0">
@@ -65,9 +95,7 @@
         <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
       </div>
       <div class="modal-body p-0 position-relative">
-        <button type="button"
-                class="btn btn-light position-absolute top-0 end-0 m-2"
-                data-bs-dismiss="modal" aria-label="Fermer">✕</button>
+        <button type="button" class="btn btn-light position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Fermer">✕</button>
         <div class="ratio ratio-16x9 bg-black">
           <img id="modalImage" class="w-100 h-100 object-fit-contain" alt="">
         </div>
@@ -80,67 +108,71 @@
 {% block styles %}
 {{ parent() }}
 <style>
-  .object-fit-cover { object-fit: cover; }
-  .object-fit-contain { object-fit: contain; background: #000; }
-  .text-truncate-2 { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; overflow: hidden; }
+  .object-fit-cover{object-fit:cover;}
+  .object-fit-contain{object-fit:contain;background:#000;}
+  html{scroll-behavior:smooth;}
 
-  /* Sécurité z-index (si un thème a modifié les valeurs Bootstrap) */
-  .modal { z-index: 2000 !important; }
-  .modal-backdrop { z-index: 1900 !important; }
+  .cat-chips{position:sticky;top:.5rem;z-index:1030;padding:.5rem 0;backdrop-filter:saturate(1.2) blur(6px);}
+  .cat-chips .btn{border-radius:999px;}
+  .cat-chips .btn.active{background:var(--bs-primary);color:#fff;border-color:var(--bs-primary);}
+  .empty-box{height:64px;display:flex;align-items:center;justify-content:center;}
 </style>
 {% endblock %}
 
 {% block scripts %}
 {{ parent() }}
 <script>
-  // Déplacer la modale directement sous <body> pour éviter tout stacking-context parent
+  // Met la modale directement sous <body> (évite les conflits de stacking)
   (function () {
     const m = document.getElementById('imageModal');
-    if (m && m.parentElement !== document.body) {
-      document.body.appendChild(m);
-    }
+    if (m && m.parentElement !== document.body) document.body.appendChild(m);
   })();
 
-  // Remplir la modale depuis l'image cliquée
+  // Lightbox : remplit la modale depuis l’image cliquée
   (function () {
     const modalEl   = document.getElementById('imageModal');
     const modalImg  = modalEl?.querySelector('#modalImage');
     const modalText = modalEl?.querySelector('#imageModalLabel');
 
     modalEl?.addEventListener('show.bs.modal', (event) => {
-      const trigger = event.relatedTarget; // <button> cliqué
-      if (!trigger) return;
-      const img   = trigger.querySelector('img[data-gallery-img]');
-      const src   = (img?.currentSrc || img?.getAttribute('src') || '').trim();
+      const trigger = event.relatedTarget;
+      const img = trigger?.querySelector('img[data-gallery-img]');
+      const raw = img?.getAttribute('data-full') || img?.currentSrc || img?.getAttribute('src');
+      const src = (raw || '').trim();
       const title = (img?.getAttribute('alt') || 'Aperçu').trim();
-
-      if (src) {
-        modalImg.src = src;
-        modalImg.alt = title;
-        modalText.textContent = title;
-      } else {
-        modalImg.src = '/assets/img/placeholder.webp';
-        modalImg.alt = 'Image introuvable';
-        modalText.textContent = 'Image introuvable';
-      }
+      if (src) { modalImg.src = src; modalImg.alt = title; modalText.textContent = title; }
+      else { modalImg.src = '/assets/img/placeholder.webp'; modalImg.alt = 'Image introuvable'; modalText.textContent = 'Image introuvable'; }
     });
 
-    // Fermer facilement (backdrop, ESC, clic image)
     const bsModal = modalEl ? bootstrap.Modal.getOrCreateInstance(modalEl) : null;
-
-    // Clic sur l'image pour fermer (confort)
     modalEl?.querySelector('#modalImage')?.addEventListener('click', () => bsModal?.hide());
+    modalEl?.addEventListener('hidden.bs.modal', () => { modalImg?.removeAttribute('src'); modalImg?.removeAttribute('alt'); });
+  })();
 
-    // Fallback ESC si nécessaire
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && modalEl.classList.contains('show')) bsModal?.hide();
+  // Bouton "Afficher tout" par catégorie
+  document.querySelectorAll('.btn-show-more').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const key = btn.getAttribute('data-group');
+      const grid = document.querySelector('.gallery-grid[data-group="'+key+'"]');
+      if (!grid) return;
+      grid.querySelectorAll('.extra').forEach(el => el.classList.remove('d-none'));
+      btn.remove();
     });
+  });
 
-    // Nettoyage
-    modalEl?.addEventListener('hidden.bs.modal', () => {
-      modalImg?.removeAttribute('src');
-      modalImg?.removeAttribute('alt');
-    });
+  // Activer le chip de la catégorie visible au scroll
+  (function(){
+    const chips = Array.from(document.querySelectorAll('.cat-chips a[href^="#cat-"]'));
+    const sections = chips.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = '#' + e.target.id;
+          chips.forEach(c => c.classList.toggle('active', c.getAttribute('href')===id));
+        }
+      });
+    }, { rootMargin:'-30% 0px -60% 0px', threshold:0.01 });
+    sections.forEach(s => io.observe(s));
   })();
 </script>
 {% endblock %}

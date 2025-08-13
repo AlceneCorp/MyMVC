@@ -55,4 +55,39 @@ class Controller
 			}
 		}
 	}
+
+	/**
+	 * Envoie une réponse JSON et termine le script.
+	 *
+	 * @param mixed $data Données à encoder en JSON
+	 * @param int $statusCode Code HTTP à renvoyer (par défaut 200)
+	 */
+	protected function json($data, int $statusCode = 200): void
+	{
+		// Code HTTP
+		http_response_code($statusCode);
+
+		// Headers
+		header('Content-Type: application/json; charset=utf-8');
+		header('Cache-Control: no-store, no-cache, must-revalidate, max-age=0');
+		header('Pragma: no-cache');
+
+		// Encodage JSON
+		$json = json_encode(
+			$data,
+			JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
+		);
+
+		if ($json === false) {
+			// Si erreur d'encodage, on renvoie un JSON minimal d'erreur
+			$json = json_encode([
+				'ok'    => false,
+				'error' => 'JSON_ENCODE_ERROR: ' . json_last_error_msg()
+			]);
+			http_response_code(500);
+		}
+
+		echo $json;
+		exit;
+	}
 }

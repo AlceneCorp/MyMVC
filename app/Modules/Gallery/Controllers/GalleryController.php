@@ -14,7 +14,6 @@ class GalleryController extends Controller
             `ID` int(11) NOT NULL AUTO_INCREMENT,
             `NAME` varchar(255) NOT NULL,
             `SLUG` varchar(255) NOT NULL,
-            `DESCRIPTION` text DEFAULT NULL,
             `CREATED_AT` datetime NOT NULL,
             PRIMARY KEY (`ID`),
             UNIQUE KEY `UQ_GALLERY_CATEGORIES_SLUG` (`SLUG`),

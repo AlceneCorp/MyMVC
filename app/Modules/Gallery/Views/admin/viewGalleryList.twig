@@ -1,53 +1,194 @@
 {% extends 'base.twig' %}
 
+{# Préfixe si FILE_PATH est relatif #}
+{% set BASE_ASSETS = baseAssetsUrl|default('http://109.219.112.85/MyMVC/public/assets') %}
+
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between mb-3">
-        <h1 class="h3"><i class="fas fa-images me-2"></i> Gestion de la galerie</h1>
-        <a href="{{ base_url }}/admin/gallery/upload" class="btn btn-primary">
-            <i class="fas fa-plus"></i> Ajouter une image
-        </a>
-    </div>
+  <div class="d-flex flex-wrap gap-2 justify-content-between align-items-center mb-3">
+    <h1 class="h3 m-0"><i class="fas fa-images me-2"></i> Gestion de la galerie</h1>
 
-    {% if images is empty %}
-        <div class="alert alert-info">Aucune image dans la galerie.</div>
-    {% else %}
-        <div class="row">
-            {% for img in images %}
-            <div class="col-md-3 mb-4">
-                <div class="card shadow-sm">
-                    <img src="{{ base_url }}{{ img.FILE_PATH }}" class="card-img-top" alt="{{ img.TITLE }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ img.TITLE }}</h5>
-                        <p class="card-text">{{ img.DESCRIPTION|length > 60 ? img.DESCRIPTION|slice(0,60) ~ '…' : img.DESCRIPTION }}</p>
-                        <div class="d-flex justify-content-between">
-                            <button class="btn btn-warning btn-sm btn-edit" data-id="{{ img.ID }}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-danger btn-sm btn-delete" data-id="{{ img.ID }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
+    <form id="admin-gallery-filters" class="d-flex gap-2 align-items-center">
+      <input type="text" name="q" value="{{ q|default('') }}" class="form-control form-control-sm" placeholder="Recherche (titre, description)">
+      <a href="{{ base_url }}/admin/gallery/upload" class="btn btn-sm btn-primary">
+        <i class="fas fa-plus"></i> Ajouter une image
+      </a>
+    </form>
+  </div>
+
+  {# Sommaire catégories #}
+  {% if groups is defined and groups|length > 0 %}
+  <div class="mb-3 cat-chips">
+    <div class="d-flex flex-wrap gap-2">
+      {% for g in groups %}
+        {% set anchor = g.SLUG ?? g.NAME|lower|replace({' ':'-'}) %}
+        <a class="btn btn-sm btn-outline-white" href="#cat-{{ anchor }}">
+          {{ g.NAME }} <span class="badge bg-danger ms-1">{{ g.IMAGES|length }}</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {% if groups is empty %}
+    <div class="alert alert-info">Aucune image dans la galerie.</div>
+  {% else %}
+    {% for g in groups %}
+      {% set anchor = g.SLUG ?? g.NAME|lower|replace({' ':'-'}) %}
+      <section id="cat-{{ anchor }}" class="mb-5">
+        <div class="d-flex align-items-center justify-content-between mb-3">
+          <div class="d-flex align-items-center">
+            <h2 class="h5 m-0">{{ g.NAME }}</h2>
+            <span class="ms-2 text-muted small">({{ g.IMAGES|length }})</span>
+          </div>
+          <a href="#top" class="small text-decoration-none text-muted"><i class="fas fa-arrow-up me-1"></i>Haut</a>
         </div>
-    {% endif %}
+
+        {% if g.IMAGES is empty %}
+          <div class="alert alert-light border small mb-0 empty-box">Aucune image dans cette catégorie.</div>
+        {% else %}
+          <div class="row g-3 gallery-grid" data-group="{{ anchor }}">
+            {% for img in g.IMAGES %}
+              {# Chemin sûr #}
+              {% set p = (img.getFILE_PATH() ?? img.FILE_PATH ?? '')|trim %}
+              {% set src = BASE_ASSETS ~ '/' ~ p %}
+              {% set title = (img.getTITLE() ?? img.TITLE ?? 'Sans titre')|trim %}
+
+              <div class="col-12 col-sm-6 col-lg-3" data-image-id="{{ img.getID ? img.getID() : img.ID }}">
+                <div class="card h-100 shadow-sm position-relative overflow-hidden">
+
+                  {# Boutons actions (overlay) #}
+                  <div class="position-absolute top-0 end-0 p-2 d-flex gap-1" style="z-index:2;">
+                    <a class="btn btn-warning btn-sm" title="Éditer"
+                       href="{{ base_url }}/admin/gallery/edit/{{ img.getID ? img.getID() : img.ID }}">
+                      <i class="fas fa-edit"></i>
+                    </a>
+                    <button type="button" class="btn btn-danger btn-sm btn-delete" title="Supprimer"
+                            data-id="{{ img.getID ? img.getID() : img.ID }}">
+                      <i class="fas fa-trash"></i>
+                    </button>
+                  </div>
+
+                  <button type="button" class="p-0 border-0 bg-transparent w-100"
+                          data-bs-toggle="modal" data-bs-target="#imageModal"
+                          aria-label="Agrandir « {{ title|e }} »">
+                    <div class="ratio ratio-4x3 bg-light overflow-hidden">
+                      <img data-gallery-img
+                           src="{{ src }}"
+                           data-full="{{ src }}"
+                           alt="{{ title|e }}"
+                           class="w-100 h-100 object-fit-cover"
+                           loading="lazy" width="800" height="600"
+                           onerror="this.onerror=null; this.src='/assets/img/placeholder.webp'; this.closest('.card')?.classList.add('border-danger');">
+                    </div>
+                  </button>
+
+                  <div class="card-body p-2">
+                    <div class="small text-truncate" title="{{ title }}">{{ title }}</div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </section>
+    {% endfor %}
+  {% endif %}
 </div>
+
+{# Modal preview #}
+<div class="modal fade" id="imageModal" tabindex="-1" aria-hidden="true" data-bs-backdrop="true" data-bs-keyboard="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content bg-dark">
+      <div class="modal-header border-0">
+        <h3 class="modal-title h6 text-white" id="imageModalLabel">Aperçu</h3>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body p-0 position-relative">
+        <button type="button" class="btn btn-light position-absolute top-0 end-0 m-2" data-bs-dismiss="modal" aria-label="Fermer">✕</button>
+        <div class="ratio ratio-16x9 bg-black">
+          <img id="modalImage" class="w-100 h-100 object-fit-contain" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block styles %}
+{{ parent() }}
+<style>
+  .object-fit-cover{object-fit:cover;}
+  .object-fit-contain{object-fit:contain;background:#000;}
+  html{scroll-behavior:smooth;}
+
+  .cat-chips{position:sticky;top:.5rem;z-index:1030;padding:.5rem 0;backdrop-filter:saturate(1.2) blur(6px);}
+  .cat-chips .btn{border-radius:999px;}
+  .cat-chips .btn.active{background:var(--bs-primary);color:#fff;border-color:var(--bs-primary);}
+  .empty-box{height:64px;display:flex;align-items:center;justify-content:center;}
+</style>
 {% endblock %}
 
 {% block jquery %}
 <script>
 $(function(){
-    $('.btn-delete').click(function(){
-        if(confirm("Supprimer cette image ?")) {
-            $.post('{{ base_url }}/gallery/ajax/delete/' + $(this).data('id'), {_csrf: '{{ csrf_token }}'}, function(resp){
-                if(resp.ok) location.reload();
-                else alert('Erreur lors de la suppression');
-            }, 'json');
-        }
+
+  // Déplacer la modale sous <body> (anti stacking-context)
+  (function () {
+    const m = document.getElementById('imageModal');
+    if (m && m.parentElement !== document.body) document.body.appendChild(m);
+  })();
+
+  // Preview modal
+  (function () {
+    const $modal = $('#imageModal');
+    const modalEl = $modal[0];
+    modalEl.addEventListener('show.bs.modal', (event) => {
+      const trigger = event.relatedTarget;
+      const img = trigger?.querySelector('img[data-gallery-img]');
+      const raw = img?.getAttribute('data-full') || img?.currentSrc || img?.getAttribute('src');
+      const src = (raw || '').trim();
+      const title = (img?.getAttribute('alt') || 'Aperçu').trim();
+      $('#modalImage').attr({src: src || '/assets/img/placeholder.webp', alt: title});
+      $('#imageModalLabel').text(title);
     });
+    modalEl.addEventListener('hidden.bs.modal', () => {
+      $('#modalImage').removeAttr('src').removeAttr('alt');
+    });
+  })();
+
+  // Activer la chip de la catégorie visible
+  (function(){
+    const chips = Array.from(document.querySelectorAll('.cat-chips a[href^="#cat-"]'));
+    const sections = chips.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+    const io = new IntersectionObserver(entries=>{
+      entries.forEach(e=>{
+        if(e.isIntersecting){
+          const id = '#' + e.target.id;
+          chips.forEach(c => c.classList.toggle('active', c.getAttribute('href')===id));
+        }
+      });
+    }, { rootMargin:'-30% 0px -60% 0px', threshold:0.01 });
+    sections.forEach(s => io.observe(s));
+  })();
+
+  // Suppression (AJAX + retrait de la carte)
+  $('.btn-delete').on('click', function(){
+    const id = $(this).data('id');
+    if(!confirm('Supprimer cette image ?')) return;
+
+    $.post('{{ base_url }}/gallery/ajax/delete/' + id, {_csrf: '{{ csrf_token }}'}, function(resp){
+      if(resp && resp.ok){
+        const card = $('[data-image-id="'+id+'"]');
+        card.fadeOut(150, function(){ $(this).remove(); });
+      } else {
+        alert('Erreur lors de la suppression');
+      }
+    }, 'json').fail(function(){
+      alert('Erreur réseau');
+    });
+  });
+
 });
 </script>
 {% endblock %}

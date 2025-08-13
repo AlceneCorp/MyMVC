@@ -4,19 +4,64 @@ namespace App\Modules\Gallery\Controllers;
 
 use App\Core\Controller;
 use App\Modules\Gallery\Managers\GalleryImagesManager;
+use App\Modules\Gallery\Managers\GalleryCategoriesManager;
 
 class AdminGalleryController extends Controller
 {
     /**
-     * Liste toutes les images (admin)
+     * Galerie (admin) : liste toutes les catégories + images associées
      */
     public function index(): void
     {
-        $manager = new GalleryImagesManager();
-        $images  = $manager->findAllGalleryImages();
+        $imagesManager = new GalleryImagesManager();
+        $catsManager   = new GalleryCategoriesManager();
+
+        // 1) Récup des catégories
+        $categories = $catsManager->findAllGalleryCategories(); // attends des entities avec getID/NAME/SLUG
+        $groups = [];
+
+        foreach ($categories as $c) {
+            $cid = (int) $c->getID();
+            $groups[$cid] = [
+                'ID'     => $cid,
+                'NAME'   => $c->getNAME(),
+                'SLUG'   => $c->getSLUG(),
+                'IMAGES' => [],
+            ];
+        }
+
+        // 2) Récup de toutes les images (si beaucoup, vois la note perfs plus bas)
+        $images = $imagesManager->findAllGalleryImages(); // entities avec getGALLERY_CATEGORY_ID(), getFILE_PATH(), etc.
+
+        // 3) Dispatch des images dans leur catégorie (ou "Non classé")
+        $UNCAT_KEY = 'UNCAT';
+        $groups[$UNCAT_KEY] = [
+            'ID'     => null,
+            'NAME'   => 'Non classé',
+            'SLUG'   => 'uncategorized',
+            'IMAGES' => [],
+        ];
+
+        foreach ($images as $img) {
+            $cid = $img->getGALLERY_CATEGORY_ID();
+            if ($cid !== null && isset($groups[(int)$cid])) {
+                $groups[(int)$cid]['IMAGES'][] = $img;
+            } else {
+                $groups[$UNCAT_KEY]['IMAGES'][] = $img;
+            }
+        }
+
+        // 4) Ordonner : alpha par nom, "Non classé" en dernier
+        $ordered = array_values($groups);
+        usort($ordered, function ($a, $b) use ($UNCAT_KEY) {
+            if ($a['ID'] === null && $b['ID'] !== null) return 1;
+            if ($b['ID'] === null && $a['ID'] !== null) return -1;
+            return strcasecmp($a['NAME'], $b['NAME']);
+        });
 
         $this->render('admin/viewGalleryList.twig', [
-            'images' => $images
+            'groups' => $ordered,
+            // passe aussi éventuellement baseAssetsUrl si tu l’utilises dans l’img src
         ]);
     }
 
@@ -25,25 +70,11 @@ class AdminGalleryController extends Controller
      */
     public function upload(): void
     {
-        $this->render('admin/viewGalleryUpload.twig');
-    }
+        $catsManager = new GalleryCategoriesManager();
 
-    public function generateSQL()
-    {
-        $databaseManager = new DatabaseManager();
-
-        foreach($this->tables as $table => $req)
-		{
-			$databaseManager->generateModelClass($table, "App\\Modules\\{$this->moduleName}\\Models", "..\\app\\Modules\\{$this->moduleName}\\Models\\");
-			$databaseManager->generateManagersClass($table, "App\\Modules\\{$this->moduleName}\\Models\\", "App\\Modules\\{$this->moduleName}\\Managers", "..\\app\\Modules\\{$this->moduleName}\\Managers\\");
-		}
-    }
-
-    public function regenerateSQL()
-    {
-        $this->generateSQL();
-
-        header("location: " . URL . "/admin/mods");
-        exit;
+        $this->render('admin/viewGalleryUpload.twig',
+        [
+            'categories' => $catsManager->findAllGalleryCategories()
+        ]);
     }
 }
