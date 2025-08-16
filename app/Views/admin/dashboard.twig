@@ -125,9 +125,36 @@
                                     <td><i class="fas fa-exclamation-triangle fa-fw"></i> Problèmes critiques</td>
                                     <td>{{ log_count_critical }}</td>
                                 </tr>
+                                <tr class="table-secondary">
+                                    <td><i class="fas fa-tools fa-fw"></i> Débug</td>
+                                    <td>{{ log_count_debug }}</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
+                </div>
+            </div>
+
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-dark text-white">
+                    <h5><i class="fas fa-bolt me-2"></i> Actions rapides</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item text-muted">
+                            {% if checkPerm('manage_database') %}
+                            {# Bouton « Effacer tous les logs » – en POST avec token CSRF #}
+                            <form method="POST" action="{{ url }}/admin/clearlogs" 
+                                  onsubmit="return confirm('Êtes‑vous sûr·e de vouloir supprimer *tous* les logs ?');"
+                                  class="d-inline me-2">
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token|e('html_attr') }}">
+                                <button type="submit" class="btn btn-danger btn-sm">
+                                    <i class="fas fa-trash-alt me-1"></i> Effacer tout les logs
+                                </button>
+                            </form>
+                            {% endif %}
+                        </li>
+                    </ul>
                 </div>
             </div>
 
@@ -189,7 +216,7 @@ $(document).ready(function()
 {
     // Récupérer les données PHP via AJAX
     $.ajax({
-        url: '{{base_url}}/admin/ajax/dashboard',
+        url: '{{url}}/admin/ajax/dashboard',
         type: 'GET',
         success: function(response) 
         {

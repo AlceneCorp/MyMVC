@@ -3,8 +3,11 @@
 namespace App\Controllers;
 
 use App\Core\Controller;
+use App\Core\CoreManager;
 
 use App\Managers\VisitorManager;
+use App\Managers\LogsManager;
+
 
 class AjaxController extends Controller
 {
@@ -122,5 +125,13 @@ class AjaxController extends Controller
                 'page_visits_data' => $page_visits_data // Visites des pages par mois
             ]
         ]);
+    }
+
+    public function clearLogs()
+    {
+        $logsManager = new LogsManager();
+        $logsManager->truncateLogs();                // méthode que tu devras ajouter
+        CoreManager::addLogs('SUCCESS', 'APPLICATION', 'Tous les logs ont été supprimés.');
+        $this->redirect(URL . '/admin/dashboard'); 
     }
 }

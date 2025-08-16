@@ -115,6 +115,7 @@ class AdminController extends Controller
 			'log_count_error' => $logsManager->countLogs(['LEVEL' => 'ERROR']),
 			'log_count_critical' => $logsManager->countLogs(['LEVEL' => 'CRITICAL']),
 			'log_recent_activity' => $logsManager->findAllLogs(['CATEGORY' => 'USERS'], ['LIMIT' => '10', 'ORDER BY' => 'ID DESC']),
+			'log_count_debug' => $logsManager->countLogs(['LEVEL' => 'DEBUG']),
 			'server_status' => $status
 		]);
 	}

@@ -3,7 +3,7 @@
 {% block title %}Paramètres{% endblock %}
 
 {% block style %}
-<link rel="stylesheet" href="{{base_url}}{{ asset('css/settings.css') }}">
+<link rel="stylesheet" href="{{url}}{{ asset('css/settings.css') }}">
 <style>
     .switch input:checked + .slider {
         background-color: {{ config('SITE.site_color_1.value') }};

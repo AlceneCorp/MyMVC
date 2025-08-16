@@ -90,4 +90,10 @@ class Controller
 		echo $json;
 		exit;
 	}
+
+	protected function redirect(string $url): void
+    {
+        header('Location: ' . $url);
+        exit;
+    }
 }

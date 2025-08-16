@@ -66,7 +66,7 @@ $('#form-upload').on('submit', function(e){
   }
 
   $.ajax({
-    url: '{{ base_url }}/gallery/ajax/upload',
+    url: '{{ url }}/gallery/ajax/upload',
     method: 'POST',
     data: formData,
     contentType: false,
@@ -76,7 +76,7 @@ $('#form-upload').on('submit', function(e){
   .done(function(resp){
     if (resp && resp.ok) 
     {
-      window.location.href = '{{ base_url }}/admin/gallery';
+      window.location.href = '{{ url }}/admin/gallery';
     } 
     else 
     {

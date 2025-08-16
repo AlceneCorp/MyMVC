@@ -22,7 +22,7 @@
                     <ul class="pagination">
                         {% if currentPage > 1 %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/{{ currentPage - 1 }}" aria-label="Previous">
+                                <a class="page-link" href="{{ url }}/admin/users/{{ currentPage - 1 }}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo; Précédent</span>
                                 </a>
                             </li>
@@ -34,7 +34,7 @@
                             
                         {% if currentPage > 2 %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/1">1</a>
+                                <a class="page-link" href="{{ url }}/admin/users/1">1</a>
                             </li>
                             {% if currentPage > 3 %}
                                 <li class="page-item disabled">
@@ -46,7 +46,7 @@
                         {% for page in (currentPage - 1)..(currentPage + 1) %}
                             {% if page > 0 and page <= totalPages %}
                                 <li class="page-item {% if page == currentPage %}active{% endif %}">
-                                    <a class="page-link" href="{{ base_url }}/admin/users/{{ page }}">{{ page }}</a>
+                                    <a class="page-link" href="{{ url }}/admin/users/{{ page }}">{{ page }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -59,12 +59,12 @@
                             
                         {% if currentPage < totalPages %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/{{ totalPages }}" aria-label="Last">
+                                <a class="page-link" href="{{ url }}/admin/users/{{ totalPages }}" aria-label="Last">
                                     <span aria-hidden="true">{{ totalPages }}</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/{{ currentPage + 1 }}" aria-label="Next">
+                                <a class="page-link" href="{{ url }}/admin/users/{{ currentPage + 1 }}" aria-label="Next">
                                     <span aria-hidden="true">Suivant &raquo;</span>
                                 </a>
                             </li>
@@ -129,12 +129,12 @@
                                         
                                             {% if entry.user.getSTATUS() == 'active' %}
                                                 {% if checkPerm('block_user') %}
-                                                    <a href="{{ base_url }}/admin/block/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
+                                                    <a href="{{ url }}/admin/block/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
                                                     <i class="fas fa-lock"></i> Bannir
                                                 {% endif %}
                                             {% else %}
                                                 {% if checkPerm('unblock_user') %}
-                                                    <a href="{{ base_url }}/admin/unblock/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
+                                                    <a href="{{ url }}/admin/unblock/{{ entry.user.getID() }}" class="btn btn-danger btn-sm mb-1">
                                                     <i class="fas fa-unlock"></i> Débannir
                                                 {% endif %}
                                             {% endif %}
@@ -143,14 +143,14 @@
                                         
                                         {% if checkPerm('manage_permissions') %}
                                             <!-- Lien pour éditer les permissions -->
-                                            <a href="{{ base_url }}/admin/edit-permissions/{{ entry.user.getID() }}" class="btn btn-warning btn-sm mb-1">
+                                            <a href="{{ url }}/admin/edit-permissions/{{ entry.user.getID() }}" class="btn btn-warning btn-sm mb-1">
                                                 <i class="fas fa-edit"></i> Modifier Permissions
                                             </a>
                                         {% endif %}
 
                                         {% if checkPerm('view_other_profiles') %}
                                             <!-- Voir le profil de l'utilisateur -->
-                                            <a href="{{ base_url }}/admin/users/view-profil/{{ entry.user.getID() }}" class="btn btn-success btn-sm mb-1">
+                                            <a href="{{ url }}/admin/users/view-profil/{{ entry.user.getID() }}" class="btn btn-success btn-sm mb-1">
                                                 <i class="fas fa-edit"></i> Voir le profil
                                             </a>
                                         {% endif %}
@@ -176,7 +176,7 @@
                     <ul class="pagination">
                         {% if currentPage > 1 %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/{{ currentPage - 1 }}" aria-label="Previous">
+                                <a class="page-link" href="{{ url }}/admin/users/{{ currentPage - 1 }}" aria-label="Previous">
                                     <span aria-hidden="true">&laquo; Précédent</span>
                                 </a>
                             </li>
@@ -188,7 +188,7 @@
                             
                         {% if currentPage > 2 %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/1">1</a>
+                                <a class="page-link" href="{{ url }}/admin/users/1">1</a>
                             </li>
                             {% if currentPage > 3 %}
                                 <li class="page-item disabled">
@@ -200,7 +200,7 @@
                         {% for page in (currentPage - 1)..(currentPage + 1) %}
                             {% if page > 0 and page <= totalPages %}
                                 <li class="page-item {% if page == currentPage %}active{% endif %}">
-                                    <a class="page-link" href="{{ base_url }}/admin/users/{{ page }}">{{ page }}</a>
+                                    <a class="page-link" href="{{ url }}/admin/users/{{ page }}">{{ page }}</a>
                                 </li>
                             {% endif %}
                         {% endfor %}
@@ -213,12 +213,12 @@
                             
                         {% if currentPage < totalPages %}
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/{{ totalPages }}" aria-label="Last">
+                                <a class="page-link" href="{{ url }}/admin/users/{{ totalPages }}" aria-label="Last">
                                     <span aria-hidden="true">{{ totalPages }}</span>
                                 </a>
                             </li>
                             <li class="page-item">
-                                <a class="page-link" href="{{ base_url }}/admin/users/{{ currentPage + 1 }}" aria-label="Next">
+                                <a class="page-link" href="{{ url }}/admin/users/{{ currentPage + 1 }}" aria-label="Next">
                                     <span aria-hidden="true">Suivant &raquo;</span>
                                 </a>
                             </li>

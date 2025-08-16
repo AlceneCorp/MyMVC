@@ -73,6 +73,17 @@ return
 		'children' => 
 		[
 			[
+				'name' => '',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/',
+				'controller' => \App\Controllers\AdminController::class,
+				'method' => 'dashboard',
+				'params' => [],
+				'perm' => 'view_site_statistics',
+				'icon' => '<i class="fas fa-tachometer-alt me-3 fs-4"></i>',
+				'inMenu' => false,
+				'children' => []
+			],
+			[
 				'name' => 'Panel Administrateur',
 				'url' => ConfigManager::get('SITE.root_path.value').'/admin/dashboard',
 				'controller' => \App\Controllers\AdminController::class,
@@ -139,10 +150,10 @@ return
 				'children' => []
 			],
 			[
-				'name' => 'Génération d\'images',
-				'url' => ConfigManager::get('SITE.root_path.value').'/admin/genimages',
+				'name' => 'AI Chat',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/aichat',
 				'controller' => \App\Controllers\AdminController::class,
-				'method' => 'genImages',
+				'method' => 'aichat',
 				'params' => [],
 				'perm' => 'view_site_statistics',
 				'icon' => '<i class="fas fa-wand-magic-sparkles me-3 fs-4"></i>',
@@ -268,6 +279,17 @@ return
 		'method' => 'viewUserProfil',
 		'params' => [],
 		'perm' => 'view_other_profiles',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/clearlogs',
+		'controller' => \App\Controllers\AjaxController::class,
+		'method' => 'clearLogs',
+		'params' => [],
+		'perm' => 'manage_error_logs',
 		'icon' => '',
 		'inMenu' => false,
 		'children' => []

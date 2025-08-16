@@ -50,20 +50,25 @@ class AjaxGalleryController extends Controller
 
         // On cherche d’abord par SLUG (plus stable), sinon par NAME
         $categorie = $galleryCategoriesManager->findOneGalleryCategories(['SLUG' => $categorySlug]);
-        if (!$categorie && $categoryName !== '') {
+        if (!$categorie && $categoryName !== '') 
+        {
             $categorie = $galleryCategoriesManager->findOneGalleryCategories(['NAME' => $categoryName]);
         }
 
-        if ($categorie) {
+        if ($categorie) 
+        {
             $categorie_id = (int) $categorie->getID();
             // Option : si le NAME diffère mais que c'est bien la même catégorie, on peut le resync
-            if (method_exists($categorie, 'getNAME') && $categorie->getNAME() !== $categoryName && $categoryName !== '') {
+            if (method_exists($categorie, 'getNAME') && $categorie->getNAME() !== $categoryName && $categoryName !== '') 
+            {
                 $galleryCategoriesManager->updateGalleryCategories([
                     'NAME' => $categoryName,
                     'SLUG' => $categorySlug
                 ], $categorie_id);
             }
-        } else {
+        }
+        else 
+        {
             // Création si nom donné, sinon NULL (non classée)
             $categorie_id = $categoryName !== '' ? (int) $galleryCategoriesManager->addGalleryCategories([
                 'NAME'       => $categoryName,
