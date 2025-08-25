@@ -1,0 +1,386 @@
+{% extends "base.twig" %}
+
+{% block title %}MyMVC • Features techniques{% endblock %}
+
+{% block style %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  /* === Layout / Background === */
+  .scene {
+    position: relative; overflow: hidden;
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(99,102,241,.25) 0%, transparent 50%),
+                radial-gradient(900px 500px at 90% -20%, rgba(16,185,129,.18) 0%, transparent 55%),
+                linear-gradient(180deg, #0b0f14 0%, #0a0d12 100%);
+  }
+  #fx-bg { position: absolute; inset:0; z-index:0; opacity:.6; }
+
+  /* === HERO === */
+  .tech-hero{ position:relative; z-index:1; padding:6rem 0 3rem; color:#e6edf3; text-align:center; }
+  .glitch {
+    font-weight:900; letter-spacing:.3px; display:inline-block; position:relative;
+    text-shadow:0 0 18px rgba(99,102,241,.4);
+  }
+  .glitch::before,.glitch::after{
+    content:attr(data-text); position:absolute; top:0; left:0;
+    mix-blend-mode:screen; opacity:.6; clip-path: polygon(0 0,100% 0,100% 40%,0 60%);
+  }
+  .glitch::before{ transform:translate(2px,0); color:#00e3a2; }
+  .glitch::after { transform:translate(-2px,0); color:#6ea0ff; }
+  .typewriter { border-right:3px solid #6ea0ff; white-space:nowrap; overflow:hidden; display:inline-block; }
+
+  .stack-badges .badge {
+    background: rgba(255,255,255,.08); color:#dbe4f4; border:1px solid rgba(255,255,255,.12);
+    font-weight:600; letter-spacing:.2px;
+  }
+
+  /* === Cards / Tilt === */
+  .fx-card {
+    background:#10151c; border:1px solid rgba(255,255,255,.06); border-radius:16px;
+    box-shadow:0 14px 40px rgba(0,0,0,.35); transform-style:preserve-3d; transition: transform .2s ease, box-shadow .2s ease;
+  }
+  .fx-card .fx-head {
+    background: linear-gradient(180deg, #151b24, #10151c);
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    color:#cfe3ff; font-weight:700;
+    border-top-left-radius:16px; border-top-right-radius:16px;
+  }
+  .tilt { perspective: 800px; }
+  .tilt:hover .fx-card { box-shadow:0 24px 60px rgba(0,0,0,.5); }
+
+  /* === Code blocks === */
+  pre.fx-code {
+    background:#0b0f14; color:#d1e0f0; border:1px solid rgba(255,255,255,.08);
+    border-radius:12px; padding:1rem 1.2rem; position:relative; margin:0;
+  }
+  .copy-btn{
+    position:absolute; top:10px; right:10px; border:1px solid rgba(255,255,255,.18);
+    background:#121822; color:#e6edf3; border-radius:10px; font-size:.8rem; padding:.3rem .6rem; cursor:pointer;
+  }
+  .copy-btn:hover{ background:#172131; }
+
+  /* === KPIs === */
+  .kpi{ background:#0d131b; border:1px solid rgba(255,255,255,.06); border-radius:14px; padding:1rem 1.2rem; color:#dbe4f4; }
+  .kpi .n{ font-size: clamp(28px, 4vw, 40px); font-weight:800; }
+  .kpi .l{ color:#94a6bd; font-size:.9rem; }
+
+  /* === Terminal === */
+  .terminal { background:#0c1116; border:1px solid rgba(255,255,255,.08); border-radius:12px; color:#cfe3ff; }
+  .term-head{
+    border-bottom:1px solid rgba(255,255,255,.08); padding:.5rem .8rem; display:flex; gap:.4rem; align-items:center;
+    background: linear-gradient(180deg,#121722,#0c1116);
+  }
+  .dot{ width:10px;height:10px;border-radius:99px;display:inline-block; }
+  .dot.red{ background:#ff5f56 } .dot.yellow{ background:#ffbd2e } .dot.green{ background:#27c93f }
+  .term-body{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; padding:1rem; }
+  .term-line{ opacity:.95; }
+  .term-cursor{ display:inline-block; width:9px; height:16px; background:#cfe3ff; margin-left:2px; animation: blink 1s steps(1,end) infinite; }
+  @keyframes blink { 50%{ opacity:0; } }
+
+  /* === Playground toggles === */
+  .toggle { display:flex; align-items:center; gap:.6rem; }
+  .toggle input { accent-color:#6366f1; }
+
+  /* Small utility */
+  .muted{ color:#9fb0c7; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="scene">
+  <canvas id="fx-bg"></canvas>
+
+  <section class="tech-hero">
+    <div class="container">
+      <h1 class="display-5">
+        <span class="glitch" data-text="MyMVC">MyMVC</span> — <span class="typewriter" id="tw"></span>
+      </h1>
+      <p class="lead muted mt-3">Routing déclaratif • Twig élégant • Sécurité/Permissions • AJAX/Charts • Logs & Observabilité</p>
+
+      <div class="stack-badges mt-4">
+        <span class="badge rounded-pill me-2">PHP {{ constant('PHP_VERSION') }}</span>
+        <span class="badge rounded-pill me-2">Twig</span>
+        <span class="badge rounded-pill me-2">Router Array</span>
+        <span class="badge rounded-pill me-2">CSRF</span>
+        <span class="badge rounded-pill me-2">Permissions</span>
+        <span class="badge rounded-pill me-2">Chart.js</span>
+        <span class="badge rounded-pill">Toastr</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="container py-5">
+
+    {# ====== Vitres Tilt 3D ====== #}
+    <div class="row g-4 mb-4">
+      <div class="col-md-4 tilt">
+        <div class="fx-card h-100">
+          <div class="fx-head p-3"><i class="fas fa-diagram-project me-2"></i> MVC net & modulable</div>
+          <div class="p-3">
+            <p class="muted mb-2">Controllers propres, vues Twig, managers dédiés — lisible et extensible.</p>
+            <pre class="fx-code"><button class="copy-btn" data-copy="#c1">Copier</button><code id="c1">return [[
+  'url' => '{{ url }}/features',
+  'controller' => \App\Controllers\HomeController::class,
+  'method' => 'features'
+]];</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 tilt">
+        <div class="fx-card h-100">
+          <div class="fx-head p-3"><i class="fas fa-shield-alt me-2"></i> Sécurité par défaut</div>
+          <div class="p-3">
+            <ul class="mb-3 muted">
+              <li>CSRF token natif</li>
+              <li>Hash BCrypt</li>
+              <li>Escape Twig systématique</li>
+              <li>Permissions granulaires</li>
+            </ul>
+            <pre class="fx-code"><button class="copy-btn" data-copy="#c2">Copier</button><code id="c2">if (!checkPerm('manage_user_groups')) {
+  throw new \Exception('Forbidden');
+}</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4 tilt">
+        <div class="fx-card h-100">
+          <div class="fx-head p-3"><i class="fas fa-plug me-2"></i> AJAX prêt à l’emploi</div>
+          <div class="p-3">
+            <p class="muted mb-2">Endpoints JSON rapides pour charts, widgets, exports…</p>
+            <pre class="fx-code"><button class="copy-btn" data-copy="#c3">Copier</button><code id="c3">public function apiPing() {
+  header('Content-Type: application/json');
+  echo json_encode(['ok'=>true,'time'=>date('c')]);
+}</code></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ====== KPIs + Chart ====== #}
+    <div class="row g-4 mb-4">
+      <div class="col-lg-6">
+        <div class="fx-card h-100">
+          <div class="fx-head p-3"><i class="fas fa-gauge-high me-2"></i> Performance & Observabilité</div>
+          <div class="p-3">
+            <div class="row g-3">
+              <div class="col-4"><div class="kpi text-center"><div class="n" data-countup="{{ stats.requests|default(912340) }}">0</div><div class="l">Requêtes</div></div></div>
+              <div class="col-4"><div class="kpi text-center"><div class="n" data-countup="{{ stats.users|default(1842) }}">0</div><div class="l">Utilisateurs</div></div></div>
+              <div class="col-4"><div class="kpi text-center"><div class="n" data-countup="{{ stats.errors|default(3) }}">0</div><div class="l">Erreurs 24h</div></div></div>
+            </div>
+            <div class="mt-3" style="height:220px;"><canvas id="fxChart"></canvas></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-6">
+        <div class="fx-card h-100">
+          <div class="fx-head p-3"><i class="fas fa-terminal me-2"></i> Terminal (typage auto)</div>
+          <div class="p-3">
+            <div class="terminal">
+              <div class="term-head">
+                <span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span>
+                <span class="ms-2 muted">myvmc@local:~</span>
+              </div>
+              <div class="term-body">
+                <div class="term-line" id="term"></div>
+              </div>
+            </div>
+            <small class="muted">Simulation visuelle (aucun appel réseau réel).</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {# ====== Playground Config live ====== #}
+    <div class="fx-card">
+      <div class="fx-head p-3"><i class="fas fa-sliders-h me-2"></i> Playground — Générer une config en direct</div>
+      <div class="p-3">
+        <div class="row g-4">
+          <div class="col-md-4">
+            <div class="toggle mb-2"><input type="checkbox" id="tCsrf" checked><label for="tCsrf">Activer CSRF</label></div>
+            <div class="toggle mb-2"><input type="checkbox" id="tCache" checked><label for="tCache">Cache templates</label></div>
+            <div class="toggle mb-2"><input type="checkbox" id="tDebug"><label for="tDebug">Mode debug</label></div>
+            <div class="toggle mb-2"><input type="checkbox" id="tLogs" checked><label for="tLogs">Logs applicatifs</label></div>
+          </div>
+          <div class="col-md-8">
+            <pre class="fx-code"><button class="copy-btn" data-copy="#cfg">Copier</button><code id="cfg">return [
+  'security' => [
+    'csrf' => true
+  ],
+  'twig' => [
+    'cache' => true,
+    'debug' => false
+  ],
+  'logs' => [
+    'enabled' => true,
+    'level'   => 'INFO'
+  ]
+];</code></pre>
+            <small class="muted">Joue avec les switches pour voir le code évoluer.</small>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block jquery %}
+<script>
+/* ===== background constellation (ultra light) ===== */
+(function(){
+  const c = document.getElementById('fx-bg'); if(!c) return;
+  const dpr = Math.min(window.devicePixelRatio || 1, 2);
+  const ctx = c.getContext('2d');
+  let w,h,pts=[];
+  function resize(){
+    w = c.width = c.offsetWidth * dpr;
+    h = c.height = c.offsetHeight * dpr;
+    pts = Array.from({length: 70}, () => ({
+      x: Math.random()*w, y: Math.random()*h,
+      vx: (Math.random()-.5)*.35*dpr, vy: (Math.random()-.5)*.35*dpr
+    }));
+  }
+  new ResizeObserver(resize).observe(c.parentElement); resize();
+  function step(){
+    ctx.clearRect(0,0,w,h);
+    for(const p of pts){
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>w) p.vx*=-1;
+      if(p.y<0||p.y>h) p.vy*=-1;
+      ctx.fillStyle='rgba(160,200,255,.6)';
+      ctx.beginPath(); ctx.arc(p.x,p.y,1.8*dpr,0,Math.PI*2); ctx.fill();
+    }
+    // links
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const a=pts[i], b=pts[j];
+        const dx=a.x-b.x, dy=a.y-b.y, dist = Math.hypot(dx,dy);
+        if(dist<110*dpr){
+          ctx.strokeStyle=`rgba(120,170,255,${1 - dist/(110*dpr)})`;
+          ctx.lineWidth=.6*dpr; ctx.beginPath(); ctx.moveTo(a.x,a.y); ctx.lineTo(b.x,b.y); ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(step);
+  } requestAnimationFrame(step);
+})();
+
+/* ===== typewriter headline ===== */
+(function(){
+  const el = document.getElementById('tw'); if(!el) return;
+  const phrases = [
+    "ossature moderne pour vos apps PHP",
+    "performant, modulaire, élégant",
+    "routing, Twig, sécurité, AJAX, logs"
+  ];
+  let i=0, j=0, del=false;
+  function tick(){
+    const word = phrases[i];
+    el.textContent = word.slice(0, j);
+    del ? j-- : j++;
+    if(!del && j===word.length+2){ del=true; }
+    if(del && j===0){ del=false; i=(i+1)%phrases.length; }
+    setTimeout(tick, del?30:55);
+  } tick();
+})();
+
+/* ===== tilt 3D ===== */
+document.querySelectorAll('.tilt .fx-card').forEach(card=>{
+  const r=10;
+  card.addEventListener('mousemove', e=>{
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left, y = e.clientY - rect.top;
+    const rx = ((y/rect.height)-.5)*-r, ry = ((x/rect.width)-.5)*r;
+    card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+  });
+  card.addEventListener('mouseleave', ()=> card.style.transform='rotateX(0) rotateY(0)');
+});
+
+/* ===== copy buttons ===== */
+document.querySelectorAll('.copy-btn').forEach(btn=>{
+  btn.addEventListener('click', ()=>{
+    const sel = btn.getAttribute('data-copy'); const el = document.querySelector(sel); if(!el) return;
+    const text = el.innerText;
+    navigator.clipboard.writeText(text).then(()=>{
+      btn.textContent='Copié ✓'; setTimeout(()=>btn.textContent='Copier',1200);
+    });
+  });
+});
+
+/* ===== counters ===== */
+function animateCount(el){
+  const target = parseInt(el.getAttribute('data-countup')||'0',10);
+  const dur=900, start=performance.now();
+  function step(t){ const p=Math.min(1,(t-start)/dur); el.textContent=Math.floor(target*(0.1+0.9*p)).toLocaleString('fr-FR'); if(p<1) requestAnimationFrame(step); }
+  requestAnimationFrame(step);
+}
+document.querySelectorAll('.kpi .n').forEach(animateCount);
+
+/* ===== mini chart ===== */
+(function(){
+  const canvas = document.getElementById('fxChart'); if(!canvas) return;
+  const data = Array.from({length: 12}, ()=> Math.floor(40+Math.random()*60));
+  new Chart(canvas.getContext('2d'), {
+    type:'line',
+    data:{ labels:['Jan','Fév','Mar','Avr','Mai','Jui','Juil','Aoû','Sep','Oct','Nov','Déc'],
+      datasets:[{ label:'Temps de réponse (ms)', data, tension:.35 }] },
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{ usePointStyle:true } }}, scales:{ y:{ beginAtZero:true } } }
+  });
+})();
+
+/* ===== terminal typing demo ===== */
+(function(){
+  const el = document.getElementById('term'); if(!el) return;
+  const lines = [
+    "$ composer create-project mymvc/app .",
+    "Installing dependencies...",
+    "Generating keys...",
+    "Done. Run: php -S localhost:8000 -t public",
+  ];
+  let i=0, j=0;
+  function render(){
+    const out = lines.slice(0,i).map(s=>`<div class="term-line">${s}</div>`).join('');
+    const cur = (i<lines.length) ? `<div class="term-line">${lines[i].slice(0,j)}<span class="term-cursor"></span></div>` : '';
+    el.innerHTML = out + cur;
+  }
+  function tick(){
+    if(i>=lines.length) return;
+    j++;
+    if(j>lines[i].length+2){ i++; j=0; setTimeout(tick, 180); return; }
+    render(); setTimeout(tick, 18 + Math.random()*35);
+  }
+  tick();
+})();
+
+/* ===== playground live config ===== */
+(function(){
+  const cfg = document.getElementById('cfg'); if(!cfg) return;
+  const t = id=> document.getElementById(id);
+  function update(){
+    const csrf  = t('tCsrf').checked ? 'true' : 'false';
+    const cache = t('tCache').checked ? 'true' : 'false';
+    const debug = t('tDebug').checked ? 'true' : 'false';
+    const logs  = t('tLogs').checked ? 'true' : 'false';
+    const level = logs==='true' ? (debug==='true' ? 'DEBUG' : 'INFO') : 'OFF';
+    cfg.textContent = `return [
+  'security' => [
+    'csrf' => ${csrf}
+  ],
+  'twig' => [
+    'cache' => ${cache},
+    'debug' => ${debug}
+  ],
+  'logs' => [
+    'enabled' => ${logs},
+    'level'   => '${level}'
+  ]
+];`;
+  }
+  ['tCsrf','tCache','tDebug','tLogs'].forEach(id=>document.getElementById(id).addEventListener('change', update));
+  update();
+})();
+</script>
+{% endblock %}

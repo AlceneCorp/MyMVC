@@ -51,6 +51,17 @@ return
 		'children' => []
 	],
 	[
+		'name' => '',
+		'url' => ConfigManager::get('SITE.root_path.value').'/features',
+		'controller' => \App\Controllers\HomeController::class,
+		'method' => 'features',
+		'params' => [],
+		'perm' => '',
+		'icon' => '<i class="fas fa-newspaper"></i>',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
 		'name' => 'Prise de contact',
 		'url' => ConfigManager::get('SITE.root_path.value').'/contact',
 		'controller' => \App\Controllers\HomeController::class,
@@ -150,14 +161,36 @@ return
 				'children' => []
 			],
 			[
-				'name' => 'AI Chat',
-				'url' => ConfigManager::get('SITE.root_path.value').'/admin/aichat',
+				'name' => 'Génération d\'images',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/genimages',
 				'controller' => \App\Controllers\AdminController::class,
-				'method' => 'aichat',
+				'method' => 'genImages',
 				'params' => [],
 				'perm' => 'view_site_statistics',
 				'icon' => '<i class="fas fa-wand-magic-sparkles me-3 fs-4"></i>',
 				'inMenu' => CoreManager::checkPerm('view_site_statistics'),
+				'children' => []
+			],
+			[
+				'name' => 'Vidéos',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/videos',
+				'controller' => \App\Controllers\AdminController::class,
+				'method' => 'index',
+				'params' => [],
+				'perm' => '',
+				'icon' => '<i class="fas fa-film me-3 fs-4"></i>',
+				'inMenu' => SessionsManager::has('USERS'),
+				'children' => []
+			],
+			[
+				'name' => 'Vidéos',
+				'url' => ConfigManager::get('SITE.root_path.value').'/admin/videos/{id}',
+				'controller' => \App\Controllers\AdminController::class,
+				'method' => 'show',
+				'params' => [],
+				'perm' => '',
+				'icon' => '<i class="fas fa-film me-3 fs-4"></i>',
+				'inMenu' => false,
 				'children' => []
 			],
 			[
@@ -288,6 +321,39 @@ return
 		'url' => ConfigManager::get('SITE.root_path.value').'/admin/clearlogs',
 		'controller' => \App\Controllers\AjaxController::class,
 		'method' => 'clearLogs',
+		'params' => [],
+		'perm' => 'manage_error_logs',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/ajax/logs/summary',
+		'controller' => \App\Controllers\AjaxController::class,
+		'method' => 'ajaxLogsSummary',
+		'params' => [],
+		'perm' => 'manage_error_logs',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/ajax/logs/last',
+		'controller' => \App\Controllers\AjaxController::class,
+		'method' => 'ajaxLogsLast',
+		'params' => [],
+		'perm' => 'manage_error_logs',
+		'icon' => '',
+		'inMenu' => false,
+		'children' => []
+	],
+	[
+		'name' => '',
+		'url' => ConfigManager::get('SITE.root_path.value').'/admin/ajax/logs/export',
+		'controller' => \App\Controllers\AjaxController::class,
+		'method' => 'exportLogs',
 		'params' => [],
 		'perm' => 'manage_error_logs',
 		'icon' => '',

@@ -262,7 +262,7 @@ class Router
 
                 if(CoreManager::checkPerm($perm))
                 {
-                    call_user_func_array([$controller, $methodName], $params);
+                    call_user_func_array([$controller, $methodName], array_values($params));
 
                     if(ConfigManager::get("SITE.log_visitor.value"))
                     {

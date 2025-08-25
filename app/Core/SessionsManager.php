@@ -77,9 +77,39 @@ class SessionsManager
      */
     public static function destroy(): void
     {
-        if (session_status() !== PHP_SESSION_NONE) {
+        if (session_status() !== PHP_SESSION_NONE) 
+        {
             session_unset();
             session_destroy();
         }
+    }
+
+    public static function setFlash(string $key, mixed $value): void
+    {
+        self::startSession();
+        $_SESSION[URL]['__flash'][$key] = $value;
+    }
+
+    public static function getFlash(string $key, mixed $default = null): mixed
+    {
+        self::startSession();
+        if (isset($_SESSION[URL]['__flash'][$key])) 
+        {
+            $val = $_SESSION[URL]['__flash'][$key];
+            unset($_SESSION[URL]['__flash'][$key]); // one-shot
+            // Nettoie le conteneur si vide
+            if (empty($_SESSION[URL]['__flash'])) 
+            {
+                unset($_SESSION[URL]['__flash']);
+            }
+            return $val;
+        }
+        return $default;
+    }
+
+    public static function hasFlash(string $key): bool
+    {
+        self::startSession();
+        return isset($_SESSION[URL]['__flash'][$key]);
     }
 }

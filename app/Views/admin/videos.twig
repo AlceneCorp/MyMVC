@@ -1,0 +1,208 @@
+{% extends 'base.twig' %}
+
+{% block title %}Vidéothèque{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-3">
+  <div class="row">
+    <!-- Sidebar -->
+    <aside class="col-3">
+      <div class="card shadow-sm h-100">
+        <div class="card-body p-3" style="overflow-y:auto;max-height:calc(100vh - 100px)">
+          <h5 class="mb-3"><i class="fas fa-folder-open text-warning me-2"></i>Vidéothèque</h5>
+
+          {# --- Rendu récursif de l'arbre --- #}
+          {% macro tree(node, currentId, pathBase, url, prefix) %}
+            {% set folderId = (prefix ~ '-' ~ (node.name|default(node.Name)|replace({' ':'_','/':'_','\\':'_'}))) %}
+
+            <li class="tree-item mb-1">
+              <div class="d-flex align-items-center folder-toggle"
+                   data-bs-toggle="collapse"
+                   data-bs-target="#{{ folderId }}"
+                   aria-expanded="false">
+                <i class="fas fa-caret-right me-1 text-muted"></i>
+                <i class="fas fa-folder text-warning me-2"></i>
+                <span class="fw-bold">{{ node.name|default(node.Name) }}</span>
+              </div>
+
+              <div id="{{ folderId }}" class="collapse ms-3">
+                {% set files = node.files|default(node.Files)|default([]) %}
+                {% if files %}
+                  <ul class="list-unstyled ms-3">
+                    {% for f in files|sort((a,b)=> (a.Name|default(a.name)) <=> (b.Name|default(b.name))) %}
+                      {% set fid = f.Id|default(f.id) %}
+                      <li>
+                        <a href="{{ url ~ '/admin' ~ pathBase ~ '/' ~ fid }}"
+                           class="tree-link d-block px-2 py-1 rounded small {{ currentId == fid ? 'active' : '' }}">
+                          <i class="fas fa-film me-1 text-secondary"></i> {{ f.Name|default(f.name) }}
+                        </a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+
+                {% set subs = node.subfolders|default(node.Subfolders)|default([]) %}
+                {% if subs %}
+                  <ul class="list-unstyled ms-3">
+                    {% for s in subs %}
+                      {{ _self.tree(s, currentId, pathBase, url, folderId ~ '-' ~ loop.index) }}
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+              </div>
+            </li>
+          {% endmacro %}
+
+          <ul class="list-unstyled tree">
+            {{ _self.tree(tree, current ? current.id : null, pathBase, url, 'root') }}
+          </ul>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main player -->
+    <main class="col-9">
+      {% if current %}
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="mb-3">{{ current.name }}</h4>
+
+            <div class="d-flex flex-wrap align-items-center gap-2 mb-3">
+              <button id="prevBtn" class="btn btn-outline-primary btn-sm"
+                      {{ prev ? '' : 'disabled' }}
+                      data-id="{{ prev ? (prev.Id|default(prev.id)) : '' }}">
+                <i class="fas fa-chevron-left me-1"></i> Épisode précédent
+              </button>
+
+              <button id="nextBtn" class="btn btn-outline-primary btn-sm"
+                      {{ next ? '' : 'disabled' }}
+                      data-id="{{ next ? (next.Id|default(next.id)) : '' }}">
+                Épisode suivant <i class="fas fa-chevron-right ms-1"></i>
+              </button>
+
+              <div class="ms-auto d-flex gap-3">
+                <div>
+                  <label class="form-label small mb-0">Audio</label>
+                  <select id="audioSel" class="form-select form-select-sm">
+                    {% for a in tracks.audio %}
+                      <option value="{{ a.index }}" {{ selAudio == a.index ? 'selected' : '' }}>
+                        {{ a.lang|default('und') }} • {{ a.codec }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div>
+                  <label class="form-label small mb-0">Sous-titres</label>
+                  <select id="subsSel" class="form-select form-select-sm">
+                    <option value="">(aucun)</option>
+                    {% for s in tracks.subtitles %}
+                      <option value="{{ s.index }}" {{ selSubs == s.index ? 'selected' : '' }}>
+                        {{ s.lang|default('und') }} • {{ s.type }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="ratio ratio-16x9 bg-dark rounded">
+              <video id="player" controls crossorigin="anonymous" style="width:100%;height:100%">
+                <source id="src" src="{{ api }}/play/{{ current.id }}/{{ selAudio|default(defaultAudio) }}" type="video/mp4">
+                {% if selSubs %}
+                  <track id="vtt" kind="subtitles" src="{{ api }}/subtitles/{{ current.id }}/{{ selSubs }}.vtt" srclang="fr" label="Sous-titres" default>
+                {% endif %}
+              </video>
+            </div>
+
+            <p class="text-muted small mt-2">
+              <i class="fas fa-info-circle me-1"></i>
+              Astuce : change la piste audio/sous-titres via les listes ci-dessus, ou utilise Suivant/Précédent pour enchaîner.
+            </p>
+          </div>
+        </div>
+      {% else %}
+        <div class="alert alert-info">
+          <i class="fas fa-hand-point-left me-2"></i>Sélectionne un fichier dans la colonne de gauche.
+        </div>
+      {% endif %}
+    </main>
+  </div>
+</div>
+
+<style>
+.tree-item .folder-toggle {
+  cursor: pointer;
+  user-select: none;
+}
+.tree-link.active {
+  background: #0d6efd;
+  color: white !important;
+}
+.tree-link:hover {
+  background: #f0f2f5;
+  text-decoration: none;
+}
+</style>
+{% endblock %}
+
+{% block jquery %}
+<script>
+$(function(){
+  const api = "{{ api }}";
+  const base = "{{ pathBase }}";
+  const currentId = "{{ current ? current.id : '' }}";
+  const $player = $("#player");
+  const $src = $("#src");
+  const $selA = $("#audioSel");
+  const $selS = $("#subsSel");
+
+  function setMedia(id, a, s) {
+    if(!id) return;
+    const t = $player[0].currentTime || 0;
+    const playing = $player.length && !$player[0].paused && !$player[0].ended;
+
+    $src.attr("src", `${api}/play/${id}/${a}`);
+
+    $("#vtt").remove();
+    if (s) {
+      const $track = $("<track>", {
+        id: "vtt",
+        kind: "subtitles",
+        srclang: "fr",
+        label: "Sous-titres",
+        src: `${api}/subtitles/${id}/${s}.vtt?v=${Date.now()}`,
+        default: true
+      });
+      $player.append($track);
+    }
+
+    $player[0].load();
+    $player.one("loadedmetadata", function(){
+      $player[0].currentTime = t;
+      if (playing) $player[0].play();
+    });
+
+    history.replaceState({}, '', `{{url ~ "/admin"}}${base}/${id}?a=${a}${s?`&s=${s}`:''}`);
+  }
+
+  $selA.on("change", ()=> setMedia(currentId, $selA.val(), $selS.val()));
+  $selS.on("change", ()=> setMedia(currentId, $selA.val(), $selS.val()));
+
+  $("#prevBtn").on("click", function(){
+    const id = $(this).data("id");
+    if(id) window.location.href = `{{url ~ "/admin"}}${base}/${id}`;
+  });
+
+  $("#nextBtn").on("click", function(){
+    const id = $(this).data("id");
+    if(id) window.location.href = `{{url ~ "/admin"}}${base}/${id}`;
+  });
+
+  // Animation caret rotation
+  $(".folder-toggle").on("click", function(){
+    $(this).find(".fa-caret-right").toggleClass("fa-rotate-90");
+  });
+});
+</script>
+{% endblock %}

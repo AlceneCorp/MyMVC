@@ -120,7 +120,7 @@ class QuestoriumController extends Controller
             'FULLNAME' => 'Répondre à un questionnaire',
             'DESCRIPTION' => 'Permet de répondre aux questionnaires disponibles.',
             'ORDERS' => 5,
-            'AUTO_ATTRIBUTE' => 1
+            'AUTO_ATTRIBUTE' => 0
         ],
         [
             'NAME' => 'export_results',

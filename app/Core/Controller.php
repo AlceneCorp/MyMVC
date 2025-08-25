@@ -12,24 +12,63 @@ class Controller
 	
 	protected $articlesManager;
 
+	protected $api;
+    protected $pathBase;
+
 	public function __construct($param_twig)
 	{
 		$this->twig = $param_twig;
 		$this->articlesManager = new ArticlesManager();
+
+		$this->api = 'http://109.219.112.85:7035/api/videos'; // <-- ADAPTE
+        $this->pathBase = '/videos'; 
 	}
 
 	// Méthode pour afficher un template Twig avec les données passées
-    public function render(string $template, array $data = [])
-    {
-		try
+	public function render(string $template, array $data = [])
+	{
+		try 
 		{
+			// 1) Calcule le path courant, sans le root_path (ex: /MyMVC)
+			$requestPath = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?? '/';
+			$rootPath = \App\Core\ConfigManager::get('SITE.root_path.value') ?? '';
+
+			if (!empty($rootPath) && $rootPath !== '/' && str_starts_with($requestPath, $rootPath)) 
+			{
+				$requestPath = substr($requestPath, strlen($rootPath));
+				if ($requestPath === '') 
+				{
+					$requestPath = '/';
+				}
+			}
+
+			// 2) Injecte currentRoute si absent
+			if (!array_key_exists('currentRoute', $data)) 
+			{
+				$data['currentRoute'] = rtrim($requestPath, '/');
+				if ($data['currentRoute'] === '') 
+				{
+					$data['currentRoute'] = '/';
+				}
+			}
+
+			// 3) Uniformise url/base_url si absents (utile dans tes partials)
+			if (!array_key_exists('url', $data)) 
+			{
+				$data['url'] = $rootPath;
+			}
+			if (!array_key_exists('base_url', $data)) 
+			{
+				$data['base_url'] = $rootPath;
+			}
+
 			echo $this->twig->render($template, $data);
-		}
-		catch (\Exception $e)
+		} 
+		catch (\Exception $e) 
 		{
-			throw new \Exception(ErrorManager::getErrorMessage(500) . " : " . $e->getMessage());
+			throw new \Exception(\App\Core\ErrorManager::getErrorMessage(500) . " : " . $e->getMessage());
 		}
-    }
+	}
 
 	protected function deleteModulesFiles($moduleName)
 	{

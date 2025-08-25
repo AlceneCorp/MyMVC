@@ -1,6 +1,8 @@
 <!-- Sidebar -->
-<nav class="col-12 col-sm-12 col-md-12 col-lg-2 d-md-block bg-dark sidebar" id="sidebar" role="navigation" aria-label="Menu d'administration">
-	<div class="position-sticky">
+<link href="{{ url ~ asset('/css/admin-dashboard.css') }}" rel="stylesheet">
+<nav class="col-12 col-sm-12 col-md-12 col-lg-2 bg-dark sidebar min-vh-100" id="sidebar" role="navigation" aria-label="Menu d'administration">
+	<div class="position-sticky top-0" style="max-height: 100vh;">
+
 		<h4 class="text-left text-white py-4 fs-4 small">Menu</h4>
 		<ul class="nav flex-column">
 
@@ -60,7 +62,7 @@
 			</li>
 			{% endif %}
 
-			{% if checkPerm('view_site_statistics') %}
+			{% if checkPerm('edit_own_profil') %}
 			<li class="nav-item mb-3">
 				<a class="nav-link d-flex align-items-center p-3 rounded-3 small {% if current starts with '/admin/genimages' %}active bg-secondary text-white fw-bold{% else %}text-light hover-bg-dark{% endif %}" href="{{url}}/admin/genimages">
 					<i class="fas fa-wand-magic-sparkles me-3 fs-4"></i>
@@ -70,7 +72,7 @@
 			{% endif %}
 
 			<li class="nav-item mb-3">
-				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{base_url}}/logout">
+				<a class="nav-link text-light d-flex align-items-center p-3 rounded-3 hover-bg-dark small" href="{{url}}/logout">
 					<i class="fas fa-sign-out-alt me-3 fs-4"></i>
 					Déconnexion
 				</a>

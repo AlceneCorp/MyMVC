@@ -35,10 +35,19 @@
                     <i class="fa-solid fa-wand-magic-sparkles me-2"></i> Générer
                 </button>
             </form>
-
             
+            <video controls preload="metadata" crossorigin="anonymous" style="width:min(100%,960px);display:block;margin:auto">
+              <source src="https://192.168.1.10:7035/api/videos/play/277399EEA97FB0C2/1" type="video/mp4">
+              <track kind="subtitles"
+                     src="https://192.168.1.10:7035/api/videos/subtitles/277399EEA97FB0C2/3.vtt"
+                     srclang="fr" label="Français" default>
+            </video>
+
         </main>
+        
     </div>
+
+    
 </div>
 {% endblock %}
 

@@ -18,7 +18,77 @@ class AjaxController extends Controller
 {
 	public function ajaxQuizDel($quiz_id)
 	{
+		header('Content-Type: application/json; charset=utf-8');
 
+		// Validation simple
+		$quizId = (int)$quiz_id;
+		if ($quizId <= 0) {
+			http_response_code(400);
+			echo json_encode(['error' => 'Invalid quiz_id']);
+			return;
+		}
+
+		// Managers
+		$quizManager        = new QuizManager();
+		$categoriesManager  = new CategoriesManager();
+		$questionsManager   = new QuestionsManager();
+		$answersManager     = new AnswersManager();
+		$subanswersManager  = new SubanswersManager();
+		$resultManager      = new ResultManager();
+
+		try {
+			// 1) (Optionnel mais recommandé) Purge des résultats liés au quiz
+			//    -> évite de garder des lignes orphelines dans Result.
+			$results = $resultManager->findAllResult(['QUIZ_ID' => $quizId]) ?? [];
+			foreach ($results as $res) {
+				$resultManager->deleteResult($res->getID());
+			}
+
+			// 2) Parcours des catégories du quiz
+			$categories = $categoriesManager->findAllCategories(['QUIZ_ID' => $quizId]) ?? [];
+			foreach ($categories as $cat) {
+				$catId = $cat->getID();
+
+				// 3) Parcours des questions de la catégorie
+				$questions = $questionsManager->findAllQuestions(['CATEGORIES_ID' => $catId]) ?? [];
+				foreach ($questions as $q) {
+					$qId = $q->getID();
+
+					// 4) Parcours des réponses de la question
+					$answers = $answersManager->findAllAnswers(['QUESTIONS_ID' => $qId]) ?? [];
+					foreach ($answers as $a) {
+						$aId = $a->getID();
+
+						// 5) Parcours des sous-réponses de la réponse
+						$subs = $subanswersManager->findAllSubanswers(['ANSWERS_ID' => $aId]) ?? [];
+						foreach ($subs as $sa) {
+							$subanswersManager->deleteSubanswers($sa->getID());
+						}
+
+						// 6) Suppression de la réponse
+						$answersManager->deleteAnswers($aId);
+					}
+
+					// 7) Suppression de la question
+					$questionsManager->deleteQuestions($qId);
+				}
+
+				// 8) Suppression de la catégorie
+				$categoriesManager->deleteCategories($catId);
+			}
+
+			// 9) Suppression du quiz
+			$quizManager->deleteQuiz($quizId);
+
+			echo json_encode(['status' => 'ok', 'quiz_id' => $quizId]);
+		} catch (\Throwable $e) {
+			// Remonte une erreur JSON propre
+			http_response_code(500);
+			echo json_encode([
+				'error' => 'Deletion failed',
+				'message' => $e->getMessage()
+			]);
+		}
 	}
 
 	public function ajaxQuiz()
@@ -243,7 +313,6 @@ class AjaxController extends Controller
 			);
 
 			echo json_encode($values);
-			
 		}
 	}
 

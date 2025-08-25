@@ -8,6 +8,7 @@ use App\Core\CoreManager;
 
 use App\Managers\PermissionsManager;
 use App\Managers\UsersManager;
+use App\Managers\UsersPermissionsManager;
 
 
 use App\Modules\Questorium\Managers\QuizManager;
@@ -16,6 +17,7 @@ use App\Modules\Questorium\Managers\QuestionsManager;
 use App\Modules\Questorium\Managers\AnswersManager;
 use App\Modules\Questorium\Managers\SubanswersManager;
 use App\Modules\Questorium\Managers\UsersQuizManager;
+
 
 class AdminController extends Controller
 {
@@ -246,44 +248,62 @@ class AdminController extends Controller
 		$usersManager = new UsersManager();
 		$usersQuizManager = new UsersQuizManager();
 		$quizManager = new QuizManager();
+		$usersPermissionsManager = new UsersPermissionsManager();
 
 		$users = [];
+		$message = null;
+		$messageType = 'info'; // bootstrap alert type : success, danger, warning...
 
 		
 
-		if(isset($_POST))
+		if ($_SERVER['REQUEST_METHOD'] === 'POST')
 		{
 
-			if(isset($_POST['nbAcc']))
+			$nbAcc = isset($_POST['nbAcc']) ? max(0, intval($_POST['nbAcc'])) : 0;
+			$quiz_id = isset($_POST['quizselected']) ? intval($_POST['quizselected']) : 0;
+
+			// Vérifie si le quiz existe
+			$quiz = $quizManager->findOneQuiz(["ID" => $quiz_id]);
+			if(!$quiz)
 			{
-				$nbAcc = $_POST['nbAcc'];
-				$quiz_id = $_POST['quizselected'];
-
-
+				$message = "Le questionnaire sélectionné est introuvable.";
+				$messageType = "danger";
+			}
+			elseif ($nbAcc <= 0) 
+			{
+				$message = "Vous devez indiquer un nombre de comptes supérieur à 0.";
+				$messageType = "warning";
+			}
+			else
+			{
 				//Creation des comptes
 				for($i = 0; $i < $nbAcc; $i++)
 				{
 					$login = CoreManager::generateRandomString(10);
 					$password = CoreManager::generateRandomString(10);
-
+					$permisions = $permissionManager->findAllPermissions(['NAME' => "respond_to_questionnaire"]);
 					$users[] = array($login, $password);
-
 
 					$user_id = $usersManager->addUsers(['USERNAME' => $login, 'PASSWORD' => password_hash($password, PASSWORD_BCRYPT), 'STATUS' => 'active']);
 					$usersQuizManager->addUsersQuiz(['USERS_ID' => $user_id, 'QUIZ_ID' => $quiz_id]);
+
+					foreach($permisions as $permision)
+                    {
+						$usersPermissionsManager->addUsersPermissions(['USERS_ID' => $user_id, 'PERMISSIONS_ID' => $permision->getID()]);
+                    }
 				}
+
+				$message = "$nbAcc comptes ont été créés avec succès.";
+				$messageType = "success";
 			}
-				
-
-
-			
-			
 		}
 
-		$this->render('admin/viewCreateUsers.twig',
+		$this->render('admin/viewCreateUsers.twig', 
 		[
-			'allQuiz' => $quizManager->findAllQuiz(),
-			'users' => $users
+			'allQuiz'     => $quizManager->findAllQuiz(),
+			'users'       => $users,
+			'message'     => $message,
+			'messageType' => $messageType
 		]);
 	}
 

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Core\Controller;
 use App\Core\CoreManager;
+use App\Core\SessionsManager;
 
 use App\Managers\VisitorManager;
 use App\Managers\LogsManager;
@@ -132,6 +133,144 @@ class AjaxController extends Controller
         $logsManager = new LogsManager();
         $logsManager->truncateLogs();                // méthode que tu devras ajouter
         CoreManager::addLogs('SUCCESS', 'APPLICATION', 'Tous les logs ont été supprimés.');
+
+        SessionsManager::setFlash('message', 'Tous les logs ont été supprimés avec succès.');
+        SessionsManager::setFlash('messageType', 'success');
+
+
         $this->redirect(URL . '/admin/dashboard'); 
     }
+
+    public function ajaxLogsSummary()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            $logsManager = new LogsManager();
+
+            // Ordre voulu des niveaux
+            $levels = ['SUCCESS','DEBUG','INFO','WARNING','ERROR','CRITICAL'];
+
+            $counts = [];
+            foreach ($levels as $lvl) {
+                $counts[$lvl] = (int) $logsManager->countLogs(['LEVEL' => $lvl]);
+            }
+
+            echo json_encode(['ok' => true, 'counts' => $counts]);
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            echo json_encode(['ok' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function ajaxLogsLast()
+    {
+        header('Content-Type: application/json; charset=utf-8');
+
+        try {
+            // Lis d'abord POST (routeurs sensibles aux query strings), puis GET en fallback
+            $level = isset($_POST['level']) ? strtoupper(trim($_POST['level']))
+                   : (isset($_GET['level']) ? strtoupper(trim($_GET['level'])) : 'ERROR');
+
+            $limit = isset($_POST['limit']) ? max(1, (int) $_POST['limit'])
+                   : (isset($_GET['limit']) ? max(1, (int) $_GET['limit']) : 10);
+
+            // (Optionnel) Vérification CSRF
+            // if (!CoreManager::checkCsrf($_POST['csrf_token'] ?? null)) {
+            //     http_response_code(403);
+            //     echo json_encode(['ok' => false, 'message' => 'CSRF token invalide']);
+            //     return;
+            // }
+
+            // Sécurité du niveau demandé
+            $allowed = ['SUCCESS', 'DEBUG','INFO','WARNING','ERROR','CRITICAL'];
+            if (!in_array($level, $allowed, true)) 
+            {
+                $level = 'ERROR';
+            }
+
+            $logsManager = new LogsManager();
+            $logs = $logsManager->findAllLogs(
+                ['LEVEL' => $level],
+                ['ORDER BY' => 'ID DESC', 'LIMIT' => (string)$limit]
+            );
+
+            // Normalise la réponse
+            $data = [];
+            foreach ($logs as $log) {
+                $data[] = [
+                    'ID'       => method_exists($log, 'getID') ? $log->getID() : null,
+                    'LEVEL'    => method_exists($log, 'getLEVEL') ? $log->getLEVEL() : $level,
+                    'CATEGORY' => method_exists($log, 'getCATEGORY') ? $log->getCATEGORY() : '',
+                    'MESSAGE'  => method_exists($log, 'getMESSAGE') ? $log->getMESSAGE() : '',
+                ];
+            }
+
+            echo json_encode(['ok' => true, 'data' => $data]);
+        } catch (\Throwable $e) {
+            http_response_code(500);
+            echo json_encode(['ok' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function exportLogs()
+    {
+        try {
+            $format = isset($_POST['format']) ? strtolower($_POST['format'])
+                    : (isset($_GET['format']) ? strtolower($_GET['format']) : 'csv');
+
+            $level  = isset($_POST['level']) ? strtoupper(trim($_POST['level']))
+                    : (isset($_GET['level']) ? strtoupper(trim($_GET['level'])) : null);
+
+            $limit  = isset($_POST['limit']) ? max(1, (int)$_POST['limit'])
+                    : (isset($_GET['limit']) ? max(1, (int)$_GET['limit']) : 100);
+
+            // (Optionnel) CSRF ici aussi
+
+            $allowed = ['DEBUG','INFO','WARNING','ERROR','CRITICAL'];
+            if ($level !== null && !in_array($level, $allowed, true)) {
+                $level = null; // ignore filtre invalide
+            }
+
+            $logsManager = new LogsManager();
+            $where = [];
+            if ($level) { $where['LEVEL'] = $level; }
+
+            $logs = $logsManager->findAllLogs($where, ['ORDER BY' => 'ID DESC', 'LIMIT' => (string)$limit]);
+
+            $rows = [];
+            foreach ($logs as $log) {
+                $rows[] = [
+                    'ID'       => method_exists($log, 'getID') ? $log->getID() : null,
+                    'LEVEL'    => method_exists($log, 'getLEVEL') ? $log->getLEVEL() : '',
+                    'CATEGORY' => method_exists($log, 'getCATEGORY') ? $log->getCATEGORY() : '',
+                    'MESSAGE'  => method_exists($log, 'getMESSAGE') ? $log->getMESSAGE() : '',
+                ];
+            }
+
+            $filenameBase = 'logs_export_' . date('Ymd_His');
+
+            if ($format === 'json') {
+                header('Content-Type: application/json; charset=utf-8');
+                header('Content-Disposition: attachment; filename="'.$filenameBase.'.json"');
+                echo json_encode($rows, JSON_UNESCAPED_UNICODE|JSON_UNESCAPED_SLASHES|JSON_PRETTY_PRINT);
+                return;
+            }
+
+            header('Content-Type: text/csv; charset=utf-8');
+            header('Content-Disposition: attachment; filename="'.$filenameBase.'.csv"');
+            $out = fopen('php://output', 'w');
+            fputcsv($out, ['ID','LEVEL','CATEGORY','MESSAGE'], ';');
+            foreach ($rows as $r) {
+                $msg = str_replace(["\r","\n"], ['\\r','\\n'], (string)$r['MESSAGE']);
+                fputcsv($out, [$r['ID'], $r['LEVEL'], $r['CATEGORY'], $msg], ';');
+            }
+            fclose($out);
+        } catch (\Throwable $e) {
+            header('Content-Type: application/json; charset=utf-8');
+            http_response_code(500);
+            echo json_encode(['ok' => false, 'message' => $e->getMessage()]);
+        }
+    }
+
 }

@@ -21,6 +21,8 @@ use App\Managers\UsersPermissionsManager;
 class AdminController extends Controller
 {
 
+	
+
 	protected function isAjax(): bool
 	{
 		return !empty($_SERVER['HTTP_X_REQUESTED_WITH']) &&
@@ -107,6 +109,9 @@ class AdminController extends Controller
 			$status = [];
 		}
 
+		$flashMessage = SessionsManager::getFlash('message');
+		$flashType    = SessionsManager::getFlash('messageType');
+
 		// Rendu de la vue
 		echo $this->render('admin/dashboard.twig', [
 			'users_count' => $usersManager->countUsers(),
@@ -116,7 +121,9 @@ class AdminController extends Controller
 			'log_count_critical' => $logsManager->countLogs(['LEVEL' => 'CRITICAL']),
 			'log_recent_activity' => $logsManager->findAllLogs(['CATEGORY' => 'USERS'], ['LIMIT' => '10', 'ORDER BY' => 'ID DESC']),
 			'log_count_debug' => $logsManager->countLogs(['LEVEL' => 'DEBUG']),
-			'server_status' => $status
+			'server_status' => $status,
+			'flash_message' => $flashMessage,
+			'flash_type'    => $flashType
 		]);
 	}
 
@@ -497,4 +504,152 @@ class AdminController extends Controller
 		]);
 	}
 
+	// GET /videos/{id}?a=..&s=..  → page visionnage d’un fichier
+    public function show($id)
+    {
+		
+        // 1) Métadonnées du fichier (pistes)
+        $details = $this->apiGetJson($this->api . '/' . rawurlencode($id));
+        if (!$details || !isset($details['id'])) {
+            http_response_code(404);
+            echo 'Vidéo introuvable';
+            return;
+        }
+
+        // 2) Choix audio/subs depuis la query ou valeurs par défaut
+        $a = isset($_GET['a']) ? (int)$_GET['a'] : $this->pickDefaultAudio($details);
+        $s = isset($_GET['s']) ? (int)$_GET['s'] : $this->pickDefaultSubs($details);
+
+        // 3) Arbre complet pour calculer Prev/Next
+        $tree   = $this->apiGetJson($this->api . '/tree');
+        $ctx    = $this->findContext($tree, $id); // ['folder'=>..., 'files'=>[...], 'index'=>n]
+        $prev   = null;
+        $next   = null;
+        if ($ctx && isset($ctx['files'][$ctx['index']-1])) $prev = $ctx['files'][$ctx['index']-1];
+        if ($ctx && isset($ctx['files'][$ctx['index']+1])) $next = $ctx['files'][$ctx['index']+1];
+
+
+        // 4) Données pour Twig
+        $this->render('admin/videos.twig', [
+            'tree'        => $tree,
+            'current'     => ['id'=>$details['id'], 'name'=>$details['name']],
+            'tracks'      => [
+                'audio'      => $details['tracks']['audio']      ?? [],
+                'subtitles'  => $details['tracks']['subtitles']  ?? [],
+            ],
+            'defaultAudio'=> $this->pickDefaultAudio($details),
+            'selAudio'    => $a,
+            'selSubs'     => $s ?: '',
+            'prev'        => $prev,
+            'next'        => $next,
+            'api'         => $this->api,
+            'pathBase'    => $this->pathBase,
+        ]);
+    }
+
+
+	// GET /videos  → page liste (arbre + videoplayer sans sélection)
+    public function index(): void
+    {
+        $tree = $this->apiGetJson($this->api . '/tree');
+        $this->render("admin/videos.twig", 
+		[
+			'tree'     => $tree,
+            'current'  => null,
+            'tracks'   => ['audio'=>[], 'subtitles'=>[]],
+            'api'      => $this->api,
+            'pathBase' => $this->pathBase,
+		]);
+    }
+
+	private function apiGetJson(string $url): array
+	{
+		$ch = curl_init($url);
+		$apiKey = "alc-proj-1MdrqjpW-7Zaaazug2sbCdhQD-n74qYO8tjI5VhDA0-U2B1sq4AUCDiO9Ad8lxn5vhk1jwt9rO9";
+
+		curl_setopt_array($ch, [
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_TIMEOUT        => 150,
+			CURLOPT_SSL_VERIFYPEER => false, // ⚠️ à activer en prod avec un vrai cert
+			CURLOPT_SSL_VERIFYHOST => false,
+			CURLOPT_HTTPHEADER     => [
+				'Accept: application/json',
+				'X-Api-Key: ' . $apiKey   // <- ajout ici
+			],
+		]);
+		$res = curl_exec($ch);
+		if ($res === false) 
+		{
+			curl_close($ch);
+			return [];
+		}
+		curl_close($ch);
+		$data = json_decode($res, true);
+		return is_array($data) ? $data : [];
+	}
+
+	// Choisit la meilleure piste audio par défaut (jpn si dispo, sinon première)
+    private function pickDefaultAudio(array $details): int
+    {
+        $aud = $details['tracks']['audio'] ?? [];
+        foreach ($aud as $a) 
+		{
+            if (isset($a['lang']) && strtolower($a['lang']) === 'jpn') 
+			{
+                return (int)$a['index'];
+            }
+        }
+        return isset($aud[0]['index']) ? (int)$aud[0]['index'] : 0;
+    }
+
+    // Choisit la meilleure piste sous-titre par défaut (fre si dispo, sinon aucun)
+    private function pickDefaultSubs(array $details): int
+    {
+        $subs = $details['tracks']['subtitles'] ?? [];
+        foreach ($subs as $s) 
+		{
+            if (isset($s['lang']) && strtolower($s['lang']) === 'fre') 
+			{
+                return (int)$s['index'];
+            }
+        }
+        return 0; // 0 → on n’affiche pas par défaut (le Twig mettra "(aucun)")
+    }
+
+    /**
+     * Retourne le contexte du fichier dans l’arbre :
+     *  - le dossier qui contient le fichier
+     *  - la liste des fichiers de ce dossier (triée par nom naturel)
+     *  - l’index du fichier courant dans cette liste
+     */
+    private function findContext(array $node, string $id)
+    {
+        $files = ($node['files'] ?? $node['Files'] ?? []);
+        if ($files) 
+		{
+            // tri naturel par nom
+            usort($files, function($a,$b)
+			{
+                $na = $a['Name'] ?? $a['name'] ?? '';
+                $nb = $b['Name'] ?? $b['name'] ?? '';
+                return strnatcasecmp($na, $nb);
+            });
+
+            foreach ($files as $i => $f) 
+			{
+                $fid = $f['Id'] ?? $f['id'] ?? '';
+                if ($fid === $id) {
+                    return ['folder'=>$node, 'files'=>$files, 'index'=>$i];
+                }
+            }
+        }
+        $subs = ($node['subfolders'] ?? $node['Subfolders'] ?? []);
+        foreach ($subs as $s) 
+		{
+            $res = $this->findContext($s, $id);
+            if ($res) return $res;
+        }
+        return null;
+    }
 }

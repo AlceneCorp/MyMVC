@@ -40,4 +40,9 @@ class HomeController extends Controller
 		
 		$this->render('home/article_detail.twig', ["article" => $article]);
 	}
+
+	public function features()
+	{
+		$this->render('home/features.twig');
+	}
 }
